@@ -2,27 +2,9 @@
 ".First.lib" <-
 function (lib, pkg) 
 {
-  ##  cat("attaching `RandomFields'...   ")
-  ## library(RandomFields, lib=lib)
-  ##library(aux)  ## already attached by RandomFields
-  ##library(mva)
-
-  ##  cat("use on.exit")
-
-  
   library.dynam("SoPhy", pkg, lib) 
-
-  ## x <- .C("GetmppParameters", lnorms=integer(1), weights=integer(1),
-  ##      tests=integer(1), mppmaxchar=integer(1), modelnr=integer(1), DUP=FALSE)
- ## assign(".sophy.XX",0, env=.GlobalEnv)
 }
 
-
-##AtmInF=AtmInF: is.null(atmosphere)
-##MaxAL = nrow(atmosphere)
-##lChem = (!is.null(cBound) && (!is.na(cBound[1])))
-##DrainF= (length(d$KElDr)!=0) && !is.na(d$KElDr[1])
-##SeepF = (length(d$NP)!=0) && !is.na(d$NP[1])
 swms2d <- function(d,
                    max.iteration = 1e+05,
                    iter.print = max.iteration,
@@ -382,7 +364,7 @@ swms2d <- function(d,
              error=error,
              intpck = intpck, 
              dblpck = dblpck,
-             NAOK=TRUE, DUP=FALSE)
+             NAOK=TRUE, DUP=FALSE, PACKAGE="SoPhy")
  
     ## false only if programming error, cf. PCK.f
     stopifnot(intpck[n.intpck]==999999, dblpck[n.dblpck]==999999.25)
