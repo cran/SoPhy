@@ -34,19 +34,15 @@
   \code{ADE} returns a (\code{length(z)} x \code{length(time)})-matrix. 
 }
 
-\author{Martin Schlather, \email{martin.schlather@cu.lu}
-  \url{http://www.cu.lu/~schlathe}}
+\author{Martin Schlather, \email{schlath@hsu-hh.de}
+  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 \references{
-  \itemize{
-    \item
     Schlather, M. and Huwe, B. (2003)
-    The use of the language interface of R: two examples for modelling water
-    flux and solute transport. \emph{Computers \& Geosciences}.% \emph{journ} \bold{}, 110-11.
-    
-    \item
-    Tindall, J.A. and Kunkel, J.R. (1999) \emph{Unsaturated Zone Hydrology
-      for Scientists and Engineers.} New Jersey: Prentice-Hall. % p. 280
-    }
+   The use of the language interface of R: two examples for modelling water
+   flux and solute transport. \emph{Computers \& Geosciences}.% \emph{journ} \bold{}, 110-11.
+
+   Tindall, J.A. and Kunkel, J.R (1999) \emph{Unsaturated Zone Hydrology
+     for Scientists and Engineers.} New Jersey: Prentice-Hall. % p. 280
   }
 
 \examples{

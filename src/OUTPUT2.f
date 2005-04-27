@@ -2,10 +2,7 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
-*  for Computers & Geosciences:
-*     The use of the language interface of R: two examples for        
-*      modelling water flux and solute transport                       
+*  Martin Schlather, schlath@hsu-hh.de 
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten, 
 *
@@ -216,17 +213,19 @@ C      ldebug = .true.
       if (ldebug) write(*,*) "subreg: start"
       xMul=1.
       ATot=0.
-      if(lWat.or.PLevel.le.1) then
+C   ### cancelling of the if statements if of no harm, but
+C   ### ensures initialised values 
+C      if(lWat.or.PLevel.le.1) then
         Volume=0.
         Change=0.
         hTot=0.
         DeltW=0.
-      end if
-      if(lChem) then
+C      end if
+C      if(lChem) then
         cTot=0.
         ConVol=0.
         DeltC=0.
-      end if
+C      end if
       do 11 i=1,NLay
         Area(i)=0.
         if(lWat.or.PLevel.le.1) then
@@ -360,7 +359,7 @@ CCCC falls lchem, dann notwendig TPrint point, see SWMS2d
           wBalT=Volume-wVolI+wCumT 
           balanc(nbalnc, jj+1) = wBalT
           ww=dmax1(DeltW,wCumA)
-          if(ww.ge.1.e-25) then
+          if(ww.ge.1.d-25) then
             wBalR=dabs(wBalT)/ww*100.D0
             balanc(nbalnc, jj+2) = wBalR
           end if
@@ -369,7 +368,7 @@ CCCC falls lchem, dann notwendig TPrint point, see SWMS2d
           cBalT=ConVol-cVolI+cCumT
           balanc(nbalnc, jj+3) = cBalT
           cc=dmax1(DeltC,cCumA)
-          if(cc.ge.1.e-25) then
+          if(cc.ge.1.d-25) then
             cBalR=dabs(cBalT)/cc*100.D0
             balanc(nbalnc, jj+4) = cBalR
           end if

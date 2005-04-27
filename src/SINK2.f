@@ -2,11 +2,7 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
-*  for Computers & Geosciences:
-*     The use of the language interface of R: two examples for        
-*      modelling water flux and solute transport                       
-*
+*  Martin Schlather, schlath@hsu-hh.de 
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten, 
 *
@@ -53,10 +49,16 @@
       double precision function FAlfa(TPot,h,P0,P1,P2H,P2L,P3,r2H,r2L)
       IMPLICIT REAL*8 (A-H,O-Z)
 
-      if(TPot.lt.r2L) P2=P2L
-      if(TPot.gt.r2H) P2=P2H
-      if((TPot.ge.r2L).and.(TPot.le.r2H))
-     !  P2=P2H+(r2H-TPot)/(r2H-r2L)*(P2L-P2H)
+      if((TPot.ge.r2L).and.(TPot.le.r2H)) then
+        P2=P2H+(r2H-TPot)/(r2H-r2L)*(P2L-P2H)
+      else
+       if(TPot.gt.r2H) then
+          P2=P2H
+       else 
+CC        if(TPot.lt.r2L) 
+         P2=P2L
+       endif 
+      end if
       FAlfa=0.0
       if((h.gt.P3).and.(h.lt.P2)) FAlfa=(h-P3)/(P2-P3)
       if((h.ge.P2).and.(h.le.P1)) FAlfa=1.0

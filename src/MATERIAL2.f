@@ -2,10 +2,7 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
-*  for Computers & Geosciences:
-*     The use of the language interface of R: two examples for        
-*      modelling water flux and solute transport                       
+*  Martin Schlather, schlath@hsu-hh.de 
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten
 
@@ -65,12 +62,12 @@
         Kr=(Qe/Qek)**Bpar*(FFQ/FFQk)**PPar*Kk/Ks
         FK=sngl(max(Ks*Kr,1.d-37))
         return
-      end if
-      if(dble(h).ge.Hk.and.dble(h).lt.Hs) then
+      elseif (dble(h).lt.Hs) then
         Kr=(1.d0-Kk/Ks)/(Hs-Hk)*(dble(h)-Hs)+1.d0
         FK=sngl(Ks*Kr)
+      else
+        FK=sngl(Ks)
       end if
-      if(dble(h).ge.Hs) FK=sngl(Ks)
       return
       end
 

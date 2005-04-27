@@ -2,12 +2,8 @@
 *                                                                     *
 *     an analytic solution of water transport                         *
 *                                                                     *
-*     Martin Schlather and Bernd Huwe (2003)                          *
+*     Martin Schlather and Bernd Huwe (2002, 2003)                    *
 *                                                                     *
-*     The use of the language interface of R: two examples for        *
-*     modelling water flux and solute transport                       *
-*                                                                     *
-*                            Computers & Geosciences                  *
 *                                                                     *
 * ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*
 

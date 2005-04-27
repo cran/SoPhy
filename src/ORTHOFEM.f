@@ -3,10 +3,7 @@
 *  modified by Jirka Simunek
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
-*  for Computers & Geosciences:
-*     The use of the language interface of R: two examples for        
-*      modelling water flux and solute transport                       
+*  Martin Schlather, schlath@hsu-hh.de 
 *
 *  Copyright (C) 2002 EDWARD A. SUDICKY, CARL A. MENDOZA, RENE THERRIEN
 *
@@ -444,6 +441,10 @@
 *     INITIALIZE RESIDUAL VECTOR
       
 C      write(*,748) RES(1)
+C     to avoid error messages: (10.2.05, M Schlather)
+      resv = 0
+      dot = 0
+
       CALL XMATM2 (RES,R,C,NN,IAD,IADN,MAXNB)
 
 C      write(*,748) RES(1)
@@ -562,6 +563,8 @@ C         !!! kleine Differenz!
 C          write(*,744) 71, RESV
 C          write(*,744) 71, DOT
 *     CALCULATE WEIGHTING FACTOR (ORTHOMIN)
+ccccc     new: (valgrind error, 14.11.04):
+          RQNORM = 0
 
         ELSE
 
@@ -609,6 +612,9 @@ C          write(*,744) 9, C(1)
         IF (DXNORM.LT.ACNVRG) GO TO 200
 
   100 CONTINUE
+      
+      write(*, 678) RESMAX, ECNVRG, XRATIO, RCNVRG, DXNORM, ACNVRG
+ 678  FORMAT(6E12.4)
       NrErr = 12
       return
 

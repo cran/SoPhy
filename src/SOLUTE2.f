@@ -2,7 +2,7 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
+*  Martin Schlather, schlath@hsu-hh.de 
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten, 
 *
@@ -58,6 +58,9 @@
      !          RQ(NumNP),QQ(NumNP),RQIDOT(MNorth),QI(NumNP,MNorth)
 
 C      write(*,*) "SOLUTE"
+
+C  ### to avoid "uninitialized" error messages:
+      AcE = 0
 
 *     Initialisation
       xMul=1.
@@ -200,7 +203,7 @@ C      write(*,*) "SOLUTE"
             if(KAT.eq.1) xMul=2.*3.1416*(x(i)+x(j)+x(l))/3.
             if(Level.eq.NLevel) then
               cS=cBound(5)
-              if(dabs(cBound(5)).gt.1.e-30) then
+              if(dabs(cBound(5)).gt.1.d-30) then
                 if(cBound(5).gt.conc(i)) cS=cS+(conc(i)-cBound(5))/3.
                 if(cBound(5).gt.conc(j)) cS=cS+(conc(j)-cBound(5))/3.
                 if(cBound(5).gt.conc(l)) cS=cS+(conc(l)-cBound(5))/3.
@@ -313,7 +316,7 @@ C        write(*, 742) B1(1), B1(2)
       do 23 i=1,NumNP
         if(lOrt) B(i)=B1(i)
         Conc(i)=sngl(B(i))
-        if(dabs(Conc(i)).lt.1.e-38) Conc(i)=0.
+        if(dabs(Conc(i)).lt.1.d-38) Conc(i)=0.
 23    continue
       return
       end
@@ -334,6 +337,10 @@ C        write(*, 742) B1(1), B1(2)
 
       alf=1.-epsi
       jjj=MBand
+      
+C   #### to avoid "uninitialized" error messages
+      cBnd = 0
+
       do 14 i=1,NumNP
         if(Kode(i).ne.0) then
           do 11 j=1,NumBP
@@ -533,12 +540,12 @@ C        write(*, 742) B1(1), B1(2)
         Dif=theta(i)*ChPar(2,M)*Tau
         DispL=ChPar(3,M)
         DispT=ChPar(4,M)
-        if(lArtD.and.VAbs.gt.1.e-20) DispL=dmax1(DispL,VAbs*dt
+        if(lArtD.and.VAbs.gt.1.d-20) DispL=dmax1(DispL,VAbs*dt
      !                 /(theta(i)+ChPar(1,M)*ChPar(5,M))/PeCr-Dif/VAbs)
         Dispxx(i)=Dif
         Dispzz(i)=Dif
         Dispxz(i)=0.
-        if(VAbs.gt.1.e-20) then
+        if(VAbs.gt.1.d-20) then
           Dispxx(i)=DispL*Vx(i)*Vx(i)/VAbs+DispT*Vz(i)*Vz(i)/VAbs+Dif
           Dispzz(i)=DispL*Vz(i)*Vz(i)/VAbs+DispT*Vx(i)*Vx(i)/VAbs+Dif
           Dispxz(i)=(DispL-DispT)*Vx(i)*Vz(i)/VAbs
@@ -594,7 +601,7 @@ C        write(*, 742) B1(1), B1(2)
             M2=List(jp1)
             Vxx=(Vx(M1)+Vx(M2))/2.
             Vzz=(Vz(M1)+Vz(M2))/2.
-            if(dabs(Vxx).lt.1.e-30.and.dabs(Vzz).lt.1.e-30) goto 11
+            if(dabs(Vxx).lt.1.d-30.and.dabs(Vzz).lt.1.d-30) goto 11
             BetaV=atan2(Vzz,Vxx)
             Delta=dabs(BetaV-Beta(j))
             if(Delta.gt.0.314.and.dabs(Delta-3.1416).gt.0.314) goto 11
@@ -611,8 +618,8 @@ C        write(*, 742) B1(1), B1(2)
             Vel=VAL*ALeng
             Disp=2.0*DAL
             aa=11.
-            if(dabs(Disp).gt.1.e-30) aa=dabs(Vel/Disp)
-            if(dabs(Disp).lt.1.e-30.or.dabs(Vel).lt.0.001*VV.or.
+            if(dabs(Disp).gt.1.d-30) aa=dabs(Vel/Disp)
+            if(dabs(Disp).lt.1.d-30.or.dabs(Vel).lt.0.001*VV.or.
      !                                dabs(aa).gt.10.) then
               if(dabs(Vel).lt.0.001*VV) WeTab(k,NumSEl)=0.0
               if(Vel.gt.0.001*VV) WeTab(k,NumSEl)=1.0
@@ -642,15 +649,19 @@ C        write(*, 742) B1(1), B1(2)
 
       Peclet=0.
       Courant=0.
-      dtMaxC=1.e+30
+      dtMaxC=1.d+30
       do 12 n=1,NumEl
+c        error messages of valgrind-2.2.0 disappear if one of the 
+c        next two lines is uncommented
+c        write(*,*) "x"
+c        call intpr("x", 1, n, 1)
         NUS=4
         if(KX(n,3).eq.KX(n,4)) NUS=3
         do 11 k=1,NUS-2
           PecX=99999.
           PecY=99999.
-          dt1=1.e+30
-          dt2=1.e+30
+          dt1=1.d+30
+          dt2=1.d+30
           i=KX(n,1)
           j=KX(n,k+1)
           l=KX(n,k+2)
@@ -660,14 +671,21 @@ C        write(*, 742) B1(1), B1(2)
           Bi(1)=y(j)-y(l)
           Bi(2)=y(l)-y(i)
           Bi(3)=y(i)-y(j)
+c          write(*,841)n,i,j,l,x(i),x(j),x(l),y(i),y(j),y(l),
+c     ! Ci(1),Ci(2),Ci(3),delX,
+c     ! KX(n,3),KX(n,4),NUS,Dispxx(i),Dispxx(j),Dispxx(l),Dispzz(i),
+c     ! Dispzz(j),Dispzz(l),Vx(i),Vx(j),Vx(l),Vz(i),Vz(j),Vz(l),
+c     ! theta(i),theta(j),theta(l),MatNum(i),MatNum(j),MatNum(l),
+c     ! ChPar(1,MatNum(i)),ChPar(1,MatNum(j)),ChPar(1,MatNum(l))
+c  841    format("xCi",4i6,10f8.3,3i6,15f8.3,3i6,3f10.3)
           delX=dmax1(dabs(Ci(1)),dabs(Ci(2)),dabs(Ci(3)))
           delY=dmax1(dabs(Bi(1)),dabs(Bi(2)),dabs(Bi(3)))
           DxE=(Dispxx(i)+Dispxx(j)+Dispxx(l))/3.
           DzE=(Dispzz(i)+Dispzz(j)+Dispzz(l))/3.
           VxE=dabs(Vx(i)+Vx(j)+Vx(l))/3.
           VzE=dabs(Vz(i)+Vz(j)+Vz(l))/3.
-          if(DxE.gt.1.e-20) PecX=VxE*delX/DxE
-          if(DzE.gt.1.e-20) PecY=VzE*delY/DzE
+          if(DxE.gt.1.d-20) PecX=VxE*delX/DxE
+          if(DzE.gt.1.d-20) PecY=VzE*delY/DzE
           if(PecX.ne.99999.D0) Peclet=dmax1(Peclet,PecX)
           if(PecY.ne.99999.D0) Peclet=dmax1(Peclet,PecY)
           Peclet=dmin1(Peclet,99999.D0)
@@ -690,8 +708,8 @@ C        write(*, 742) B1(1), B1(2)
             if(PecX.ne.99999.) Cour1=dmin1(1.D0,PeCr/dmax1(0.5D0,PecX))
             if(PecY.ne.99999.) Cour2=dmin1(1.D0,PeCr/dmax1(0.5D0,PecY))
           end if
-          if(VxMax.gt.1.e-20) dt1=Cour1*delX*RMin/VxMax
-          if(VzMax.gt.1.e-20) dt2=Cour2*delY*RMin/VzMax
+          if(VxMax.gt.1.d-20) dt1=Cour1*delX*RMin/VxMax
+          if(VzMax.gt.1.d-20) dt2=Cour2*delY*RMin/VzMax
           dtMaxC=dmin1(dtMaxC,dt1,dt2)
 
 11      continue

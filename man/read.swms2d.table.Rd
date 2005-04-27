@@ -140,18 +140,18 @@ read.swms2d.table(path, selct.in = "SELECTOR.IN",
     \item
     Schlather, M. and Huwe, B. (2003)
     The use of the language interface of R: two examples for modelling water
-    flux and solute transport. \emph{Computers \& Geosciences} % \emph{journ} \bold{}, 110-11.
-
+    flux and solute transport. \emph{Computers \& Geosciences}.% \emph{journ} \bold{}, 110-11.
+    
     \item
     Simunek, J., Vogel, T., and van Genuchten, M.Th. (1994)
     \emph{The SWMS2D code for simulating water flow and solute transport
       in two-dimensional variably saturated media, Version 1.21.}
     Research Report No. 132, 197 p.,
-    U.S. Salinity Laboratory, USDA, ARS, Riverside, California. 
-   }
+    U.S. Salinity Laboratory, USDA, ARS, Riverside, California.
+  }
 }
-\author{Martin Schlather, \email{Martin.Schlather@cu.lu}
-  \url{http://www.cu.lu/~schlathe}
+\author{Martin Schlather, \email{schlath@hsu-hh.de}
+  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}
 }
 
 
@@ -159,22 +159,6 @@ read.swms2d.table(path, selct.in = "SELECTOR.IN",
   }
 
 \examples{
-##################################################################
-## global printing paramters and functions
-##################################################################
-par(cex=1.5, mar=c(4.2,4,0.2,0.2))
-my.legend <- function(lu.x, lu.y, zlim, col, cex=1.5) {
-    ## uses already the legend code of R-1.3.0
-    cn <- length(col)
-    filler <- vector("character", length=(cn-3)/2)
-    legend(lu.x, lu.y, y.i=0.04, x.i=0.1, yj=0,
-           legend=c(format(zlim[2], dig=2), filler,
-             format(mean(zlim), dig=2), filler,
-             format(zlim[1], dig=2)),
-           lty=1, col=rev(col), cex=cex)
-  }
-
-
 ##################################################################
 ##  SWMS2D, Example 1
 ##################################################################
@@ -186,6 +170,7 @@ my.legend <- function(lu.x, lu.y, zlim, col, cex=1.5) {
 path <- paste(system.file(package='SoPhy'), 'swms2d', sep="/")
 x <- read.swms2d.table(path)
 x$TPrint <- seq(10, 5400, 10)
+par(cex=1, mar=c(4.2,4,0.2,0.2))
 
 z <- swms2d(x)$hQ[3, , ]
 i <- ((length(x$nCodeM$z) / 2):1) * 2 - 1
@@ -193,8 +178,8 @@ image(x=c(0, x$TPrint) / 60, y=x$nCodeM$z[i] - max(x$nCodeM$z),
       z=t(z[i, ]), xlab='time [min]', ylab='z [cm]',
       col=grey(seq(1, 0.15, -0.01)), cex.lab=1.5, cex.axis=1.5)
 
-my.legend(0, -max(x$nC$z[i]), zlim=range(z),
-          col=grey(seq(1,0.15,-0.01)))
+my.legend(0, -max(x$nC$z[i]), zlim=range(z), y.i=0.02,
+          col=grey(seq(1,0.15,-0.01)), cex=1.5)
 }
 
 \keyword{spatial}

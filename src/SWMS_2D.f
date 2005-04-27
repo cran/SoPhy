@@ -2,11 +2,7 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
-*  for Computers & Geosciences:
-*     The use of the language interface of R: two examples for        
-*      modelling water flux and solute transport                       
-*
+*  Martin Schlather, schlath@hsu-hh.de 
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten
 
@@ -194,6 +190,10 @@ c      double precision RTime1,RTime2
      !  A1(MBandD,NumNP),RES(NumNP),VRV(NumNP),RQI(NumNP,MNorth),
      !  RQ(NumNP),QQ(NumNP),RQIDOT(MNorth),QI(NumNP,MNorth)
 
+
+C   #### to avoid "uninitialized" error messages
+      iiprnt = 0
+
 C !! start or continue from a previous run? 
       if (IntVec(20).eq.0) goto 2  
 
@@ -226,7 +226,7 @@ C !! start or continue from a previous run?
       CumCh0 = 0.0
       CumCh1 = 0.0
       CumChR = 0.0
-      dtMaxC = 1.e+30
+      dtMaxC = 1.d+30
       wCumA = 0.0
       cCumA = 0.0
       Explic = .false.
@@ -316,6 +316,9 @@ C      write(*,800) (hNew(iii), iii=1,42)
      !              ListNE,lUpW,WeTab,dt,dtMaxC,Peclet,Courant,KAT,
      !              lArtD,PeCr,ConO)
        call cOut  (NumNP,Conc,x,y,tInit, hQThF, MPL, nPLvl)
+      else
+         lUpW = .false.
+         lArtD = .false.
       end if
 
       if (ldebug) write(*,*) "hout"
@@ -385,12 +388,13 @@ C      ldebug = .true.
 
       if (ii.ge.iiprnt) then
          if (iiprnt.eq.IntVec(19)) 
-     !      call dblepr("\ncurrent time; percent of available time",  
-     !                  40, prii, 0)
+     !      call dblepr("\ncurrent time; percent of allowed number 
+     !                    of iterations",  
+     !                  53, prii, 0)
          iiprnt = iiprnt + IntVec(19)
          prii(1) = t
          prii(2) = ii * 100.0 / IntVec(21)
-         call dblepr("", 0, prii, 2)
+         call dblepr(" ", 0, prii, 2)
       end if
 
       if (ldebug) write(*,739) ii, t, IntVec(21)

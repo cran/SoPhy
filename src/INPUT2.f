@@ -2,11 +2,8 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
-*  for Computers & Geosciences:
-*     The use of the language interface of R: two examples for        
-*      modelling water flux and solute transport                       
-*                                                                     
+*  Martin Schlather, schlath@hsu-hh.de
+* 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten
 *
 * This program is free software; you can redistribute it and/or
@@ -39,12 +36,12 @@
       double precision DblVec(NDbl)
       integer IntVec(NInt)
 
-      character*72 Hed
-      character*5  LUnit,TUnit,MUnit
+C      character*72 Hed
+C      character*5  LUnit,TUnit,MUnit
       logical lWat,lChem,AtmInF,ShortF,SeepF,FluxF,FreeD,DrainF
 
-      dimension IU(11)
-      data IU /50,71,72,75,76,77,78,79,80,81,82/
+C      dimension IU(11)
+C      data IU /50,71,72,75,76,77,78,79,80,81,82/
 
 C      read(30,*)
 C      read(30,*)
@@ -541,7 +538,7 @@ C      if(.not.lConst) IJ=NumNP
       IMPLICIT REAL*8 (A-H,O-Z)
       double precision DblVec(NDbl)
       
-      character*50 Text1
+C      character*50 Text1
       dimension KXB(NumBP),Width(NumBP),SWidth(NumKD),Kode(NumNP),
      !          Node(NObsD)
 
@@ -704,7 +701,7 @@ C      P3 =-abs(P3)
 
 C     write(*,*) 'reading transport information'
       NLevel=1
-      write(51,110)
+C      write(51,110)
 C      read(30,*)
 C      read(30,*)
 C      read(30,*) epsi,lUpW,lArtD,PeCr

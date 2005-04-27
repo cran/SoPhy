@@ -8,7 +8,6 @@
 \usage{
 swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE, 
        message = NULL, breakpoint = 1e+10, intermediate.result = NULL)
-%       NumNPD = NumNP, NumElD = NumEl, NumBPD = NumBP, NMatD = NMat)
 }
 \arguments{
   \item{d}{list; see details}
@@ -20,56 +19,59 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
   \item{message}{\code{NULL} or a function that takes a scalar time
     argument and returns a logical value.
     The function is called in case \code{max.iteration} is exceeded.
-    The function allows the user to decide on the basis of the current
+    The function may allow the user to decide on the basis of the current
     time whether the simulation should be continued.}
   \item{breakpoint}{number of incremental time steps after which
     \code{intermediate.result} is called}
   \item{intermediate.result}{\code{NULL} or a function with two
     parameters: the first one gives the time, the second is a \eqn{(6 \times
-      \code{NumNP})}{(6 x \code{NumNP})}-matrix where the rows give
+      \code{NumNP}) x 1}{(6 x \code{NumNP} x 1)}-array where the first
+    dimension gives
     the (1) current pressure h, (2) discharge rate Q,
     (3) water content theta, (4) x-component vx of Darcian flux,
     (5) z-component vz of Darcian flux, 
     and (6) the solute concentration;
     \code{NumNP} gives the number of nodes; \code{intermediate.result}
-    can be used to create movies of water flow.}
+    can be used to create movies of water flow at calculation time.}
 %  \item{NumNPD}{maximum number of nodes; default is unlimited}
 %  \item{NumElD}{maximum number of finite elements; default is unlimited}
 %  \item{NumBPD}{maximum number of boundary points; default is unlimited}
 %  \item{NMatD}{maximum number of materials; default is unlimited}
   }
-}
+
 \details{
-  \code{d} is a list that should contain the following elements
+  \code{d} is a profile definition of a type as the return list of
+  \code{link{xswms2d}}, or it is 
+  a list that should contain the following elements
   \itemize{
-    \item{Kat}{type of flow system; 0:horizontal, 1:axisymmetric;
+    \item{\code{Kat}}{type of flow system; 0:horizontal, 1:axisymmetric;
       2:vertical.}
     
-    \item{MaxIt}{maximum number of iteration during any time step.}
+    \item{\code{MaxIt}}{maximum number of iteration during any time step.}
     
-    \item{TolTh}{maximum desired change of water content.}
+    \item{\code{TolTh}}{maximum desired change of water content within one step.}
     
-    \item{TolH}{maximum desired change of pressure head.}
+    \item{\code{TolH}}{maximum desired change of pressure head within one step.}
     
-    \item{lWat}{logical. If \code{TRUE} transient water flow else
+    \item{\code{lWat}}{logical. If \code{TRUE} transient water flow else
       steady state.}
     
-    \item{FreeD}{logical. \code{TRUE} if free drainage at the bottom.}
+    \item{\code{FreeD}}{logical. \code{TRUE} if free drainage at the bottom.}
     
-    \item{NLay}{Number of subregions for water balances.}
+    \item{\code{NLay}}{Number of subregions for water balances.}
     
-    \item{hTab}{\code{c(hTab1, hTabN)}, interval of pressure heads
+    \item{\code{hTab}}{\code{c(hTab1, hTabN)}, interval of pressure heads
       within which a table of hydraulic properties is generated.}
     
-    \item{Par}{vector of 9 elements or matrix of 9 columns, each row
+    \item{\code{Par}}{vector of 9 elements or matrix of 9 columns, each row
       representing a different kind of material.}
     
-    \item{dt}{initial time increment.}
+    \item{\code{dt}}{initial time increment.}
     
-    \item{dtMinMax}{\code{c(dtmin, dtmax)}, minimum and maximum permitted
+    \item{\code{dtMinMax}}{\code{c(dtmin, dtmax)}, minimum and maximum permitted
       time increment.}
     
-    \item{DMul}{\code{c(dMul, dMul2)},
+    \item{\code{DMul}}{\code{c(dMul, dMul2)},
       \eqn{\code{dMul}\ge 1}{\code{dMul >= 1}},
       \eqn{\code{dMul2}\le 1}{\code{dMul2 <= 1}};
       if number of required iterations is less than 4 or greater than 6
@@ -77,42 +79,42 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
       step is multiplied by \code{dMul} and \code{dMul2}, respectively.
     }
     
-    \item{TPrint}{vector of increasing print-times.}
+    \item{\code{TPrint}}{vector of increasing print-times.}
     
-    \item{NP}{seepage information: matrix or list.
+    \item{\code{NP}}{seepage information: matrix or list.
       matrix of one or two rows and arbitrary columns or
       each row defines a seepage face, the columns
       give the node numbers (or are \code{NA}) or
       a list of vectors;
     }
-    \item{DrCorr}{reduction factor for drainage; see the SWMS2D manual.}
+    \item{\code{DrCorr}}{reduction factor for drainage; see the SWMS2D manual.}
     
-    \item{ND}{vector of up to two elements given the global node number
+    \item{\code{ND}}{vector of up to two elements given the global node number
       of the drain.}
     
-    \item{EfDim}{\code{(length{ND} x 2)-matrix} drain information: first
+    \item{\code{EfDim}}{\code{(length{ND} x 2)-matrix} drain information: first
       column gives the effective diameter; second column gives the
       dimension of the square in the finite element mesh.}
     
-    \item{KElDr}{drainage information: matrix or list;
+    \item{\code{KElDr}}{drainage information: matrix or list;
       matrix of \code{length(ND)} rows and arbitrary colums;
       each row defines the surrounding finite
       elements of the drain; values are either the global finite
       element numbers or \code{NA} or a list of vectors.}
     
-    \item{Epsi}{temporal weighing coefficient: 0: explicit scheme,
+    \item{\code{Epsi}}{temporal weighing coefficient: 0: explicit scheme,
       0.5:Crank-Nicholson, 1:fully implicit.}
     
-    \item{lUpW}{logical. Upstream weighing formalation used if \code{TRUE}
+    \item{\code{lUpW}}{logical. Upstream weighing formalation used if \code{TRUE}
       else Galkerin formulation.}
     
-    \item{lArtD}{logical. \code{TRUE} if artificial dispersion is to be
+    \item{\code{lArtD}}{logical. \code{TRUE} if artificial dispersion is to be
       added to fulfill the stability criterion \code{PeCr}.}
     
-    \item{PeCr}{Stability criterion, see the SWMS2D manual; zero if
+    \item{\code{PeCr}}{Stability criterion, see the SWMS2D manual; zero if
       \code{lUpW}.}
     
-    \item{ChPar}{vector of 9 element if \code{Par} is a vector; other
+    \item{\code{ChPar}}{vector of 9 element if \code{Par} is a vector; other
       wise (\code{nrow(Par)} x 9)-matrix; chemical material properties:
       bulk density, ionic diffusion coeffcient in free water,
       longitudinal dispersivity, transverse dispersivity, Freundlich
@@ -121,16 +123,16 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
       constant for dissolved phase, zero-order rate constant for solid
       phase.}
     
-    \item{KodCB}{vector of \code{sum(nCodeM[,2]!=0)} elements, defining
+    \item{\code{KodCB}}{vector of \code{sum(nCodeM[,2]!=0)} elements, defining
       the chemical boundary conditions, see the SWMS2D manual.}
     
-    \item{cBound}{vector of six elements: jth element gives the 
+    \item{\code{cBound}}{vector of six elements: jth element gives the 
       concentration for boundary nodes \code{i} with chemical boundary
       condition \code{abs(KodCB[i])==j}.}
     
-    \item{tPuls}{time duration of the concentration pulse.}
+    \item{\code{tPuls}}{time duration of the concentration pulse.}
     
-    \item{nCodeM}{matrix of 11 or 12 columns and arbitrary number of rows;
+    \item{\code{nCodeM}}{matrix of 11 or 12 columns and arbitrary number of rows;
       \code{nCodeM} gives the nodal information;
       the 12 columns contain: (1) nodal number (might be omitted), (2) code
       giving the boundary condition (see the SWMS2D manual), (3) x-coordinate,
@@ -141,7 +143,7 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
       factor.
     }
     
-    \item{KXR}{matrix of 8 columns and arbitrary rows; gives the finite
+    \item{\code{KXR}}{matrix of 8 columns and arbitrary rows; gives the finite
       element information; first 4 colums give the nodes in
       counter-clockwise order (last node is repeated if element is a
       triangle), 5th to 7th column give anisotropy parameters of the
@@ -149,33 +151,34 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
       8th column: subregion number.
     }
     
-    \item{Width}{scalar or vector of \code{sum(nCodeM[,2]!=0)} elements;
+    \item{\code{Width}}{scalar or vector of \code{sum(nCodeM[,2]!=0)} elements;
       width of the boundary associated with the boundary nodes
       (in the order given by nCodeM).}
     
-    \item{rLen}{width of soil surface associated with transpiration}
+    \item{\code{rLen}}{width of soil surface associated with transpiration}
     
-    \item{Node}{vector of observation nodes for which information is
+    \item{\code{Node}}{vector of observation nodes for which information is
       collected at each time level.}
     
-    \item{SinkF}{logical; water extraction from the root zone if \code{TRUE}.}
-    \item{qGWLF}{logical; If \code{TRUE} then the discharge-groundwater
+    \item{\code{SinkF}}{logical; water extraction from the root zone if
+      \code{TRUE}.} 
+    \item{\code{qGWLF}}{logical; If \code{TRUE} then the discharge-groundwater
       level relationship is used, see the SWMS2D manual.}
     
-    \item{GWL0L}{reference position of groundwater table (usually the
+    \item{\code{GWL0L}}{reference position of groundwater table (usually the
       z-coordinate of the soil surface).}
     
-    \item{Aqh}{parameter in the discharge-groundwater
+    \item{\code{Aqh}}{parameter in the discharge-groundwater
       level relationship.}
     
-    \item{Bqh}{second parameter in the discharge-groundwater
+    \item{\code{Bqh}}{second parameter in the discharge-groundwater
       level relationship.}
     
-    \item{tInit}{starting time of the simulation.}
+    \item{\code{tInit}}{starting time of the simulation.}
     
-    \item{hCritS}{maximum allowed pressure head at soil surface.}
+    \item{\code{hCritS}}{maximum allowed pressure head at soil surface.}
     
-    \item{atmosphere}{matrix of 10 columns and arbitrary rows;
+    \item{\code{atmosphere}}{matrix of 10 columns and arbitrary rows;
       each row presents the atmospherical conditions at a certain
       instance;
       the columns are (1) the instance at which the time period ends
@@ -190,18 +193,18 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
       (for \code{(abs(nCodeM[,2])==3) & (KodCB>0)}).
     }
     
-    \item{root}{vector of 6 elements or (\code{nrow(nCodeM)} x 6)-matrix.
+    \item{\code{root}}{vector of 6 elements or (\code{nrow(nCodeM)} x 6)-matrix.
       \code{c(P0, P2H, P2L, P3, r2H, r2L)} information about
       water uptake by roots, see the SWMS2D manual.}
     
-    \item{POptm}{pressure heads, below which roots start to extract water
+    \item{\code{POptm}}{pressure heads, below which roots start to extract water
       at maximum possible rate;
       if \code{is.vector(root)} then \code{POptm} is a 
       scalar if \code{Par} is a vector, and a vector of
       \code{nrow{Par}} elements otherwise;
       if \code{!is.vector(root)} then \code{POptm} has
       \code{nrow(nCodeM)} elements.
-      }  
+    }
   }
 }
 \value{
@@ -237,7 +240,7 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
     \code{boundary.n} rows (simulation output);
     first 5 columns are (1) time, (2) WatBalT, (3) WatBalT, (4) CncBalT, (5)
     CncBalR; for each of the subjects (i) Area, (ii) Volume, (iii)
-    InFlow, (iv) hMean, and (v) ConcVol and (vi) cMean if \code{lChem},
+    InFlow, (iv) hMean, and (v) ConcVol and (vi) cMean if solute transport,
     \code{NLay +1} subsequent columns are given for the total value and
     the value of each subregion; see the SWMS2D manual for details.
   }
@@ -247,26 +250,39 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
     (6) Q, (7) v, (8) h, (9) th, (10) Conc, (11) time;
     see the SWMS2D manual for details.
   }
+  \item{flux}{\code{d$flux};  different from \code{NULL} if the function
+    is called with the output of \code{create.waterflow}
+    or with a profile definition, see the return value of
+    \code{\link{xswms2d}}.} 
+  \item{water.x}{\code{d$water.x};  different from \code{NULL}
+    if the function is called with the output of \code{create.waterflow}
+    or with a profile definition, see the return value of
+    \code{\link{xswms2d}}.} 
+  \item{water.y}{\code{d$water.y};  different from \code{NULL} if
+    the function is called with the output of \code{create.waterflow}
+    or with a profile definition, see the return value of
+    \code{\link{xswms2d}}.} 
 }
 \references{
   \itemize{
     \item
     Schlather, M. and Huwe, B. (2003)
-    The use of the language interface of R: two examples for modelling water
-    flux and solute transport. \emph{Computers \& Geosciences}.% \emph{journ} \bold{}, 110-11.
-   
-    \item
+   The use of the language interface of R: two examples for modelling water
+   flux and solute transport. \emph{Computers \& Geosciences}.% \emph{journ} \bold{}, 110-11.
+
+   \item
     Simunek., J., Vogel, T., and van Genuchten, M.Th. (1994)
     \emph{The SWMS2D code for simulating water flow and solute transport
       in two-dimensional variably saturated media, Version 1.21.}
     Research Report No. 132, 197 p.,
     U.S. Salinity Laboratory, USDA, ARS, Riverside, California.
- }
+    
+  }
 }
-\author{Martin Schlather, \email{Martin.Schlather@cu.lu}
-  \url{http://www.cu.lu/~schlathe}
+\author{Martin Schlather, \email{schlath@hsu-hh.de}
+  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}
 
-  The Fortran code was published as `swms\_2d' 
+  The Fortran code was published as \sQuote{swms\_2d}
   by Jirka Simunek, T. Vogel and Martinus Th. van Genuchten, 
   \url{http://www.ussl.ars.usda.gov/MODELS/MODELS.HTM};
   the file ORTHOFEM.f was written by Edward A. Sudicky  
@@ -285,13 +301,12 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
   and its code is proprietary.
 
   The work has been supported by the German Federal Ministry of Research
-  and Technology (BMFT) grant PT BEO 51-0339476C during 2000--2002.
+  and Technology (BMFT) grant PT BEO 51-0339476C during 2000-2002.
 }
 
-\seealso{%\code{\link{create.waterflow}}, 
-         %\code{\link{define.horizons}},
+\seealso{\code{\link{xswms2d}},
          \code{\link{read.swms2d.table}},
-         %\code{\link{SoPhy}}
+         \code{\link{SoPhy}}
        }
 
 \examples{
@@ -311,7 +326,7 @@ n <- 100 # better 10000
 front <- integer(n)
 
 for (j in 1:n) {
-  cat(j, "\n")
+  cat(j,"\n")
   x$nCodeM[, 10] <- rlnorm(length(x$nCodeM$z), m = mu, sd = sd)
   x$nCodeM[, 11] <- x$nCodeM[, 10]^(-2)
   z <- swms2d(x)$hQ[3, , ]
@@ -332,6 +347,7 @@ hist(distance, freq=FALSE,
      breaks=seq(h[1]-dh, h[length(h)]+dh, 2 * dh),
      main="Histogramm for the depth of the water front",
      xlab="depth", cex.axis=1.5, cex.main=1.2, cex.lab=1.5)
+
 }
 \keyword{spatial}
 

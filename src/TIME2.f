@@ -2,11 +2,7 @@
 *  Authors:   J. Simunek, T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
-*  for Computers & Geosciences:
-*     The use of the language interface of R: two examples for        
-*      modelling water flux and solute transport                       
-*
+*  Martin Schlather, schlath@hsu-hh.de 
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten, 
 *
@@ -67,6 +63,9 @@
 
       logical qGWLF,FreeD,lMinStep
       dimension Width(NumBP),KXB(NumBP),Kode(NumNP),hNew(NumNP),Q(NumNP)
+
+C   #### to avoid "uninitialized" error messages
+      rGWLOld = 0.0
 
       atmkk = atmkk + 1
 

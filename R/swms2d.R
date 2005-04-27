@@ -1,10 +1,28 @@
+.ENV <- environment()
+.ENV <- .GlobalEnv
 
-".First.lib" <-
-function (lib, pkg) 
-{
-  library.dynam("SoPhy", pkg, lib) 
+.onLoad <- function (lib, pkg) {
+ # library("RandomFields", lib=lib)
+#  library.dynam("SoPhy", pkg, lib) 
+
+  if (file.exists("/home/schlather/bef/x")) {
+    ## to do list -- since my surname is rare, the message should 
+    ## appear only on computers I have a login
+    cat("To-Do List\n==========\n")
+    print("wurzeln, parameter wie depth zuschlag funktionieren nicht mehr")
+    print("convert create.stones into c programme")
+    print("convert create.roots into c programme")
+    print("improve cut[][]-area!! -- add lines at the very end that check how much the cut area can be reduced.")
+    print("rf.link not tested yet -- improve standard definition of rf.link!")
+  }
 }
 
+
+##AtmInF=AtmInF: is.null(atmosphere)
+##MaxAL = nrow(atmosphere)
+##lChem = (!is.null(cBound) && (!is.na(cBound[1])))
+##DrainF= (length(d$KElDr)!=0) && !is.na(d$KElDr[1])
+##SeepF = (length(d$NP)!=0) && !is.na(d$NP[1])
 swms2d <- function(d,
                    max.iteration = 1e+05,
                    iter.print = max.iteration,
@@ -12,11 +30,20 @@ swms2d <- function(d,
                    message = NULL,
                    breakpoint = 1e+10,
                    intermediate.result = NULL
+#                   NumNPD=NumNP,
+#                   NumElD=NumEl,
+#                   NumBPD=NumBP,
+#                   NMatD =NMat
                    ){
-
-  
+  h <- NULL
+  if (is.null(d$nCodeM)) {
+    if (d$H1$type=="Start") {
+      h <- d
+      d <- create.waterflow(d)
+      if (is.character(d)) stop(d)
+    } else stop("neither a swms2d input list nor a profile definition")
+  }
   FluxF <- TRUE  ## hence output of Q, v, conc!
-  max.horizons <- 10
   NSeepD <- 2    #
   NumSPD <- 50
   NDrD <- 2
@@ -27,14 +54,14 @@ swms2d <- function(d,
   NTabD <- 100
   MNorth <- 4
 
-  len <- function(x,l,m, value=0) {
+  len <- function(x, l, m, value=0) {
     ##  print(match.call())
     if (is.list(x)) {
       stop("??")
       m <- max(unlist(lapply(x, length)))
       x <- t(sapply(x,function(e) c(e, rep(NA,m))[1:m]))
     } else if (is.matrix(x)) {
-      m <-  matrix(value, nrow=l, ncol=m)
+      m <- matrix(value, nrow=l, ncol=m)
       m[1:nrow(x),1:ncol(x)] <- x
       return(m)
     }
@@ -102,7 +129,7 @@ swms2d <- function(d,
     if (tMax < (TPrintMax <- TPrint[length(TPrint)])) {
       warning(paste(tMax,"= tMax < max(TPrint)=",TPrintMax,
                     " -- TPrint is shortened", sep=""))
-      TPrint <- c(TPrint[TPrint<tMax], tMax)
+      TPrint <- c(TPrint[TPrint < tMax], tMax)
     } else {
       ## tmax is automatically shortened !!!
       tMax <- TPrintMax
@@ -166,7 +193,7 @@ swms2d <- function(d,
       NED <- integer(NDr)
       for (i in 1:NDr) {
         if ( (l <- NED[i] <- length(d$KElDr[[i]])) > NElDrD)
-          return(paste("KElDr[[",i,"]] has too many elements"))
+          return(paste("KElDr[[", i, "]] has too many elements"))
         KElDr[i, 1:l] <- d$KElDr[[i]]
       }
     } else {
@@ -199,7 +226,7 @@ swms2d <- function(d,
       NSP <- integer(NSeep)
       for (i in 1:NSeep) {
         if ((l <- NSP[i] <- length(d$NP[[i]])) > NumSPD)
-          return(paste("NP[[",i,"]] has too many elements"))
+          return(paste("NP[[", i, "]] has too many elements"))
         NP[i, 1:l] <- d$NP[[i]]
       }
     } else {
@@ -249,20 +276,20 @@ swms2d <- function(d,
   if (length(IntVec)!=NInt || length(DblVec)!=NDbl) return("unexpected nulls")
   
   MPL <- length(TPrint)
-  hQThFlC <- array(dim=c(6, NumNP, MPL+2))
+  hQThFlC <- array(0, dim=c(6, NumNP, MPL+2))
 
   TlSolObs.ncol <- 10 + 3 * (NumKD + 1) + 3 + 2 * NumKD + 3 * NObs
   TlSolObs.nrow <- max(1 - d$lWat, if (ShortF) MPL + 1 else max.iteration)
   TlSolObs <- matrix(nrow=TlSolObs.nrow, ncol=TlSolObs.ncol)
   ## note interpretation of the variables depends on lWat, see TLInf
   
-  atmOut <-  matrix(nrow=MaxAL,ncol=9)
+  atmOut <-  matrix(nrow=MaxAL, ncol=9)
 
   boundary.n <- 2 + if(!d$lWat && !lChem) max.iteration else MPL #!!
-  boundary <- array(dim=c(NumBP, 11,  boundary.n))
+  boundary <- array(0, dim=c(NumBP, 11,  boundary.n))
 
   balance.ncol <- 5 + (4 + 2 * lChem) * (d$NLay + 1)
-  balance <- matrix(nrow=boundary.n, ncol=balance.ncol)
+  balance <- matrix(0, nrow=boundary.n, ncol=balance.ncol)
 
   if (AtmInF && (!is.matrix(d$atmosphere) || (ncol(d$atmosphere)!=10)))
       return("`atmosphere' not compatible with AtmInF")
@@ -364,7 +391,7 @@ swms2d <- function(d,
              error=error,
              intpck = intpck, 
              dblpck = dblpck,
-             NAOK=TRUE, DUP=FALSE, PACKAGE="SoPhy")
+             PACKAGE="SoPhy", NAOK=TRUE, DUP=FALSE)
  
     ## false only if programming error, cf. PCK.f
     stopifnot(intpck[n.intpck]==999999, dblpck[n.dblpck]==999999.25)
@@ -378,12 +405,19 @@ swms2d <- function(d,
       intermediate.result(as.list(dbl)$time,
                           array(hQThFlC, dim=c(6, NumNP, 2 + MPL),
                                 dimnames=list(c("h","Q","th","vx","vz","Conc"),
-                           NULL,NULL))[,,IntVec$brk.tprint]) ## PLevel, see PCK.f
+                           NULL,NULL))[,,IntVec$brk.tprint, drop=FALSE])
+      ## PLevel, see PCK.f
       if (error==6) error <- 13
     }
 
-    if ((error!=7) && ((error!=13) || is.null(message) ||
-           !message(as.list(dbl)$time))) break
+    if (error!=7) {
+      if (error==13 && !is.null(message)) {
+        if (!message(as.list(dbl)$time)) {
+          error <- 20
+          break
+        }
+      } else break
+    }
     
     IntVec$start <- FALSE
     if (error==13) {
@@ -401,8 +435,8 @@ swms2d <- function(d,
                   "NDrD exceeded",
                   "NElDrD exceeded",
                   "jj -- should never happen", #5
-                  "breakpoint && maxLoop -- never gets here",
-                  "breakpoint -- never gets here",
+                  "breakpoint && maxLoop -- should never get here",
+                  "breakpoint -- should never get here",
                   "NObsD exceeded",
                   "NumKD exceeded",
                   "NodInf failed", #10
@@ -411,14 +445,21 @@ swms2d <- function(d,
                   "iteration > max. iter., see swms2d (water)",
                   "nPLvl > MPL + 2",
                   "nbalnc > balaR", #15
+                  "",
+                  "",
+                  "",
+                  "",
+                  "stopped", #20
                   )
-    return(paste("error",error, "in swms_2d occured:",txt))
+    return(if (error<20) paste("error", error, "in swms_2d occured:", txt) else
+           paste("swms_2d:", txt) 
+           )
   }
 
   hQThFlC <- array(hQThFlC, dim=c(6, NumNP, 2 + MPL),
                           dimnames=list(c("h","Q","th","vx","vz","Conc"),
-                            NULL,NULL))
-  hQThFlC <- hQThFlC[, , !apply(is.na(hQThFlC), 3, all)]
+                            NULL,NULL))[, , -2-MPL, drop=FALSE] # -2-MPL,13.11.04
+  # hQThFlC <- hQThFlC[, , !apply(is.na(hQThFlC), 3, all)] # 13.11.04
 
   nx <-  function(x) paste(x, c("Atm", "Root", 3, 1, "Seep", 5:NumKD), sep="")
   TlSolObs <-
@@ -455,8 +496,10 @@ swms2d <- function(d,
                              "v","h","th","Conc","time"),NULL))
   boundary <- boundary[, ,!apply(is.na(boundary), 3, all)]
 
-  return(list(hQThFlC=hQThFlC, TlSolObs=TlSolObs, atmOut=atmOut,
-              balance=balance, boundary=boundary))
+  return(c(h, list(hQThFlC=hQThFlC, TlSolObs=TlSolObs, atmOut=atmOut,
+              balance=balance, boundary=boundary,
+              flux=d$flux, water.x=d$water.x, water.y=d$water.y
+              )))
 }
 
 
@@ -502,9 +545,6 @@ read.swms2d.table <- function(path,
       return(x[1:ndata])
     }
   }
-  
-
-  options(warn=2)
   
   slct <- paste(path,selct.in,sep="/")
   grid <- paste(path,grid.in,sep="/")
@@ -687,7 +727,7 @@ read.swms2d.table <- function(path,
               path = path,
               selct.in = selct.in,
               grid.in = grid.in,
-              atm.in = atm.in
+              atm.in = atm.in,
               ))
 }
 

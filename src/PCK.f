@@ -1,15 +1,13 @@
+* ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*
 *                                                                     *
 *     an analytic solution of water transport                         *
 *                                                                     *
-*     Martin Schlather and Bernd Huwe (2003)                          *
+*     Martin Schlather and Bernd Huwe (2002, 2003)                    *
 *                                                                     *
-*     The use of the language interface of R: two examples for        *
-*     modelling water flux and solute transport                       *
-*                                                                     *
-*                            Computers & Geosciences                  *
 *                                                                     *
 * ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*
 
+  
       subroutine xpack(intpck, dblpck,
      !  A, B, Q, hNew, htemp, hOld ,ConSat, F,
      !  hTab, ConTab, CapTab, Con, Cap, x, y, LayNum,
@@ -66,7 +64,7 @@
      !  RQ(NumNP),QQ(NumNP),RQIDOT(MNorth),QI(NumNP * MNorth),
      !  Kode(NumNP),MatNum(NumNP),KX(NumEl * 4)
       logical lWat,lChem,SinkF,qGWLF,AtmInF,ShortF,SeepF,FluxF,
-     !        Explic,lUpW,FreeD,DrainF,lArtD,lOrt,lMinStep, ldebug
+     !        Explic,lUpW,FreeD,DrainF,lArtD,lOrt,lMinStep
       integer PLevel,ALevel,TLevel, atmkk, nPLvl, TLkk, nbalnc
 
       idbl = 0
@@ -166,60 +164,60 @@
       call cpdbl(RQIDOT, dblpck, ndbl, idbl)
       ndbl = NumNP * MNorth 
       call cpdbl(QI, dblpck, ndbl, idbl)
-      ndbl = 1
-      call cpdbl(tInit, dblpck, ndbl, idbl)
-      call cpdbl(CumQrT, dblpck, ndbl, idbl)
-      call cpdbl(CumQrR, dblpck, ndbl, idbl)
-      call cpdbl(CumQvR, dblpck, ndbl, idbl)
-      call cpdbl(rRoot, dblpck, ndbl, idbl)
-      call cpdbl(rTop, dblpck, ndbl, idbl)
-      call cpdbl(CumCh0, dblpck, ndbl, idbl)
-      call cpdbl(CumCh1, dblpck, ndbl, idbl)
-      call cpdbl(CumChR, dblpck, ndbl, idbl)
-      call cpdbl(dtMaxC, dblpck, ndbl, idbl)
-      call cpdbl(wCumA, dblpck, ndbl, idbl)
-      call cpdbl(cCumA, dblpck, ndbl, idbl)
-      call cpdbl(ECNVRG, dblpck, ndbl, idbl)
-      call cpdbl(ACNVRG, dblpck, ndbl, idbl)
-      call cpdbl(RCNVRG, dblpck, ndbl, idbl)
-      call cpdbl(t, dblpck, ndbl, idbl)
-      call cpdbl(TolTh, dblpck, ndbl, idbl)
-      call cpdbl(TolH, dblpck, ndbl, idbl)
-      call cpdbl(rLen, dblpck, ndbl, idbl)
-      call cpdbl(GWL0L, dblpck, ndbl, idbl)
-      call cpdbl(tMax, dblpck, ndbl, idbl)
-      call cpdbl(Aqh, dblpck, ndbl, idbl)
-      call cpdbl(Bqh, dblpck, ndbl, idbl)
-      call cpdbl(hCritS, dblpck, ndbl, idbl)
-      call cpdbl(tAtm, dblpck, ndbl, idbl)
-      call cpdbl(hCritA, dblpck, ndbl, idbl)
-      call cpdbl(cPrec, dblpck, ndbl, idbl)
-      call cpdbl(cht, dblpck, ndbl, idbl)
-      call cpdbl(crt, dblpck, ndbl, idbl)
-      call cpdbl(tOld, dblpck, ndbl, idbl)
-      call cpdbl(dt, dblpck, ndbl, idbl)
-      call cpdbl(dtMax, dblpck, ndbl, idbl)
-      call cpdbl(dMul, dblpck, ndbl, idbl)
-      call cpdbl(dMul2, dblpck, ndbl, idbl)
-      call cpdbl(dtMin, dblpck, ndbl, idbl)
-      call cpdbl(dtOpt, dblpck, ndbl, idbl)
-      call cpdbl(dtOld, dblpck, ndbl, idbl)
-      call cpdbl(dtInit, dblpck, ndbl, idbl)
-      call cpdbl(epsi, dblpck, ndbl, idbl)
-      call cpdbl(tPulse, dblpck, ndbl, idbl)
-      call cpdbl(PeCr, dblpck, ndbl, idbl)
-      call cpdbl(Peclet, dblpck, ndbl, idbl)
-      call cpdbl(Courant, dblpck, ndbl, idbl)
-      call cpdbl(wCumT, dblpck, ndbl, idbl)
-      call cpdbl(cCumT, dblpck, ndbl, idbl)
-      call cpdbl(wVolI, dblpck, ndbl, idbl)
-      call cpdbl(cVolI, dblpck, ndbl, idbl)
-      call cpdbl(vMeanR, dblpck, ndbl, idbl)
-      call cpdbl(hMeanR, dblpck, ndbl, idbl)
-      call cpdbl(hMeanT, dblpck, ndbl, idbl)
-      call cpdbl(hMeanG, dblpck, ndbl, idbl)
+C      ndbl = 1
+      call Ecpdbl(tInit, dblpck, idbl)
+      call Ecpdbl(CumQrT, dblpck, idbl)
+      call Ecpdbl(CumQrR, dblpck, idbl)
+      call Ecpdbl(CumQvR, dblpck, idbl)
+      call Ecpdbl(rRoot, dblpck, idbl)
+      call Ecpdbl(rTop, dblpck, idbl)
+      call Ecpdbl(CumCh0, dblpck, idbl)
+      call Ecpdbl(CumCh1, dblpck, idbl)
+      call Ecpdbl(CumChR, dblpck, idbl)
+      call Ecpdbl(dtMaxC, dblpck, idbl)
+      call Ecpdbl(wCumA, dblpck, idbl)
+      call Ecpdbl(cCumA, dblpck, idbl)
+      call Ecpdbl(ECNVRG, dblpck, idbl)
+      call Ecpdbl(ACNVRG, dblpck, idbl)
+      call Ecpdbl(RCNVRG, dblpck, idbl)
+      call Ecpdbl(t, dblpck, idbl)
+      call Ecpdbl(TolTh, dblpck, idbl)
+      call Ecpdbl(TolH, dblpck, idbl)
+      call Ecpdbl(rLen, dblpck, idbl)
+      call Ecpdbl(GWL0L, dblpck, idbl)
+      call Ecpdbl(tMax, dblpck, idbl)
+      call Ecpdbl(Aqh, dblpck, idbl)
+      call Ecpdbl(Bqh, dblpck, idbl)
+      call Ecpdbl(hCritS, dblpck, idbl)
+      call Ecpdbl(tAtm, dblpck, idbl)
+      call Ecpdbl(hCritA, dblpck, idbl)
+      call Ecpdbl(cPrec, dblpck, idbl)
+      call Ecpdbl(cht, dblpck, idbl)
+      call Ecpdbl(crt, dblpck, idbl)
+      call Ecpdbl(tOld, dblpck, idbl)
+      call Ecpdbl(dt, dblpck, idbl)
+      call Ecpdbl(dtMax, dblpck, idbl)
+      call Ecpdbl(dMul, dblpck, idbl)
+      call Ecpdbl(dMul2, dblpck, idbl)
+      call Ecpdbl(dtMin, dblpck, idbl)
+      call Ecpdbl(dtOpt, dblpck, idbl)
+      call Ecpdbl(dtOld, dblpck, idbl)
+      call Ecpdbl(dtInit, dblpck, idbl)
+      call Ecpdbl(epsi, dblpck, idbl)
+      call Ecpdbl(tPulse, dblpck, idbl)
+      call Ecpdbl(PeCr, dblpck, idbl)
+      call Ecpdbl(Peclet, dblpck, idbl)
+      call Ecpdbl(Courant, dblpck, idbl)
+      call Ecpdbl(wCumT, dblpck, idbl)
+      call Ecpdbl(cCumT, dblpck, idbl)
+      call Ecpdbl(wVolI, dblpck, idbl)
+      call Ecpdbl(cVolI, dblpck, idbl)
+      call Ecpdbl(vMeanR, dblpck, idbl)
+      call Ecpdbl(hMeanR, dblpck, idbl)
+      call Ecpdbl(hMeanT, dblpck, idbl)
+      call Ecpdbl(hMeanG, dblpck, idbl)
       xxx = 999999.25
-      call cpdbl(xxx, dblpck, ndbl, idbl)
+      call Ecpdbl(xxx, dblpck, idbl)
 C      write(*, 777) idbl, dblpck(idbl)
  777  format(i10, f15.7)
 C      stop
@@ -235,28 +233,29 @@ CCCCCCCCCCCCCCCCCCCCCCCCC
       nint = NumNP
       call cpint(IADN, intpck, nint, iint)
       call cpint(IADD, intpck, nint, iint)
-      nint = 1
-      call cpint(NTab, intpck, nint, iint)
-      call cpint(ItCum, intpck, nint, iint)
-      call cpint(Iter, intpck, nint, iint)
-      call cpint(TLevel, intpck, nint, iint)
-      call cpint(ALevel, intpck, nint, iint)
-      call cpint(PLevel, intpck, nint, iint)
-      call cpint(MaxItO, intpck, nint, iint)
-      call cpint(atmkk, intpck, nint, iint)
-      call cpint(nPLvl, intpck, nint, iint)
-      call cpint(TLkk, intpck, nint, iint)
-      call cpint(nbalnc, intpck, nint, iint)
-      call cpint(KAT, intpck, nint, iint)
-      call cpint(MaxIt, intpck, nint, iint)
-      call cpint(MBand, intpck, nint, iint)
-      call cpint(NLay, intpck, nint, iint)
-      call cpint(MaxAL, intpck, nint, iint)
-      call cpint(NSeep, intpck, nint, iint)
-      call cpint(NLevel, intpck, nint, iint)
-      call cpint(MPL, intpck, nint, iint)
-      call cpint(NDr, intpck, nint, iint)
-      call cpint(NObs, intpck, nint, iint)
+C      nint = 1
+
+      call Ecpint(NTab, intpck, iint)
+      call Ecpint(ItCum, intpck, iint)
+      call Ecpint(Iter, intpck, iint)
+      call Ecpint(TLevel, intpck, iint)
+      call Ecpint(ALevel, intpck, iint)
+      call Ecpint(PLevel, intpck, iint)
+      call Ecpint(MaxItO, intpck, iint)
+      call Ecpint(atmkk, intpck, iint)
+      call Ecpint(nPLvl, intpck, iint)
+      call Ecpint(TLkk, intpck, iint)
+      call Ecpint(nbalnc, intpck, iint)
+      call Ecpint(KAT, intpck, iint)
+      call Ecpint(MaxIt, intpck, iint)
+      call Ecpint(MBand, intpck, iint)
+      call Ecpint(NLay, intpck, iint)
+      call Ecpint(MaxAL, intpck, iint)
+      call Ecpint(NSeep, intpck, iint)
+      call Ecpint(NLevel, intpck, iint)
+      call Ecpint(MPL, intpck, iint)
+      call Ecpint(NDr, intpck, iint)
+      call Ecpint(NObs, intpck, iint)
       nint = NumNP
       call cpint(Kode, intpck, nint, iint)
       call cpint(MatNum, intpck, nint, iint)
@@ -265,26 +264,27 @@ CCCCCCCCCCCCCCCCCCCCCCCCC
 C      call cpint(, intpck, nint, iint)
 
 CCCCCCCCCCCCCCCCCCCCCCCCC
-      nint = 1
-      call cplog(SinkF, intpck, nint, iint)
-      call cplog(qGWLF, intpck, nint, iint)
-      call cplog(Explic, intpck, nint, iint)
-      call cplog(lMinStep, intpck, nint, iint)
-      call cplog(lWat, intpck, nint, iint)
-      call cplog(lChem, intpck, nint, iint)
-      call cplog(AtmInF, intpck, nint, iint)
-      call cplog(ShortF, intpck, nint, iint)
-      call cplog(SeepF, intpck, nint, iint)
-      call cplog(FluxF, intpck, nint, iint)
-      call cplog(lUpW, intpck, nint, iint)
-      call cplog(FreeD, intpck, nint, iint)
-      call cplog(DrainF, intpck, nint, iint)
-      call cplog(lArtD, intpck, nint, iint)
-      call cplog(lOrt, intpck, nint, iint)
-C      call cplog(, intpck, nint, iint)
+C      nint = 1
+      call Ecplog(SinkF, intpck, iint)
+      call Ecplog(qGWLF, intpck, iint)
+      call Ecplog(Explic, intpck, iint)
+      call Ecplog(lMinStep, intpck, iint)
+      call Ecplog(lWat, intpck, iint)
+      call Ecplog(lChem, intpck, iint)
+      call Ecplog(AtmInF, intpck, iint)
+      call Ecplog(ShortF, intpck, iint)
+      call Ecplog(SeepF, intpck, iint)
+      call Ecplog(FluxF, intpck, iint)
+      call Ecplog(lUpW, intpck, iint)
+      call Ecplog(FreeD, intpck, iint)
+      call Ecplog(DrainF, intpck, iint)
+      call Ecplog(lArtD, intpck, iint)
+      call Ecplog(lOrt, intpck, iint)
+C      call Ecplog(, intpck, iint)
 
       nxxx = 999999
-      call cpint(nxxx, intpck, nint, iint)
+      call Ecpint(nxxx, intpck, iint)
+
       return
       end
 
@@ -311,26 +311,55 @@ C      call cplog(, intpck, nint, iint)
       end
 
 
-      subroutine cplog(from, to, nfrom, ito)
-      logical from(*)
-      integer to(*)
-      integer nfrom, ito
-      do 11 i=1,nfrom
-         if (from(i)) then 
-            to(ito + i) = 1
-         else
-            to(ito + i) = 0
-         end if
- 11   continue
-      ito = ito + nfrom 
+C      subroutine cplog(from, to, nfrom, ito)
+C      logical from(*)
+C      integer to(*)
+C      integer nfrom, ito
+C      do 11 i=1,nfrom
+C         if (from(i)) then 
+C            to(ito + i) = 1
+C         else
+C            to(ito + i) = 0
+C         end if
+C 11   continue
+C      ito = ito + nfrom 
+C      return
+C      end
+
+      subroutine Ecpdbl(from, to, ito)
+      double precision from, to(*)
+      integer ito
+      ito = ito + 1
+      to(ito) = from
       return
       end
 
 
+      subroutine Ecpint(from, to, ito)
+      integer from, to(*)
+      integer ito
+      ito = ito + 1
+      to(ito) = from
+      return
+      end
+
+      subroutine Ecplog(from, to, ito)
+      logical from
+      integer to(*)
+      integer ito
+      ito = ito + 1
+      if (from) then 
+         to(ito) = 1
+      else
+         to(ito) = 0
+      end if
+      return
+      end
+
       subroutine redbl(from, to, nfrom, ito)
       double precision from(*), to(*)
       integer nfrom, ito
-       do 11 i=1,nfrom
+      do 11 i=1,nfrom
         from(i) = to(ito + i) 
  11   continue
       ito = ito + nfrom 
@@ -349,17 +378,43 @@ C      call cplog(, intpck, nint, iint)
       end
 
 
-      subroutine relog(from, to, nfrom, ito)
-      logical from(*)
-      integer to(*)
-      integer nfrom, ito
-      do 11 i=1,nfrom
-         from(i) =  to(ito + i).eq.1
- 11   continue
-      ito = ito + nfrom 
+C      subroutine relog(from, to, nfrom, ito)
+C      logical from(*)
+C      integer to(*)
+C      integer nfrom, ito
+C      do 11 i=1,nfrom
+C         from(i) =  to(ito + i).eq.1
+C 11   continue
+C      ito = ito + nfrom 
+C      return
+C      end
+
+      subroutine Eredbl(from, to, ito)
+      double precision from, to(*)
+      integer ito
+      ito = ito + 1
+      from = to(ito) 
       return
       end
 
+
+      subroutine Ereint(from, to, ito)
+      integer from, to(*)
+      integer ito
+      ito = ito + 1
+      from = to(ito)
+      return
+      end
+
+
+      subroutine Erelog(from, to, ito)
+      logical from
+      integer to(*)
+      integer ito
+      ito = ito + 1
+      from =  to(ito).eq.1
+      return
+      end
 
       subroutine xunpck(intpck, dblpck, 
      !  A, B, Q, hNew, htemp, hOld ,ConSat, F,
@@ -418,9 +473,9 @@ C      call cplog(, intpck, nint, iint)
      !  Kode(NumNP),MatNum(NumNP),KX(NumEl*4)
 
       logical lWat,lChem,SinkF,qGWLF,AtmInF,ShortF,SeepF,FluxF,
-     !        Explic,lUpW,FreeD,DrainF,lArtD,lOrt,lMinStep, ldebug
+     !        Explic,lUpW,FreeD,DrainF,lArtD,lOrt,lMinStep
       integer PLevel,ALevel,TLevel, atmkk, nPLvl, TLkk, nbalnc
-
+     
       idbl = 0
       iint = 0
       ndbl = MBandD * NumNP
@@ -518,60 +573,60 @@ C      call cplog(, intpck, nint, iint)
       call redbl(RQIDOT, dblpck, ndbl, idbl)
       ndbl = NumNP * MNorth 
       call redbl(QI, dblpck, ndbl, idbl)
-      ndbl = 1
-      call redbl(tInit, dblpck, ndbl, idbl)
-      call redbl(CumQrT, dblpck, ndbl, idbl)
-      call redbl(CumQrR, dblpck, ndbl, idbl)
-      call redbl(CumQvR, dblpck, ndbl, idbl)
-      call redbl(rRoot, dblpck, ndbl, idbl)
-      call redbl(rTop, dblpck, ndbl, idbl)
-      call redbl(CumCh0, dblpck, ndbl, idbl)
-      call redbl(CumCh1, dblpck, ndbl, idbl)
-      call redbl(CumChR, dblpck, ndbl, idbl)
-      call redbl(dtMaxC, dblpck, ndbl, idbl)
-      call redbl(wCumA, dblpck, ndbl, idbl)
-      call redbl(cCumA, dblpck, ndbl, idbl)
-      call redbl(ECNVRG, dblpck, ndbl, idbl)
-      call redbl(ACNVRG, dblpck, ndbl, idbl)
-      call redbl(RCNVRG, dblpck, ndbl, idbl)
-      call redbl(t, dblpck, ndbl, idbl)
-      call redbl(TolTh, dblpck, ndbl, idbl)
-      call redbl(TolH, dblpck, ndbl, idbl)
-      call redbl(rLen, dblpck, ndbl, idbl)
-      call redbl(GWL0L, dblpck, ndbl, idbl)
-      call redbl(tMax, dblpck, ndbl, idbl)
-      call redbl(Aqh, dblpck, ndbl, idbl)
-      call redbl(Bqh, dblpck, ndbl, idbl)
-      call redbl(hCritS, dblpck, ndbl, idbl)
-      call redbl(tAtm, dblpck, ndbl, idbl)
-      call redbl(hCritA, dblpck, ndbl, idbl)
-      call redbl(cPrec, dblpck, ndbl, idbl)
-      call redbl(cht, dblpck, ndbl, idbl)
-      call redbl(crt, dblpck, ndbl, idbl)
-      call redbl(tOld, dblpck, ndbl, idbl)
-      call redbl(dt, dblpck, ndbl, idbl)
-      call redbl(dtMax, dblpck, ndbl, idbl)
-      call redbl(dMul, dblpck, ndbl, idbl)
-      call redbl(dMul2, dblpck, ndbl, idbl)
-      call redbl(dtMin, dblpck, ndbl, idbl)
-      call redbl(dtOpt, dblpck, ndbl, idbl)
-      call redbl(dtOld, dblpck, ndbl, idbl)
-      call redbl(dtInit, dblpck, ndbl, idbl)
-      call redbl(epsi, dblpck, ndbl, idbl)
-      call redbl(tPulse, dblpck, ndbl, idbl)
-      call redbl(PeCr, dblpck, ndbl, idbl)
-      call redbl(Peclet, dblpck, ndbl, idbl)
-      call redbl(Courant, dblpck, ndbl, idbl)
-      call redbl(wCumT, dblpck, ndbl, idbl)
-      call redbl(cCumT, dblpck, ndbl, idbl)
-      call redbl(wVolI, dblpck, ndbl, idbl)
-      call redbl(cVolI, dblpck, ndbl, idbl)
-      call redbl(vMeanR, dblpck, ndbl, idbl)
-      call redbl(hMeanR, dblpck, ndbl, idbl)
-      call redbl(hMeanT, dblpck, ndbl, idbl)
-      call redbl(hMeanG, dblpck, ndbl, idbl)
+C      ndbl = 1
+      call Eredbl(tInit, dblpck, idbl)
+      call Eredbl(CumQrT, dblpck, idbl)
+      call Eredbl(CumQrR, dblpck, idbl)
+      call Eredbl(CumQvR, dblpck, idbl)
+      call Eredbl(rRoot, dblpck, idbl)
+      call Eredbl(rTop, dblpck, idbl)
+      call Eredbl(CumCh0, dblpck, idbl)
+      call Eredbl(CumCh1, dblpck, idbl)
+      call Eredbl(CumChR, dblpck, idbl)
+      call Eredbl(dtMaxC, dblpck, idbl)
+      call Eredbl(wCumA, dblpck, idbl)
+      call Eredbl(cCumA, dblpck, idbl)
+      call Eredbl(ECNVRG, dblpck, idbl)
+      call Eredbl(ACNVRG, dblpck, idbl)
+      call Eredbl(RCNVRG, dblpck, idbl)
+      call Eredbl(t, dblpck, idbl)
+      call Eredbl(TolTh, dblpck, idbl)
+      call Eredbl(TolH, dblpck, idbl)
+      call Eredbl(rLen, dblpck, idbl)
+      call Eredbl(GWL0L, dblpck, idbl)
+      call Eredbl(tMax, dblpck, idbl)
+      call Eredbl(Aqh, dblpck, idbl)
+      call Eredbl(Bqh, dblpck, idbl)
+      call Eredbl(hCritS, dblpck, idbl)
+      call Eredbl(tAtm, dblpck, idbl)
+      call Eredbl(hCritA, dblpck, idbl)
+      call Eredbl(cPrec, dblpck, idbl)
+      call Eredbl(cht, dblpck, idbl)
+      call Eredbl(crt, dblpck, idbl)
+      call Eredbl(tOld, dblpck, idbl)
+      call Eredbl(dt, dblpck, idbl)
+      call Eredbl(dtMax, dblpck, idbl)
+      call Eredbl(dMul, dblpck, idbl)
+      call Eredbl(dMul2, dblpck, idbl)
+      call Eredbl(dtMin, dblpck, idbl)
+      call Eredbl(dtOpt, dblpck, idbl)
+      call Eredbl(dtOld, dblpck, idbl)
+      call Eredbl(dtInit, dblpck, idbl)
+      call Eredbl(epsi, dblpck, idbl)
+      call Eredbl(tPulse, dblpck, idbl)
+      call Eredbl(PeCr, dblpck, idbl)
+      call Eredbl(Peclet, dblpck, idbl)
+      call Eredbl(Courant, dblpck, idbl)
+      call Eredbl(wCumT, dblpck, idbl)
+      call Eredbl(cCumT, dblpck, idbl)
+      call Eredbl(wVolI, dblpck, idbl)
+      call Eredbl(cVolI, dblpck, idbl)
+      call Eredbl(vMeanR, dblpck, idbl)
+      call Eredbl(hMeanR, dblpck, idbl)
+      call Eredbl(hMeanT, dblpck, idbl)
+      call Eredbl(hMeanG, dblpck, idbl)
 
-      call redbl(xxx, dblpck, ndbl, idbl)  
+      call Eredbl(xxx, dblpck, idbl)  
       if (xxx.ne.999999.25) then
          write(*,*) "xxx.ne.999999.25"
          stop
@@ -589,28 +644,28 @@ CCCCCCCCCCCCCCCCCCCCCCCCC
       nint = NumNP
       call reint(IADN, intpck, nint, iint)
       call reint(IADD, intpck, nint, iint)
-      nint = 1
-      call reint(NTab, intpck, nint, iint)
-      call reint(ItCum, intpck, nint, iint)
-      call reint(Iter, intpck, nint, iint)
-      call reint(TLevel, intpck, nint, iint)
-      call reint(ALevel, intpck, nint, iint)
-      call reint(PLevel, intpck, nint, iint)
-      call reint(MaxItO, intpck, nint, iint)
-      call reint(atmkk, intpck, nint, iint)
-      call reint(nPLvl, intpck, nint, iint)
-      call reint(TLkk, intpck, nint, iint)
-      call reint(nbalnc, intpck, nint, iint)
-      call reint(KAT, intpck, nint, iint)
-      call reint(MaxIt, intpck, nint, iint)
-      call reint(MBand, intpck, nint, iint)
-      call reint(NLay, intpck, nint, iint)
-      call reint(MaxAL, intpck, nint, iint)
-      call reint(NSeep, intpck, nint, iint)
-      call reint(NLevel, intpck, nint, iint)
-      call reint(MPL, intpck, nint, iint)
-      call reint(NDr, intpck, nint, iint)
-      call reint(NObs, intpck, nint, iint)
+C      nint = 1
+      call Ereint(NTab, intpck, iint)
+      call Ereint(ItCum, intpck, iint)
+      call Ereint(Iter, intpck, iint)
+      call Ereint(TLevel, intpck, iint)
+      call Ereint(ALevel, intpck, iint)
+      call Ereint(PLevel, intpck, iint)
+      call Ereint(MaxItO, intpck, iint)
+      call Ereint(atmkk, intpck, iint)
+      call Ereint(nPLvl, intpck, iint)
+      call Ereint(TLkk, intpck, iint)
+      call Ereint(nbalnc, intpck, iint)
+      call Ereint(KAT, intpck, iint)
+      call Ereint(MaxIt, intpck, iint)
+      call Ereint(MBand, intpck, iint)
+      call Ereint(NLay, intpck, iint)
+      call Ereint(MaxAL, intpck, iint)
+      call Ereint(NSeep, intpck, iint)
+      call Ereint(NLevel, intpck, iint)
+      call Ereint(MPL, intpck, iint)
+      call Ereint(NDr, intpck, iint)
+      call Ereint(NObs, intpck, iint)
       nint = NumNP
       call reint(Kode, intpck, nint, iint)
       call reint(MatNum, intpck, nint, iint)
@@ -619,26 +674,26 @@ CCCCCCCCCCCCCCCCCCCCCCCCC
 C      call reint(, intpck, nint, iint)
 
 CCCCCCCCCCCCCCCCCCCCCCCCC
-      nint = 1
-      call relog(SinkF, intpck, nint, iint)
-      call relog(qGWLF, intpck, nint, iint)
-      call relog(Explic, intpck, nint, iint)
-      call relog(lMinStep, intpck, nint, iint)
-      call relog(lWat, intpck, nint, iint)
-      call relog(lChem, intpck, nint, iint)
-      call relog(AtmInF, intpck, nint, iint)
-      call relog(ShortF, intpck, nint, iint)
-      call relog(SeepF, intpck, nint, iint)
-      call relog(FluxF, intpck, nint, iint)
-      call relog(lUpW, intpck, nint, iint)
-      call relog(FreeD, intpck, nint, iint)
-      call relog(DrainF, intpck, nint, iint)
-      call relog(lArtD, intpck, nint, iint)
-      call relog(lOrt, intpck, nint, iint)
-C      call relog(, intpck, nint, iint)
+C      nint = 1
+      call Erelog(SinkF, intpck, iint)
+      call Erelog(qGWLF, intpck, iint)
+      call Erelog(Explic, intpck, iint)
+      call Erelog(lMinStep, intpck, iint)
+      call Erelog(lWat, intpck, iint)
+      call Erelog(lChem, intpck, iint)
+      call Erelog(AtmInF, intpck, iint)
+      call Erelog(ShortF, intpck, iint)
+      call Erelog(SeepF, intpck, iint)
+      call Erelog(FluxF, intpck, iint)
+      call Erelog(lUpW, intpck, iint)
+      call Erelog(FreeD, intpck, iint)
+      call Erelog(DrainF, intpck, iint)
+      call Erelog(lArtD, intpck, iint)
+      call Erelog(lOrt, intpck, iint)
+C      call Erelog(, intpck, iint)
 
 
-      call reint(nxxx, intpck, nint, iint)
+      call Ereint(nxxx, intpck, iint)
       if (nxxx.ne.999999) then
          write(*,*) "nxxx.ne.999999"
          stop

@@ -2,11 +2,7 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, Martin.Schlather@uni-bayreuth.de 
-*  for Computers & Geosciences:
-*     The use of the language interface of R: two examples for        
-*      modelling water flux and solute transport                       
-*
+*  Martin Schlather, schlath@hsu-hh.de 
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten
 *
@@ -148,7 +144,7 @@ C      write(*,801) lOrt
         hTemp(i)=hNew(i)
         if(lOrt) B(i)=B1(i)
         hNew(i)=sngl(B(i))
-        if(abs(hNew(i)).gt.1.e+10) hNew(i)=sign(1.e+10,hNew(i))
+        if(abs(hNew(i)).gt.1.d+10) hNew(i)=sign(1.d+10,hNew(i))
 13    continue
       Iter =Iter+1
       ItCum=ItCum+1
@@ -240,10 +236,10 @@ C       write(*,101) Iter
 
 *     Initialisation
       xMul=1.
+      AreaR =0.
       if(Iter.eq.0) then
         vMeanR=0.
         hMeanR=0.
-        AreaR =0.
       end if
       do 12 i=1,NumNP
         B(i)=0.d0
@@ -324,8 +320,7 @@ C          write(*,778) 333, ib
 15      continue
 
 16    continue
-      if(AreaR.gt.0..and.Iter.eq.0) hMeanR=hMeanR/AreaR
-
+      if(Iter.eq.0.and.AreaR.gt.0.) hMeanR=hMeanR/AreaR
 *     Determine boundary fluxes
       do 19 n=1,NumNP
         if(Kode(n).lt.1) goto 19
