@@ -13,7 +13,7 @@ create.roots(h, trials = 10, PrintLevel=RFparameters()$PrintLevel,
 
 \arguments{
   \item{h}{a list of the
-    same format as the output \code{\link{xswms2d}},
+    same format as the output \command{\link{xswms2d}},
     see there for a description of the components.
   } 
  \item{trials}{number of trials to find a realisation of the plant
@@ -21,13 +21,16 @@ create.roots(h, trials = 10, PrintLevel=RFparameters()$PrintLevel,
     a distance of at least \code{$plants.mindist}.
   }
   \item{PrintLevel}{
-     \itemize{
-     \item \eqn{<}=0 : no messages are printed\cr
-     \item 1 : failures of \code{optim} are announced
-     \item 2 : occurences of partial failures
-     \item 3 : the percentage of performed work is shown.
-     \item \eqn{>}=4 : further tracing information
-   }
+    The higher the value the more tracing information is given;
+    up to value 2, no information is given.
+%     \itemize{
+%     \item \eqn{<}=0 : no messages are printed\cr
+%     \item 1 : failures of \code{\link[]{optim} are announced
+%     \item 2 : occurences of partial failures
+%     \item 3 : the percentage of performed work is shown.
+%     \item \eqn{>}=4 : further tracing information
+%   }
+
    Note that if \code{PrintLevel>2} a running counter is shown that
    includes the printing of backspaces
    (\eqn{\mbox{\textasciicircum}}{^}H).
@@ -164,7 +167,7 @@ create.roots(h, trials = 10, PrintLevel=RFparameters()$PrintLevel,
 }
 
 \references{  
-  Schlather, M. and Huwe, B. (2005) Modelling inhomogeneous soils:
+  Schlather, M. and Huwe, B. (2006) Modelling inhomogeneous soils:
   Theory. \emph{In preparation.} %\bold{}, - .
   \cr
 }
@@ -172,11 +175,11 @@ create.roots(h, trials = 10, PrintLevel=RFparameters()$PrintLevel,
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 
-\seealso{ \code{\link{SoPhy}}, \code{\link{xswms2d}}}
+\seealso{ \code{\link{SoPhy}}, \command{\link{xswms2d}}}
 
 \examples{
 %  library(SoPhy, lib="~/TMP"); library(RandomFields)
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/simu.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/simu.R")
 ## get a standard definition first
 h <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1, new=NULL)
 h$root[[1]]$plants.lambda <- 0.02

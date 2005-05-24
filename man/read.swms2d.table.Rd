@@ -138,9 +138,10 @@ read.swms2d.table(path, selct.in = "SELECTOR.IN",
 \references{
   \itemize{
     \item
-    Schlather, M. and Huwe, B. (2003)
+    Schlather, M. and Huwe, B. (2004)
     The use of the language interface of R: two examples for modelling water
-    flux and solute transport. \emph{Computers \& Geosciences}.% \emph{journ} \bold{}, 110-11.
+    flux and solute transport.
+    \emph{Computers \& Geosciences} \bold{30}, 197-201.
     
     \item
     Simunek, J., Vogel, T., and van Genuchten, M.Th. (1994)
@@ -155,7 +156,7 @@ read.swms2d.table(path, selct.in = "SELECTOR.IN",
 }
 
 
-\seealso{\code{\link{swms2d}}%, \code{\link{SoPhy}}
+\seealso{\command{\link{swms2d}}%, \code{\link{SoPhy}}
   }
 
 \examples{

@@ -22,7 +22,7 @@ flowpattern(type=c('identical', 'unif', 'independent',
       selected.dist = 2/3, front.factor=2, method = 'fix.m',
       endpoint.tolerance=0, measure=function(x) x^2,
            
-      simu.method=NULL, drop.simu.method = NULL, register=c(1,2),
+      simu.method="TBM3", drop.simu.method = NULL, register=c(1,2),
       old.paths=NULL, PrintLevel=RFparameters()$Print, wait=FALSE,
       raw=FALSE, compress=TRUE, max.points = 5500000)
 }
@@ -54,8 +54,8 @@ flowpattern(type=c('identical', 'unif', 'independent',
     independently distributed.}
   \item{x.name}{character.  Name of the covariance function used to
     simulate the path increments.  Only used if \code{type} is different
-    from \code{'unif'}, see \code{\link[RandomFields]{PrintModelList}} or
-    \code{\link[RandomFields]{CovarianceFct}}.
+    from \code{'unif'}, see %\command{\link[RandomFields]{PrintModelList}} or
+    \command{\link[RandomFields]{CovarianceFct}}.
   }
   \item{x.var}{numeric.  Variance of the covariance function.}
   \item{x.v.scale}{numeric.  Scale in vertical direction.}
@@ -86,8 +86,8 @@ flowpattern(type=c('identical', 'unif', 'independent',
     dependence of the Gaussian random field that is used to model the
     stained path length.  Only used if \code{type='all'} - otherwise
     a Gaussian random field with pure nugget effect is used. See
-    \code{\link[RandomFields]{PrintModelList}} or
-    \code{\link[RandomFields]{CovarianceFct}} for possible values.
+    % \command{\link[RandomFields]{PrintModelList}} or
+    \command{\link[RandomFields]{CovarianceFct}} for possible values.
   }
   \item{drop.scale}{numeric.  Scale in (horizontal) direction.}
   \item{drop.kappa}{Vector of additional parameters for the covariance
@@ -97,7 +97,7 @@ flowpattern(type=c('identical', 'unif', 'independent',
   }
   \item{selected.dist}{number in \eqn{(0,1)} or a vector of integers.
     \code{selected.dist} used for estimating the risk index, see
-    \code{\link{risk.index}}.
+    \command{\link{risk.index}}.
   
     \code{selected.dist} gives the
     distances for which the form parameter of the pareto distribution
@@ -109,7 +109,7 @@ flowpattern(type=c('identical', 'unif', 'independent',
   \item{front.factor}{
     \code{front.factor} is
     used for estimating the risk index, see
-    \code{\link{risk.index}}.
+    \command{\link{risk.index}}.
 
      The upper bound
     for the upper endpoint equals the \code{front.factor} times the
@@ -120,7 +120,7 @@ flowpattern(type=c('identical', 'unif', 'independent',
   \item{method}{character, 'fix.m' or 'optim.m'.
     \code{method} is
     used for estimating the risk index, see
-    \code{\link{risk.index}}.
+    \command{\link{risk.index}}.
   
     If 'fix.m', the estimated number of path equals the maximum number of
     ob stained pixels below a given threshold. If 'optim.m' the number
@@ -133,7 +133,7 @@ flowpattern(type=c('identical', 'unif', 'independent',
   }
   \item{endpoint.tolerance}{numeric.
     \code{endpoint.tolerance} is
-    used for estimating the risk index, see \code{\link{risk.index}}
+    used for estimating the risk index, see \command{\link{risk.index}}
 
      If the shape
     parameter is negative then the distribution has a finite upper
@@ -155,18 +155,21 @@ flowpattern(type=c('identical', 'unif', 'independent',
   }
   \item{measure}{function that measures the distance between points; the
     function gets and returns a vector; used for estimating the risk
-    index, see \code{\link{risk.index}}}
-  \item{simu.method}{\code{NULL} or string; Method used for simulating
+    index, see \command{\link{risk.index}}}
+  \item{simu.method}{\code{NULL} or string;
+    Currently, only \dQuote{TBM3} is allowed.
+    Method used for simulating
     the Gaussian random fields for the paths,
-    see \code{\link[RandomFields]{RFMethods}}, or
-    type \code{\link[RandomFields]{PrintMethodList}()} to get all options.
+    see \link[RandomFields]{RFMethods}
+   % or type \command{\link[RandomFields]{PrintMethodList}()}
+    to get all options.
     If \code{model} is given as list then \code{method} may not be
     set if \code{model[[i]]$Method}, \eqn{i=1,3,..} is given, and vice
     versa.}
   \item{drop.simu.method}{\code{NULL} or string; Method used for simulating
     the Gaussian random fields for the drops, see \code{simu.method}}
   \item{register}{vector of 2 components. The first compontent gives the
-    register used in \code{\link[RandomFields]{GaussRF}} to simulate the
+    register used in \command{\link[RandomFields]{GaussRF}} to simulate the
     paths, the 
     second component gives the register for the drops.}
   \item{old.paths}{\code{NULL} or \code{list}. If \code{list} it must have the
@@ -204,7 +207,7 @@ flowpattern(type=c('identical', 'unif', 'independent',
   it returns the following list
   \item{c.r}{empty list if \code{length(method)==0}.  Otherwise a list
     with \code{length(method)} components.  Each of them is the output
-    of \code{\link{risk.index}}.
+    of \command{\link{risk.index}}.
   }
   \item{intermediate}{list containing \code{xx}, a matrix of x-coordinates
     of the vertices of the paths, \code{yy}, a matrix of y-coordinates
@@ -270,12 +273,12 @@ flowpattern(type=c('identical', 'unif', 'independent',
 \references{
   \itemize{
     \item
-    Schlather, M. and Huwe, B. (2004a)
+    Schlather, M. and Huwe, B. (2005a)
     A stochastic model for 3-dimensional flow patterns in dye tracer
-    experiments. \emph{Submitted to J. Hydrol.}% \bold{}, .
+    experiments. \emph{J. Hydrol.} \bold{In press}, .
     
     \item
-    Schlather, M. and Huwe, B. (2004b)
+    Schlather, M. and Huwe, B. (2005b)
     A risk index for characterising flow pattern in soils
     using dye tracer distributions
     \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
@@ -284,7 +287,7 @@ flowpattern(type=c('identical', 'unif', 'independent',
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
-\seealso{\code{\link[RandomFields]{RandomFields}} }
+\seealso{\command{\link[RandomFields]{RandomFields}}, \command{\link{plotFlow2d}}, \command{\link{plotFlow3d}}}
 \examples{
 
 ############################################################

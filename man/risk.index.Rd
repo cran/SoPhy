@@ -93,13 +93,15 @@ risk.index(data, selected.dist=0.95,
     \code{max.no.paths} give the bounds for the nuisance parameter.}
   \item{max.no.paths}{see \code{min.no.paths}}
   \item{PrintLevel}{
-     \itemize{
-     \item \eqn{<}=0 : no messages are printed\cr
-     \item 1 : failures of \code{optim} are announced
-     \item 2 : occurences of partial failures
-     \item 3 : the percentage of performed work is shown.
-     \item \eqn{>}=4 : further tracing information
-   }
+    The higher the value of \code{PrintLevel} the more tracing
+    information is given. Up to value 2, no information is given.
+%     \itemize{
+%     \item \eqn{<}=0 : no messages are printed\cr
+%     \item 1 : failures of \code{optim} are announced
+%     \item 2 : occurences of partial failures
+%     \item 3 : the percentage of performed work is shown.
+%     \item \eqn{>}=4 : further tracing information
+%   }
    Note that if \code{PrintLevel>2} a running counter is shown that
    includes the printing of backspaces
    (\eqn{\mbox{\textasciicircum}}{^}H).
@@ -117,7 +119,7 @@ risk.index(data, selected.dist=0.95,
   defined precisely, the shape parameter is calculated for the
   function values \eqn{f(d)} for distances \eqn{d \ge d_i}{d>=d_i}
   and several fixed starting distances \eqn{d_i}. 
-  The distances \eqn{d_i} are given by \code{selected.dist}.
+  The distances \eqn{d_i} are given by \code{selected.rate}.
   (The approach is similar to that for analyzing extremal events.)
 }
 \value{
@@ -155,7 +157,7 @@ risk.index(data, selected.dist=0.95,
   Embrechts, P., Klueppelberg, C. and Mikosch, T. (1997)
   \emph{Modelling Extremal Events.} Berlin: Springer.
 
-  Schlather, M. and Huwe, B. (2004)
+  Schlather, M. and Huwe, B. (2005)
   A risk index for characterising flow pattern in soils
   using dye tracer distributions
   \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
@@ -163,8 +165,8 @@ risk.index(data, selected.dist=0.95,
 
 \seealso{
   \code{\link{SoPhy}},
-  \code{\link{analyse.profile}},
-  \code{\link{xswms2d}}
+  \command{\link{analyse.profile}},
+  \command{\link{xswms2d}}
 }
 
 \examples{

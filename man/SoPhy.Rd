@@ -15,42 +15,42 @@
   \itemize{
     \item \bold{Physical modelling}
     \itemize{
-      \item \code{\link{swms2d}} : R interface to SWMS\_2d, an algorithm by
+      \item \command{\link{swms2d}} : R interface to SWMS\_2d, an algorithm by
       Simunek et. al based on finite elements to simulate water flux and
       solute transport in soil
-      \item \code{\link{xswms2d}} : interactive plot to define
+      \item \command{\link{xswms2d}} : interactive plot to define
       soil structure and to simulate water flux and solute transport
       \item various functions for the modified simulation of the water flux or
       the solute transport in a profile; see
-      \code{\link{calculate.horizons}}
+      \command{\link{calculate.horizons}}
       for an example
     }
     \item \bold{Stochastic modelling}
     \itemize{
-      \item \code{\link{flowpattern}}
+      \item \command{\link{flowpattern}}
       stochastic simulation of dye tracer profiles
-      %  \item \code{\link{invasion}} : simulation of percolation
+      %  \item \command{\link{invasion}} : simulation of percolation
       %   invasion models
     }
     \item \bold{Estimation of the risk index}
     \itemize{
-      \item \code{\link{analyse.profile}} : analysis of brilliant blue
+      \item \command{\link{analyse.profile}} : analysis of brilliant blue
       experiments w.r.t. the contamination risk index
-      \item \code{\link{BrilliantBlue}} : examples of profile pictures
-      \item \code{\link{Pareto}} : the Pareto distribution
-      \item \code{\link{risk.index}} : esimation of the risk index 
+      \item \command{\link{BrilliantBlue}} : examples of profile pictures
+      \item \command{\link{Pareto}} : the Pareto distribution
+      \item \command{\link{risk.index}} : esimation of the risk index 
     }
     \item \bold{Graphics}
     \itemize{
-      \item \code{\link{my.legend}} : legend giving a colour spectrum
-      \item \code{\link{quader}} : tools for 3d perspective plot
-      \item \code{\link{read.picture}}, \code{\link{plotRGB}} :
+      \item \command{\link{my.legend}} : legend giving a colour spectrum
+      \item \command{\link{quader}} : tools for 3d perspective plot
+      \item \command{\link{read.picture}}, \command{\link{plotRGB}} :
       Conversion of tiff pictures to RGBA array and plotting RGB figures
     }
     \item \bold{Code used in publications by Schlather and Huwe}
     \itemize{
-      \item \code{\link{sh.jh}} : Schlather, M. and Huwe, B. (2004a)
-      \item \code{\link{sh.jch}} : Schlather, M. and Huwe, B. (2004b)
+      \item \command{\link{sh.jh}} : Schlather, M. and Huwe, B. (2005a)
+      \item \command{\link{sh.jch}} : Schlather, M. and Huwe, B. (2005b)
     }
   } 
 }
@@ -69,27 +69,27 @@
 }
 
 \references{
-  Schlather, M. (2005)
+  Schlather, M. (2006)
   SOPHY - a package for the simulation and the analysis of water flux in soil
   \emph{In preparation}% \bold{}, .
 
-  Schlather, M. and Huwe, B. (2004a)
+  Schlather, M. and Huwe, B. (2005a)
   A stochastic model for 3-dimensional flow patterns in dye tracer
-  experiments. \emph{Submitted to J. Hydrol.}% \bold{}, .
+  experiments. \emph{J. Hydrol.} \bold{In press}, .
     
-  Schlather, M. and Huwe, B. (2004b)
+  Schlather, M. and Huwe, B. (2005b)
   A risk index for characterising flow pattern in soils
   using dye tracer distributions
   \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
    
-  Schlather, M. and Huwe, B. (2005)
+  Schlather, M. and Huwe, B. (2006)
   Modelling inhomogeneous soils: Part I, Theory \emph{In preparation}% \bold{}, .
 
-  Schlather, M. and Huwe, B. (2005)
+  Schlather, M. and Huwe, B. (2006)
   SOPHY - an interactive programme for water flow modelling
   \emph{In preparation}% \bold{}, .
 
-  Schlather, M., Zeilinger, J. and Huwe, B. (2005)
+  Schlather, M., Zeilinger, J. and Huwe, B. (2006)
   Modelling inhomogeneous soils: Part II, Applications
   \emph{In preparation}% \bold{}, .
  
@@ -106,8 +106,30 @@
   the GNU copyleft licence, hence making their code directly available
   for this package.
 
-  The work has been supported by the German Federal Ministry of Research
+  The work has been financially
+  supported by the German Federal Ministry of Research
   and Technology (BMFT) grant PT BEO 51-0339476C during 2000-03.
+}
+
+\section{Installation}{
+
+  [linux]
+  The tiff-library is avalailable from
+  \url{http://www.remotesensing.org/libtiff}.
+  SuSe-users install libtiff and libtiff-devel.
+  
+  [windows]
+  The binaries are available from
+  \url{gnuwin32.sourceforge.net/packages/tiff.htm}.
+  Before starting the R session, add in the 
+  system variable \$PATH the path to the
+  libtiff3.dll file; the standard path to be added 
+  is C:\\Programme\\GnuWin32\\bin.
+
+%  After installation copy the files in GnuWin32/lib and GnuWin32/include
+%  to MinGW
+}
+     
 }
 
 \keyword{spatial}

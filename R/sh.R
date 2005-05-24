@@ -2,8 +2,8 @@
 ################################################
 
 
-sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
-                   simu.pspath="simu.ps/",
+sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
+                   simu.path="simu/",
                    final=TRUE, PrintLevel=0, bw=TRUE, readlines=TRUE
                    ) {
   ## additional, last input value = Inf to exit safely after simulation
@@ -12,7 +12,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
   keep.figures <- FALSE
   ## keep.figures <- TRUE ## files *.m and *.l are much larger, but contain
   ##                         full information
-  
+  simu.pspath <- "./ps"
   if (final) {
     simu.dir <- "./final.simu/"
     tinylambda <- 0.01
@@ -27,20 +27,41 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
     delta <- NA  ## automatic determination of area around considered slice
     ##              to avoid side effects
     figures <- c("F04", "F06", "K06")
+    data.selected.dist <- 0.75
+    data.ppi.par <- 5
+    data.measures <- c("robust", "lsq")
+    type.select <- c("identical", "unif", "independent", "largelambda",
+                    "dependent", "all")
+    model.param.select <- c("xiNN", "xiN", "xi0", "xiP", "xiPP")
+    select.dist <- c(0, 0.95)
+    lambda.F04 <- 1.5
+    lambda.F06 <- 1.0
+    lambda.K06 <- 1.0
   } else {
     simu.dir <- "./prelim.simu/"
-    tinylambda <- 0.001
+    tinylambda <- 0.01
     largelambda <- 0.01
-    simu.repet <- 3
+    simu.repet <- 2
     all.methods <- c("fix.m")   ## used in all.estimated
-    all.measures <- c("robust") ## dito
-    sens.nlines <- 20
+    all.measures <- c("lsq") ## dito
+    sens.nlines <- 10
     sens.measure <- "lsq"
-    sens.repet <- 3
-    sens.boot.repet <- 3
+    sens.repet <- 2
+    sens.boot.repet <- 2
     delta <- 3
-   figures <- c("K06")
- }
+    figures <- c("F04")
+    # figures <- c("F04", "F06", "K06")
+    data.selected.dist <- c(0.1, 0.15)
+    data.ppi.par <- 1
+    data.measures <- c("lsq")
+    type.select <- c("identical", "independent")
+    model.param.select <- c("xiP", "xiPP")
+    select.dist <- c(0, 0.05) 
+    lambda.F04 <- 0.3
+    lambda.F06 <- 0.2
+    lambda.K06 <- 0.2
+}
+
   
   
   ## sensitivity analysis as described in the last paragraph of section 4
@@ -50,12 +71,14 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
   sens.psbasename <- "simu2"
   sens.method <- "fix.m"
   sens.bundle <- 1 # sens.bundle <- c(1, 2, 4, 8, 16, 32)
-  sens.type <- list(list(type="all",
+  
+  sens.type <- list(F04 =
+                    list(type="all",
                          delta.x=40,
                          delta.y=40, 
                          endpoint.tolerance=-50,
-                         length= (if (final) 547 else 200) - 56 + 1,
-                         lambda= if (final) 1.5 else 0.3,
+                         length= 547 - 56 + 1,
+                         lambda=lambda.F04,
                          x.var=  0.16,
                          depth=  (126 - 52),
                          drops=1,
@@ -64,8 +87,9 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
                          x.h.scale=20, x.v.scale=5, 
                          dd=function(x) (1 - x^(-tt$xi)) * 50, 
                          ),
-                    list(length= (if (final) 579 else 200) - 51 + 1,
-                         lambda= if (final) 1.0 else 0.2,
+                    F06 =
+                    list(length=  579 - 51 + 1,
+                         lambda= lambda.F06,
                          depth = (407 - 33) ,
                          xi=0.25, 
                          drop.scale=20,
@@ -73,8 +97,9 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
                          x.v.scale=10, #20, 3.9.04
                          dd=function(x) (x^(-tt$xi) - 1) * 250/(0.05^(-tt$xi)-1),
                          ),
-                    list(length=(if (final) 468 else 200) - 118 + 1,
-                         lambda=if (final) 1.0 else 0.2,
+                    K06 =
+                    list(length= 468  - 118 + 1,
+                         lambda=lambda.K06,
                          depth = (350 - 29),
                          x.var= 0.2, #0.1, 3.9.04
                          xi=0.38, 
@@ -83,6 +108,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
                          dd=function(x) (x^(-tt$xi) - 1)*(150)/(0.05^(-tt$xi)-1),
                          )
                     )
+  stopifnot("F04" %in% figures)
+  sens.type <- sens.type[figures]
   sens.linesimustep <- 0.1
 
   ## simulated figures
@@ -118,37 +145,44 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
   simu.eval.variables <- 1 ## subset of c(1,2); 1:xi, 2:sigma
   #continue <- TRUE   ### continue simulation if stopped -- do not restart
   upper.bound <- 0.1 ### ??
-  type <- list(list(type="identical", delta.y=1, delta.x=1,
+  type <- list(identical=
+               list(type="identical", delta.y=1, delta.x=1,
                     lambda=tinylambda,
                     length=length.for.largelambda * largelambda / tinylambda,
                     x.h.scale=20, x.v.scale=5, x.var=0,
                     endpoint.tolerance=-50,
                     ),
+               unif =
                list(type="unif", unif.b=2, delta.y=1, delta.x=2,
                     ),
+               independent=
                list(type="independent", x.var=0.16, delta.y=delta, delta.x=delta,
                     ),
+               largelambda=
                list(lambda=largelambda, length=length.for.largelambda
                     ),
+               dependent=
                list(type="dependent",
                     ),
+               all =
                list(type="all", 
                     ),
                )
-  model.param <- list(list(xi= -1.5, drops=1, drop.scale=10,
+  type <- type[type.select]
+  model.param <- list(xiNN=list(xi= -1.5, drops=1, drop.scale=10,
                            dd=function(x) (1 - x^(-m$xi)) * 100, 
                            ),
-                      list(xi=-1/2),
-                      list(xi=0, 
+                      xiN=list(xi=-1/2),
+                      xi0=list(xi=0, 
                            dd=function(x) -log(1 - x) * 20, # 50, 20      
                            ),
-                      list(xi=1/2, drop.scale=5,
+                      xiP=list(xi=1/2, drop.scale=5, drops=1,
                            dd=function(x) (x^(-m$xi) - 1) * 100/(0.05^(-m$xi)-1),
                            ),
-                      list(xi=1.5) #              0.1, 0.005
+                      xiPP=list(xi=1.5) #              0.1, 0.005
                       )
+  model.param <- model.param[model.param.select]
   hist.bw <- bw
-  select.dist <- c(0, 0.95)
   upper.pos.xi <- 9.5 ## estimates of xi beyond this value are very
   ##                     likely due to numerical or statistical errors
   p.sideeffect <- 0.999  ## 1-p = probability for delta being too small
@@ -157,16 +191,22 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
   linesimustep <- 0.1
 
   ## standard modifications of names
-  for (name in c(simu.dir, pspath, txt.result.dir, simu.pspath, data.dir)) {
-    if (PrintLevel>2) print(name)
-    if (file.exists(name)) stopifnot(file.info(name)$isdir)
-    else stopifnot(dir.create(name))
-  }
-  for (pathname in c("pspath", "txt.result.dir", "simu.pspath")) {
+  for (pathname in c("pspath", "txt.result.dir", "simu.path")) {
     path <- get(pathname)
     if (substr(path, nchar(path), nchar(path)) != "/")
       assign(pathname, paste(path,  "/", sep=""))
   }
+  simu.dir <- paste(simu.path, simu.dir, sep="")
+  simu.pspath <- paste(simu.path, simu.pspath, sep="")
+  data.dir <- paste(simu.path, data.dir, sep="")
+  
+  for (name in c(simu.path, simu.dir, simu.pspath, data.dir,
+                 pspath, txt.result.dir)) {
+    if (PrintLevel>2) print(name)
+    if (file.exists(name)) stopifnot(file.info(name)$isdir)
+    else stopifnot(dir.create(name))
+  }
+
   for (name in c("sens.simu.name", "sens.bundle.name", "simu.name"))
     assign(name, paste(simu.dir, get(name), sep=""))
   for (name in c("sens.result.name", "result.name",
@@ -174,7 +214,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
     assign(name, paste(txt.result.dir, get(name), sep=""))
 
   ## further settings
-  if (!exists(".Random.seed",  envir=.GlobalEnv)) runif(1)
+  if (!exists(".Random.seed", envir=.GlobalEnv)) runif(1)
   seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
   close.screen(close.screen())
   Measures <- list(robust=function(x) abs(x), lsq=function(x) x^2)
@@ -227,10 +267,10 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
   }
 
  
-  rl <- if (readlines || .Platform$OS.type!="unix")
+  rl <- if (readlines) # || .Platform$OS.type!="unix")
     function(x) if (x=="") readline("press return")
     else readline(paste(x, ": press return"))
-  else function(x) { cat(x); system("sleep 1"); cat("\n")}
+  else function(x) { cat(x); sleep.milli(1000); cat("\n")}
 
   sketches <- function(dev, bw) {
     if (bw) {
@@ -435,6 +475,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
     RFPrintLevel <- PrintLevel
     type <- sens.type
     nn.start <- 1
+    
     if (repet>1) {
       cat("R can be interrupted whenever data are not being saved\n",
           "and the simulation can be continued later on. \n",
@@ -456,8 +497,9 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
                  TBM2.linesimus=sens.linesimustep)
     split.screen(c(2,2))
     screen(1, new=FALSE)
-    tt <- list()  
-    zeit <- system.time(if (nn.start<repet) for (nn in nn.start:repet) {
+    tt <- list()
+    
+    zeit <- system.time(if (nn.start<=repet) for (nn in nn.start:repet) {
       if (PrintLevel>1) cat(nn, "")
       for (typ in 1:length(type)) {
         for (nt in names(type[[typ]])) 
@@ -493,7 +535,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
           save(file=paste(sens.simu.name, typ, sep="."), estim)
         }
         gc()
-      } #  typ
+      } #  typ      
       if (repet>1) {
         if (PrintLevel>0) cat("saving...")
         seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
@@ -515,10 +557,10 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
         for (nt in names(type[[typ]])) 
           eval(parse(text=paste("tt$", nt, "<-", "type[[typ]]$", nt)))
         load(paste(sens.simu.name, typ, sep="."))
-        psname <- paste(sens.psbasename, typ,  sep=".")
+        psname <- paste(pspath, sens.psbasename, ".", typ,  sep="")
         Dev(TRUE, dev, ps=psname, height=tt$depth * 0.015,
             width=tt$length * 0.015)
-        par(mar=c(2.1, 2.2, 0.1, 0.3), bg="white")
+        par(mar=c(4.4, 4.8, 0.1, 0.3), bg="white")
         plot(estim[, 1], -estim[, 2],
              ylim=c(-tt$depth, -1),
              pch=".", xlab="", ylab="", main="", 
@@ -566,7 +608,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
           if (PrintLevel>1)
             cat("\n **** run=", i, "   type=", typ, " (", tt$type,")", 
                 "   model=", m.p, " (xi=", m$xi, ") **** \n", sep="")
-          environment(m$dd) <- environment()        
+
+          environment(m$dd) <- environment()
           estim <-
             flowpattern(type=tt$type,
                         depth=depth,
@@ -599,7 +642,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
       } #  typ      
       seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
       i.start <- i + 1
-      save(file=simu.name, parameters, frequencies, xi, model.param, 
+      sel.dist <-  estim[[1]]$sel.dist
+      save(file=simu.name, parameters, frequencies, xi, model.param, sel.dist,
            type, model.param, Methods, Measures, ParIdx, repet, seed, i.start)
       simu.storage <- NULL
     } # i
@@ -636,23 +680,24 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
                 if (PrintLevel>1) cat(met, mea, " jumped\n")
                 next
               }
-              est <- risk.index(cbind(1:dim(frequencies)[1],
+              estim <- risk.index(cbind(1:dim(frequencies)[1],
                                         frequencies[, i, typ, m.p]),
                                   selected.dist=select.dist,
                                   selected.rate=NULL,
                                   endpoint.tolerance=tt$endpoint.tolerance,
                                   method=met, 
                                   measure=Measures[mea][[1]],
-                                  PrintLevel=PrintLevel)$par
+                                  PrintLevel=PrintLevel)
               if (length(parameters)<par.idx || is.null(parameters[[par.idx]]))
                 parameters[[par.idx]] <-
-                  array(dim=c(dim(est), repet, length(type),length(model.param)))
-              str(parameters)
-              parameters[[par.idx]][, , i, typ, m.p] <- est
+                  array(dim=c(dim(estim$par), repet, length(type),
+                          length(model.param)))
+              parameters[[par.idx]][, , i, typ, m.p] <- estim$par
             } # mea
           } # met
         } # m.p
-        save(file=simu.name, parameters, frequencies, xi, model.param, 
+        sel.dist <- estim$sel.dist
+        save(file=simu.name, parameters, frequencies, xi, model.param, sel.dist,
              type, model.param, Methods, Measures, ParIdx)
       } # typ
     } # i / repet
@@ -667,9 +712,11 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
       print(max.freq)
       stop("non-finite values in max.freq -- please contact author")
     }
-    idx <- 1:(select.dist[2] * depth) ## nicht nachgeprueft, ob definition ok
+    idx <- sel.dist
+    ## 1:(select.dist[2] * depth) ## nicht nachgeprueft, ob definition ok
     ##                                   fuer depth != 100
-    distances <- rep(1:(select.dist[2] * depth), dim(frequencies)[2]) 
+    distances <- rep(idx, dim(frequencies)[2]) 
+    # distances <- rep(1:(select.dist[2] * depth), dim(frequencies)[2]) 
     if (!is.numeric(dev)) write(file=result.name, "")
     tt <- list()
     for (typ in 1:length(type)) {
@@ -716,7 +763,6 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
             xlim <- c(1, 0)
             y.coord <- parameters[[ii]][variable, , , typ, m.p]
             med <- y.coord
-            
             med[x.coord>med.max | x.coord<med.min] <- NA
             med <- apply(med, 2 , median, na.rm=TRUE)
             if (any(is.na(med))) {
@@ -730,6 +776,12 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
                 med2[x.coord>med.max + 0.2 | x.coord<med.min - 0.2] <- NA
                 med2 <- apply(med2, 2 , median, na.rm=TRUE)
                 med[is.na(med)] <- med2[is.na(med)]
+              }
+              if (!final && any(is.na(med))) {
+                warning("bad approximation of med")
+                med2 <- y.coord
+                med2 <- apply(med2, 2 , median, na.rm=TRUE)
+                med[is.na(med)] <- med2[is.na(med)]                
               }
               stopifnot(!any(is.na(med)))
             }
@@ -762,7 +814,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
             for (r in 0:2) { # 0:2
               par.name <- paste(name.ps, method, measure, fr.name, sep=".")
               Dev(TRUE, dev, ps=par.name, height=5, width=5, quiet=TRUE)
-              par(cex=1, mar=c(2.1, 2.2, 0.1, 0.1)) 
+              par(cex=1, mar=c(2.1, 2.2, 0.1, 0.1))
               plot(x.coord, y.coord, xlab=xlab, ylab=ylab,
                    pch=pch, xlim=xlim, ylim=ylim)
               if (!final) points(rep((med.min + med.max)/2, length(med)), med,
@@ -771,9 +823,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
               ki <- is.finite(ks$y)
               lines(ks$x[ki], ks$y[ki], col="red", lty=1)
               if(!is.logical(dev)) rl("")
-              Dev(FALSE) 
+              Dev(FALSE)
               if (is.numeric(dev)) rl(paste(tt$type, "xi=", m$xi, fr.name))
-              
               Dev(TRUE, dev, ps=paste(par.name, "var", sep="."),
                   height=5, width=5, quiet=TRUE)
               ks <- ksmooth(x.coord, (P - var.value)^2, ker="box", band=0.1)
@@ -809,13 +860,13 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
               if (r==0) {
                 fr.name <- paste(var.name, ".D", sep="")
                 x.coord <- distances[allowed]
-                xlim <- range(x.coord)
+                xlim <- range(x.coord, na.rm=TRUE)
                 xlab <- "D"
               } else {
                 ## unused 
                 fr.name <-  paste(var.name, "-all.D", sep="")
                 y.coord <- P
-                ylim <- range(P)
+                ylim <- range(P, na.rm=TRUE)
                 pch <- 16  
               } # r==0
             } # for r in 1:2
@@ -862,7 +913,6 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
       freq <- m[[1]]$r.i$data[, 2]
       dist <- m[[1]]$r.i$data[, 1]
       max.freq <- m[[1]]$r.i$max.freq
-      
       if (plot.all) {
         Dev(TRUE, dev, ps=paste(psname, "lines", sep="-"), hei=height, wid=width)
         plotRGB(m[[1]]$picture, xlab="x [pixels]", ylab="depth [pixels]",
@@ -913,7 +963,6 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
         if (is.numeric(dev)) rl(paste(figures[k], "pixels"))
         else if (PrintLevel>1) cat("pixels...")
       } ## plot.all
-      
       idx <- m[[1]]$r.i$selected.dist
       for (ms in 1:length(m)) {
         x.coord <- freq[idx] / max.freq
@@ -941,7 +990,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
           } else {
             x.coord <- m[[1]]$contamination.risk$selected.dist
           }
-          xlim <- range(x.coord)
+         xlim <- range(x.coord)
           xlab <- "threshold depth D"
           col <- if (bw) "black" else "darkgreen"
           pch <- 16
@@ -1070,8 +1119,9 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
            if (ms==1) {
              max.freq <- max(est$freq)
              Dev(TRUE, dev, ps=psname, height=2.5, width=5)
-             par(cex=1, mar=c(4.1, 4.5, 0.3, 0.5))
-             plot(est$i.x, -est$i.d, ylim=c(-est$input$depth, -1),
+             par(cex=1, mar=c(4.1, 4.5, 0.3, 1.4))
+             plot(est$i.x, # * if (final) 1 else 100,
+                  -est$i.d, ylim=c(-est$input$depth, -1),
                   pch=".", xlab="x [pixels]", ylab="depth [pixels]",
                   main="", cex=1/2, col=if (bw) "black" else "blue")
              Dev(FALSE)
@@ -1158,7 +1208,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
       "(Re-)Evaluation of indices of profiles for last paragr., Sec.4",
       "simulation study",    #6
       "use all estimator variants in the simulation study (time demanding!)",
-      "evaluation of simul. study ('simulation study' must be called first ) (Tab.1)",
+      "evaluation of simul. study ('simulation study' must be called first) (Tab.1)",
       "data image analysis", #9
       "data risk estimation ('data image analysis' must have been called first)",
       "data print ('data risk estimation' must have been called first) (Fig. 10, Table 2, Fig. 11,12)",
@@ -1173,6 +1223,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
     if (input[1] > length(items) || input[1]==0) break
     if (PrintLevel>1) cat(input[1], ":", items[input[1]], "\n")
 
+    ut <- unix.time(
     switch(input[1],
              {
                sketches(dev=dev, bw=bw)
@@ -1207,7 +1258,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
              }, {
                eval.simulation(dev=dev)
              }, { #9
-               if (.Platform$OS.type!="unix") {sorry(); next} 
+               # if (.Platform$OS.type!="unix") {sorry(); next} 
                for (i in figures) {
                  data(list=i, envir=environment(), package="SoPhy")
                  l <- get(i)
@@ -1220,27 +1271,29 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
                  dev.off()
                }
              }, {
-               if (.Platform$OS.type!="unix") {sorry(); next} 
+               # if (.Platform$OS.type!="unix") {sorry(); next} 
                for (k in figures) {
                  load(paste(data.dir, k, data.ana.ext, sep=""));
                  m <- list()
-                 for (ms in 1:length(Measures)) {
-                   if (PrintLevel>1) cat(k, names(Measures)[ms], "\n")
-                   m[[ms]] <-
+                 for (mi in 1:length(data.measures)) {
+                   if (PrintLevel>1) cat(k, data.measures[mi], "\n")
+                   m[[mi]] <-
                      analyse.profile(l, estimate.all=TRUE, interactive=FALSE,
-                                     selected.dist=3/4,
+                                     selected.dist=data.selected.dist,
                                      selected.rate=selected.rate,
                                      Print=PrintLevel,
-                                     measure=Measures[[ms]],
+                                     ppi.par=data.ppi.par,
+                                     measure=Measures[data.measures[mi]][[1]],
                                      endpoint.tolerance=data.endpoint.tolerance,
                                      method=data.method
                                      )
-                   if (!keep.figures) m[[ms]]$picture <- NULL
+                   if (!keep.figures) m[[mi]]$picture <- NULL
                    save(file=paste(data.dir, k, data.estim.ext,sep=""),
                         m)
                  }
                }
              }, {
+               # if (.Platform$OS.type!="unix") {sorry(); next} 
                data.print(figures, dev=dev, bw=bw, plot.all=data.plot.all)
              }, { #12
                pictures(dev=dev, types=1:6, models=1, name=pict.name)
@@ -1250,7 +1303,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
                pictures(dev=dev, repet=pict.repet, types=6, models=5,
                         name=pict.several.name)
              }
-             )
+             ))
+    if (!final) cat("\nsystem time for #", input[1], ":", ut,"\n\n")
     input <- input[-1]
   } # while (true)
 }
@@ -1271,9 +1325,9 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
     len.x <- len.y <- 101 ## in case of simulation on grid
     nlines <- 250         ## TBM3D method in GaussRF
   } else {
-    lambda <- 0.02        ## in case of simulation on Poisson points
-    len.x <- len.y <- 50  ## in case of simulation on grid
-    nlines <- 25          ## TBM3D method in GaussRF
+    lambda <- 0.002       ## in case of simulation on Poisson points
+    len.x <- len.y <- 10  ## in case of simulation on grid
+    nlines <- 10          ## TBM3D method in GaussRF
   }
   length.profile <- 100
   drop.scale <- 15
@@ -1436,14 +1490,17 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   for (name in c(pspath)) {
     if (PrintLevel>2) cat("path", name, "\n")
     if (file.exists(name)) stopifnot(file.info(name)$isdir)
-    else stopifnot(dir.create(name))
+    else {
+      if (.Platform$OS.type=="unix") stopifnot(dir.create(name))
+      else try(dir.create(name))
+    }
   }
   if (substr(pspath, nchar(pspath), nchar(pspath)) != "/")
     pspath <- paste(pspath,  "/", sep="")
-  rl <- if (readlines || .Platform$OS.type!="unix")
+  rl <- if (readlines) # || .Platform$OS.type!="unix")
     function(x) if (x=="") readline("press return")
     else readline(paste(x, ": press return"))
-  else function(x) { cat(x); system("sleep 1"); cat("\n")}
+  else function(x) { cat(x); sleep.milli(1000); cat("\n")}
 
   sketches <- function(dev) {
     x <- seq(0, 100, 10)
@@ -1557,7 +1614,7 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
         zlim <- range(res$interm$raw.xx)
         for (cs in c(FALSE, TRUE)) {
           for (ii in 1:tt$Profiles) {
-            if (PrintLevel>1) cat(cs, ii, "\n")
+            if (PrintLevel>1) cat("cumsum=", cs, "profile=", ii, "\n")
             i <- iy[ii]
             base.name <- paste("2d.pattern.xz", names(type[typ]), ii, sep=".")
             Dev(TRUE, dev, ps=paste(pspath, base.name, ".", cs, sep=""),

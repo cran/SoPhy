@@ -12,10 +12,10 @@ calculate.horizons(h)
 }
 \arguments{
   \item{h}{a list of the same format as the output of 
-    \code{\link{xswms2d}}}
+    \command{\link{xswms2d}}}
 }
 \value{
-  a list of the same format as the output of \code{\link{xswms2d}}.
+  a list of the same format as the output of \command{\link{xswms2d}}.
   The values of the following list elements are changed:
   \item{h[[i]]$points}{points defining the vertices of
     the boundary line for horizon \eqn{i};
@@ -46,22 +46,22 @@ calculate.horizons(h)
   respective x coordinate on the boundary of the grid is added. 
 }
 \seealso{
-  \code{\link{draw.horizons}},
-  \code{\link{modify.horizons}},
-  \code{\link{plotRF}},
-  \code{\link{plotWater}},
-  \code{\link{simulate.horizons}},
+  \command{\link{draw.horizons}},
+  \command{\link{modify.horizons}},
+  \command{\link{plotRF}},
+  \command{\link{plotWater}},
+  \command{\link{simulate.horizons}},
   \code{\link{SoPhy}},
-  \code{\link{swms2d}} 
-  \code{\link{xswms2d}} 
+  \command{\link{swms2d}} 
+  \command{\link{xswms2d}} 
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 \examples{
 %  library(SoPhy, lib="~/TMP"); library(RandomFields)
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/Sophy.R")
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/swms2d.R")
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/simu.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/swms2d.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/simu.R")
 
 ############ fetch the standard definition of a profile ###########
 h <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1, new=NULL)

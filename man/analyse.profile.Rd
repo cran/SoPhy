@@ -29,7 +29,7 @@
   \item{picture}{list or array or character.
     If is a list, then the programme expects that the structure is
     of the output format
-    of \code{analyse.profile}.  Then the parameters
+    of \command{analyse.profile}.  Then the parameters
     \code{fct}, \code{param},
     \code{upper}, \code{lower} and \code{loc} must be missing, and they
     are taken from the list.
@@ -43,7 +43,7 @@
 
     If \code{picture} is a character string, the function reads in a
     file with name or name base 
-    \code{picture}, see \code{\link{read.picture}}.
+    \code{picture}, see \command{\link{read.picture}}.
   }
   \item{fct}{threshold function that extracts the stained area from an
     RGB figure. \code{fct} has two input variables, the first is a three
@@ -123,10 +123,10 @@
     The marginal number of grid points is \code{ppi.par} for the
     components of \code{lower} and \code{upper} and \code{ppi.xy}
     for the definition of the clipping rectangle;
-    see also \code{\link{risk.index}}}
+    see also \command{\link{risk.index}}}
   \item{selected.dist}{number in \eqn{(0,1)} or a vector of integers. 
     Distances for which the form parameter of the pareto distribution
-    is estimated; see \code{\link{risk.index}}. 
+    is estimated; see \command{\link{risk.index}}. 
     If \code{selected.dist} is a number in \eqn{(0,1)} the distances are
     \code{1:(1 + round(max(data[,1]-1) * selected.dist))}.
  }
@@ -269,7 +269,7 @@
   \item{loc}{see the variable \code{loc} above}
   \item{ppi.par}{see the variable \code{ppi.par} above}
   \item{ppi.xy}{see the variable \code{ppi.xy} above}
-  \item{r.i}{output of \code{\link{risk.index}} for the ideal parameters}
+  \item{r.i}{output of \command{\link{risk.index}} for the ideal parameters}
   \item{risk.index}{array of \code{2 + length(param)} dimensions
     containing the estimated risk indeces obtained by
     the sensitivity analysis. The latter is
@@ -285,7 +285,7 @@
   }
   \item{raw.risk.index}{
     same as \code{risk.index} except that the raw risk index is stored,
-    see the function \code{\link{risk.index}}.
+    see the function \command{\link{risk.index}}.
 
     The raw risk index is usually not used.
   }
@@ -294,43 +294,40 @@
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 
 \references{
-  Schlather, M. and Huwe, B. (2004)
+  Schlather, M. and Huwe, B. (2005)
   A risk index for characterising flow pattern in soils
   using dye tracer distributions
   \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
 }
 
 
-\seealso{%\code{\link{define.horizons}},
-  \code{\link{risk.index}}, \code{\link{SoPhy}}
+\seealso{%\command{\link{define.horizons}},
+  \command{\link{risk.index}}, \code{\link{SoPhy}}
 }
 
 
 \examples{
 %% library(SoPhy, "~/TMP")
-%% load('~/article/soil.contamination/R/data/K06.G.tif.l')
+%% load('~/soil.contamination/R/data/K06.G.tif.l')
 %% K06 <- l; 
 %% plotRGB(K06$picture[100:500, 200:400, 1:3])
 %% K06$picture <- K06$picture[100:500, 200:400 , 1:3];
 %% K06$loc <- rep(list(list(x=c(50,350), y=c(50,150))), 3)
 %% environment(K06$fct) <- NULL
-%% save(file=paste('~/article/R/SOPHY/SoPhy/data/K06.RData'), K06, compress=TRUE)
+%% save(file=paste('~/R/SOPHY/SoPhy/data/K06.RData'), K06, compress=TRUE)
 
 % library(SoPhy, lib="~/TMP")
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/extremal.coeff.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/extremal.coeff.R")
 % close.screen(close.screen()); dev.off(); dev.off(); dev.off();
 
-####################################################################
-##  Note: this function currently works only under unix systems!  ##
-####################################################################
-#ifdef unix
-  data("K06")
-  path <- paste(system.file(package='SoPhy'),"tracer", sep="/")
-  K06$name <- paste(path, "K06.G.tif", sep="/")
-  ri <- analyse.profile(K06, estimate.all=FALSE, 
-                        selected.rate=c(0.5, 0.8))
-  cat("estimated risk index =", ri$r.i$risk.index, "\n")
-#endif
+data("K06")
+path <- paste(system.file(package='SoPhy'),"tracer", sep="/")
+K06$name <- paste(path, "K06.G.tif", sep="/")
+rate <- if (interactive()) c(0.5, 0.8) else c(0.6, 0.67)
+ri <- analyse.profile(K06, estimate.all=FALSE, method="fix.m",
+                      selected.rate=rate, selected.dist=NULL,
+                      Print=2)
+cat("estimated risk index =", ri$r.i$risk.index, "\n")
 }
 
 \keyword{spatial}

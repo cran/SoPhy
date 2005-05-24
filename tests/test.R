@@ -1,6 +1,6 @@
 # source("test.R")
 
-if (file.exists("source.R")) source("source.R")
+if (EXTENDED.TESTING <- file.exists("source.R")) source("source.R")
 
 ## redo example 1 of SWMS_2d
 

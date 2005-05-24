@@ -36,17 +36,17 @@ plotFlow3d(paths, horizons=c("no", "absorbing", "breakthrough"),
    \item{Profiles}{number of the in the
      y-direction equally spaced profiles of the
      3d flow pattern}
-   \item{dev}{plotting device, see \code{\link[RandomFields]{Dev}}
+   \item{dev}{plotting device, see \command{\link[RandomFields]{Dev}}
    }
-   \item{ps}{name of the postscript file, see \code{\link[RandomFields]{Dev}}
+   \item{ps}{name of the postscript file, see \command{\link[RandomFields]{Dev}}
    }
    \item{height}{height of the plotted figure, see
-     \code{\link[RandomFields]{Dev}}
+     \command{\link[RandomFields]{Dev}}
    }
    \item{unit}{string; if empty then labels are not given. Otherwise
      \code{unit} denotes the units of the plot}
    \item{cex}{used for \code{cex.axis} and \code{cex.lab}, see
-     \code{\link[graphics]{par}}
+     \command{\link[graphics]{par}}
    }
    \item{correction}{positive real number. Do not change its value.
      This constant takes into account that the plotting procedure used
@@ -118,12 +118,12 @@ plotFlow3d(paths, horizons=c("no", "absorbing", "breakthrough"),
 \references{
   \itemize{
     \item
-    Schlather, M. and Huwe, B. (2004a)
+    Schlather, M. and Huwe, B. (2005a)
     A stochastic model for 3-dimensional flow patterns in dye tracer
-    experiments. \emph{Submitted to J. Hydrol. }% \bold{}, .
+    experiments. \emph{J. Hydrol. } \bold{In press}, .
     
     \item
-    Schlather, M. and Huwe, B. (2004b)
+    Schlather, M. and Huwe, B. (2005b)
     A risk index for characterising flow pattern in soils
     using dye tracer distributions
     \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .

@@ -253,22 +253,22 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
   \item{flux}{\code{d$flux};  different from \code{NULL} if the function
     is called with the output of \code{create.waterflow}
     or with a profile definition, see the return value of
-    \code{\link{xswms2d}}.} 
+    \command{\link{xswms2d}}.} 
   \item{water.x}{\code{d$water.x};  different from \code{NULL}
     if the function is called with the output of \code{create.waterflow}
     or with a profile definition, see the return value of
-    \code{\link{xswms2d}}.} 
+    \command{\link{xswms2d}}.} 
   \item{water.y}{\code{d$water.y};  different from \code{NULL} if
     the function is called with the output of \code{create.waterflow}
     or with a profile definition, see the return value of
-    \code{\link{xswms2d}}.} 
+    \command{\link{xswms2d}}.} 
 }
 \references{
   \itemize{
     \item
-    Schlather, M. and Huwe, B. (2003)
+    Schlather, M. and Huwe, B. (2004)
    The use of the language interface of R: two examples for modelling water
-   flux and solute transport. \emph{Computers \& Geosciences}.% \emph{journ} \bold{}, 110-11.
+   flux and solute transport. \emph{Computers \& Geosciences} \bold{30}, 197-201.
 
    \item
     Simunek., J., Vogel, T., and van Genuchten, M.Th. (1994)
@@ -300,12 +300,13 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
   Note that, however, HYDRUS2D, an advanced development of SWMS2D,
   and its code is proprietary.
 
-  The work has been supported by the German Federal Ministry of Research
+  The work has been financially
+  supported by the German Federal Ministry of Research
   and Technology (BMFT) grant PT BEO 51-0339476C during 2000-2002.
 }
 
-\seealso{\code{\link{xswms2d}},
-         \code{\link{read.swms2d.table}},
+\seealso{\command{\link{xswms2d}},
+         \command{\link{read.swms2d.table}},
          \code{\link{SoPhy}}
        }
 
@@ -322,7 +323,7 @@ x <- read.swms2d.table(path)
 x$TPrint <- 20 * 60
 sd <- 0.3 ## then sd of log.gauss is 0.306878
 mu <- log(x$nCodeM[, 10]) - 0.5 * sd^2
-n <- 100 # better 10000
+n <- if (interactive()) 100 else 10 # better 10000
 front <- integer(n)
 
 for (j in 1:n) {

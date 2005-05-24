@@ -2,7 +2,7 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, schlath@hsu-hh.de 
+*  Martin Schlather, schlath@hsu-hh.de  (2004 -- 2005)
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten
 

@@ -11,8 +11,8 @@ my.legend(lb.x=0, lb.y=0, zlim, col, cex=0.8, y.intersp=0.02, bg='white')
   \item{lb.x}{x-coordinate of the left bottom corner of the legend box}
   \item{lb.y}{y-coordinate of the left bottom corner of the legend box}
   \item{zlim}{value range for the colours}
-  \item{col}{spectrum of colours, obtained by
-    \code{\link{rainbow}} or \code{\link{grey}}, for example.}
+  \item{col}{spectrum of colours, obtained by the various 
+    \link[grDevices]{palettes}.}
   \item{cex}{letter size increse}
   \item{y.intersp}{the space between the small colour lines; this value
     might be changed if the size of the legend box is not appropriate.

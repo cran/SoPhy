@@ -2,7 +2,7 @@
 \alias{create.waterflow}
 \title{Preparation for swms2d}
 \description{
- The function creates the input list for \code{\link{swms2d}}
+ The function creates the input list for \command{\link{swms2d}}
 }
 \usage{
 create.waterflow(h, Kat = 2, MaxIt = 20, hTab = c(0.001, 200), 
@@ -14,7 +14,7 @@ create.waterflow(h, Kat = 2, MaxIt = 20, hTab = c(0.001, 200),
 }
 \arguments{
   \item{h}{a list of the
-    same format as the output \code{\link{xswms2d}}}
+    same format as the output \command{\link{xswms2d}}}
  % \item{Units}{vector of character.  Units for length, time, mass, and a
  %   further quantity, which is unclear}
   \item{Kat}{type of flow system:
@@ -85,7 +85,7 @@ create.waterflow(h, Kat = 2, MaxIt = 20, hTab = c(0.001, 200),
   }
 }
 \value{
-  The output is a list suitable as input list for \code{\link{swms2d}}.
+  The output is a list suitable as input list for \command{\link{swms2d}}.
   Additionally, the list has the following elements:
 
   \item{flux}{
@@ -101,20 +101,20 @@ create.waterflow(h, Kat = 2, MaxIt = 20, hTab = c(0.001, 200),
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 
 \seealso{
-         \code{\link{modify.horizons}},
-         \code{\link{plotRF}},
-         \code{\link{plotWater}},
-         \code{\link{simulate.horizons}},
+         \command{\link{modify.horizons}},
+         \command{\link{plotRF}},
+         \command{\link{plotWater}},
+         \command{\link{simulate.horizons}},
          \code{\link{SoPhy}},
-         \code{\link{swms2d}},
-	 \code{\link{xswms2d}}
+         \command{\link{swms2d}},
+	 \command{\link{xswms2d}}
        }
 
 \examples{
 %  library(SoPhy, lib="~/TMP"); library(RandomFields)
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/Sophy.R")
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/simu.R")
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/swms2d.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/simu.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/swms2d.R")
 h <- xswms2d(xlim=c(1, 50), ylim=c(1, 30), step=1, new=NULL)
 h$water$red <- 1
 h$water$top.value <- -50   ## pressure head at surface

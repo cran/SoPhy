@@ -4,7 +4,7 @@
 \title{Plotting random fields}
 \description{
   the function plots random fields including stones and roots using
-  the definition of the horizons in \code{\link{xswms2d}}.
+  the definition of the horizons in \command{\link{xswms2d}}.
 }
 \usage{
   plotRF(h, col.txt='black', col.stones='white',
@@ -18,14 +18,14 @@
  }
 \arguments{
   \item{h}{a list of the
-    same format as the output of \code{\link{xswms2d}}}
+    same format as the output of \command{\link{xswms2d}}}
   \item{col.txt}{colour of the title}
   \item{col.stones}{colour of the stones and the air}
   \item{col.rf}{colour spectrum of the random field;  plants are always grey}
   \item{titl}{logical. If \code{TRUE}  a title is plotted using the
     colour \code{col.txt}}
   \item{line}{place where the titel is plottes, see
-    \code{\link[graphics]{title}}.}
+    \command{\link[graphics]{title}}.}
   \item{lim}{value in \eqn{[0,1]} that is used only if
     \code{zlim} is missing; quantile for the upper bound 
     \code{zlim[2]}; the value of \code{lim} should be
@@ -74,7 +74,7 @@
   and an error message otherwise.
 }
 \seealso{
-  \code{\link{plotWater}}, \code{\link{xswms2d}}
+  \command{\link{plotWater}}, \command{\link{xswms2d}}
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}

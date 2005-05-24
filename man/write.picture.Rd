@@ -16,7 +16,7 @@ write.picture(picture, tif)
   None.
 }
 \seealso{
-  \code{\link{plotRGB}}, \code{\link{read.picture}}
+  \command{\link{plotRGB}}, \command{\link{read.picture}}
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}

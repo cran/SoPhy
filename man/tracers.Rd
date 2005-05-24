@@ -73,7 +73,7 @@
     Sorption of Brilliant Blue FCF in soils as affected by pH and
     ionic strength. \emph{Geoderma} \bold{97}, 87-101.
 
-    \item Schlather, M. and Huwe, B. (2004)
+    \item Schlather, M. and Huwe, B. (2005)
     A risk index for characterising flow pattern in soils
     using dye tracer distributions
     \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
@@ -81,11 +81,8 @@
 }
 \examples{
 % library(SoPhy)
-%    source("/home/schlather/article/R/SOPHY/SoPhy/R/rgb.R")
-##########################################################################
-##  Note: these data can currently be treated only under unix systems!  ##
-##########################################################################
-#ifdef unix
+%    source("/home/schlather/R/SOPHY/SoPhy/R/rgb.R")
+
 path <- paste(system.file(package='SoPhy'), 'tracer', sep="/")
 for (nm in c("F04", "F06", "K06")) {
    cat("\n", nm, ":\nOriginal picture. ", sep="")
@@ -96,6 +93,6 @@ for (nm in c("F04", "F06", "K06")) {
    plotRGB(p)
    readline("Picture after first preparation. Press return.")
 }
-#endif
 }
+
 \keyword{datasets}

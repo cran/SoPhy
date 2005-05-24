@@ -16,8 +16,8 @@ dimension of \code{picture}}
    \item{y}{y-coordinates; the length must match the length of the first
 dimension of \code{picture}; see details}
    \item{reverse}{logical; see details}
-   \item{cex.axis}{graphical parameter, see \code{\link{par}}}
-   \item{...}{additional graphical parameters for \code{\link[base]{image}}}
+   \item{cex.axis}{graphical parameter, see \command{\link{par}}}
+   \item{...}{additional graphical parameters for \command{\link[base]{image}}}
 }
 \value{
  NULL
@@ -33,18 +33,13 @@ dimension of \code{picture}; see details}
   The functions checks whether \code{y} is in decreasing or increasing
   order, and plots the y axis accordingly. 
 }
-\seealso{\code{\link{read.picture}}, \code{\link{write.picture}}}
+\seealso{\command{\link{read.picture}}, \command{\link{write.picture}}}
 
 \examples{
  %library(SoPhy)
-#ifdef unix
-##############################################################
-##  Note: the given examples work only under unix systems!  ##
-##############################################################
- fig <- read.picture(paste(system.file(package='SoPhy'),
-                      'tracer', 'K06', sep="/"))
- plotRGB(fig)
-#endif
+fig <- read.picture(paste(system.file(package='SoPhy'),
+                    'tracer', 'K06', sep="/"))
+plotRGB(fig)
 
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}

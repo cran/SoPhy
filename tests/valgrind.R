@@ -2,12 +2,9 @@
 ## R -d "valgrind --tool=memcheck --leak-check=yes"
 ## source("valgrind.R")
 
-if (FALSE)
-  {
+if (EXTENDED.TESTING <- file.exists("source.R")) source("source.R")
+if (EXTENDED.TESTING) {
 
-#detach(package:SoPhy)
-library(SoPhy)
-source("/home/schlather/article/R/SOPHY/SoPhy/R/swms2d.R")
 if (TRUE) {
   runif(1)
   seed <- .Random.seed

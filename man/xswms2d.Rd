@@ -171,9 +171,9 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
 	modelling time after which the result is printed.
 
 	\cr
-	Note that for directly calls of \code{\link{create.waterflow}}
-	and subsequent call of \code{\link{swms2d}}, \code{TPrint}
-	might also be a vector, see \code{\link{read.swms2d.table}}
+	Note that for directly calls of \command{\link{create.waterflow}}
+	and subsequent call of \command{\link{swms2d}}, \code{TPrint}
+	might also be a vector, see \command{\link{read.swms2d.table}}
 	for futher information.
       }
       
@@ -207,7 +207,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
 	the random field values when the transformed random field is plotted.}
 
       \item{\code{lim.swms2d} \{quantile for swms2s plot\}}{
-	numeric in \eqn{[0,1]}. See \code{\link{plotWater}} for details.}
+	numeric in \eqn{[0,1]}. See \command{\link{plotWater}} for details.}
       
       \item{\code{TolTh} \{TolTh\}}{
 	maximum desired change of water content
@@ -413,7 +413,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   \item{model}{
     \{structure\} the covariance model for the Gaussian random
     fields used for the definition of the Miller similar media.
-    See \code{\link[RandomFields]{CovarianceFct}} for details on the
+    See \command{\link[RandomFields]{CovarianceFct}} for details on the
     definiton of the covariance model.
     
     If the mean equals \code{NA} and if it is the last horizon,
@@ -970,35 +970,35 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   %
   \item{col.rect}{
     colour of the button for free input; see
-    \code{\link[RandomFields]{eval.parameters}}}
+    \command{\link[RandomFields]{eval.parameters}}}
 
   \item{col.bg}{
     colour of a interactive bar; see
-    \code{\link[RandomFields]{eval.parameters}}}
+    \command{\link[RandomFields]{eval.parameters}}}
 
   \item{col.sep}{
     colour of the separating line; see
-    \code{\link[RandomFields]{eval.parameters}}}
+    \command{\link[RandomFields]{eval.parameters}}}
 
   \item{col.left}{
     colour of preceding element; see
-    \code{\link[RandomFields]{eval.parameters}}}
+    \command{\link[RandomFields]{eval.parameters}}}
 
   \item{col.mid}{
     colour for the message; see
-    \code{\link[RandomFields]{eval.parameters}}}  
+    \command{\link[RandomFields]{eval.parameters}}}  
 
   \item{col.right}{
     colour of subsequent element; see
-    \code{\link[RandomFields]{eval.parameters}}}
+    \command{\link[RandomFields]{eval.parameters}}}
 
   \item{col.line}{
     colour of the marking line in interactive bars of
-    absolute choice; see \code{\link[RandomFields]{eval.parameters}}}
+    absolute choice; see \command{\link[RandomFields]{eval.parameters}}}
 
   \item{col.txt}{
     colour of headers; see
-    \code{\link[RandomFields]{eval.parameters}}}
+    \command{\link[RandomFields]{eval.parameters}}}
 
   \item{col.submenue}{
     colour for the text in the main menue}
@@ -1060,8 +1060,8 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
 
   \item{frequent.reset}{logical.
     Background: the current implementation of \command{xswms2d}
-    uses \command{split.screen} to build the interactive plot;
-    \command{split.screen} memorises all changings in the plot and
+    uses \command{\link[graphics]{split.screen}} to build the interactive plot;
+    \command{\link[graphics]{split.screen}} memorises all changings in the plot and
     replays them all if the X11 window has to be rebuilt.
     If \code{frequent.reset=TRUE} then the memory effect is reduced
     at the cost of some flickering of the X11 window in the main menu.
@@ -1079,9 +1079,9 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   \item{waterflow}{
     \{water flow\} logical.  If \code{TRUE} swms2d is run}
   \item{zlim}{vector of 2 components or \code{NULL} which gives the
-    limits for the plotted values in the \command{image}s. If
+    limits for the plotted values in the \command{\link[graphics]{image}}s. If
     \code{NULL} then \code{zlim} is calculated internally, cf.
-    \code{\link{plotWater}}.
+    \command{\link{plotWater}}.
   }
   %
   \item{print.par}{
@@ -1190,7 +1190,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
       area.
       Afterwards a new menue is opened in the upper right part of the
       window.  Within this new menue we have, see 
-      \code{\link[RandomFields]{ShowModels}} for details,
+      \command{\link[RandomFields]{ShowModels}} for details,
       
       \describe{
 	\item{bottom left}{a simulation of the Gaussian random field
@@ -1347,7 +1347,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     stones are simulated, then the roots.
     If \sQuote{water flow}=\sQuote{yes}
     then the SWMS2D simulation is performed.  See
-    \code{\link{simulate.horizons}}
+    \command{\link{simulate.horizons}}
     and the references therein for further details on the stochastic
     simulation.  See the SWMS2D manuscript for details on SWMS2D.
 
@@ -1411,7 +1411,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
       
       \item{\code{model}}{
         list or \code{NULL}. Covariance model in list format, see
-        \code{\link[RandomFields]{CovarianceFct}}.
+        \command{\link[RandomFields]{CovarianceFct}}.
         The \code{model} is \code{NULL} if \sQuote{structure} of the
 	main menue 
         has not been called yet for the respective horizon. The
@@ -1550,7 +1550,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     Each element contains the random seed for the
     simulation of the Gaussian random field in the respective horizon.
     \code{random.seed} is \code{NULL} if
-    \code{\link{simulate.horizons}}
+    \command{\link{simulate.horizons}}
     has not been called yet.
   }
   \item{stone.random.seed}{The random seed for the simulation of the
@@ -1598,7 +1598,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
 
       \item distance to the preceding knot
     }
-    \code{plants} is \code{NULL} if \code{\link{simulate.horizons}}
+    \code{plants} is \code{NULL} if \command{\link{simulate.horizons}}
     has not been called yet, or any parameter in \code{root}
     has been changed.
   }
@@ -1606,7 +1606,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     plant type (\eqn{1,\ldots,\code{plant.types}}{1,...,\code{plant.types}})
     of the \code{i}th simulated plant.
     \code{plants.idx} is \code{NULL} if
-    \code{\link{create.roots}} or \code{\link{simulate.horizons}}
+    \command{\link{create.roots}} or \command{\link{simulate.horizons}}
     has not been called yet.}
   
   \item{water.x}{the coordinates of \code{grid.x} after thinning by
@@ -1642,7 +1642,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     or \sQuote{water flow} has been
     set to \sQuote{no}. Further \code{swms2d} is set to \code{NULL}
     if an error occurs when trying to plot
-    the SWMS2D simulation results (by \code{\link{plotWater}}); this
+    the SWMS2D simulation results (by \command{\link{plotWater}}); this
     happens if the result has no finite values.
     Finally, \code{swms2d} is set to \code{NULL} if a relevant
     parameters was changed, such as those in
@@ -1653,7 +1653,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   Any of the lists that contain input parameters may have the additional
   component \code{.history}, an internal variable used by the
   interactive menue algorithm that gives the last entries by the user;
-  see \code{\link[RandomFields]{evalpar}}. 
+  see \command{\link[RandomFields]{evalpar}}. 
 }
 \section{Warning}{The user should consider the following parameters
   of \code{h[[i]]} as being read-only:
@@ -1688,50 +1688,48 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     \emph{In preparation}
   }
 }
-\seealso{\code{\link{calculate.horizons}},
-  \code{\link{create.roots}},
-  \code{\link{create.stones}},
-  \code{\link{create.waterflow}}, 
-  \code{\link{draw.horizons}},
-  \code{\link{modify.horizons}},
-  \code{\link{plotRF}},
-  \code{\link{plotWater}},
-  \code{\link{simulate.horizons}},
+\seealso{\command{\link{calculate.horizons}},
+  \command{\link{create.roots}},
+  \command{\link{create.stones}},
+  \command{\link{create.waterflow}}, 
+  \command{\link{draw.horizons}},
+  \command{\link{modify.horizons}},
+  \command{\link{plotRF}},
+  \command{\link{plotWater}},
+  \command{\link{simulate.horizons}},
   \code{\link{SoPhy}}, 
-  \code{\link{swms2d}}
+  \command{\link{swms2d}}
 }
 
 \examples{
 %  library(SoPhy, lib="~/TMP"); 
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/simu.R")
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/Sophy.R")
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/swms2d.R")
-% source("/home/schlather/article/R/NEW.RF/RandomFields/R/ShowModels.R");
+% source("/home/schlather/R/SOPHY/SoPhy/R/simu.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/swms2d.R")
+% source("/home/schlather/R/NEW.RF/RandomFields/R/ShowModels.R");
 
 
-\dontrun{% for unknown reasons the check runs for a too long time
-##### without underlying profile
+% for unknown reasons the check runs for a too long time
+\dontrun{
+### without underlying profile
 h0 <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1)
 # or, equivalently:
 # h1 <- sophy(xlim=c(1, 100), ylim=c(1, 100), step=1)
-}
 
-\dontrun{% for unknown reasons the check runs for a too long time
-##### underlying profile
-##### the profile was taken by M. Flury, J. Leuenberger,
-##### B. Studer, W.A. Jury and H. Fl\"uhler, see also URL
-##### www.ito.umnw.ethz.ch/SoilPhys/Fliessmuster/projekt_flury.html
+% for unknown reasons the check runs for a too long time
+### underlying profile
+### the profile was taken by M. Flury, J. Leuenberger,
+### B. Studer, W.A. Jury and H. Fl\"uhler, see also URL
+### \url{http://www.ito.umnw.ethz.ch/SoilPhys/Fliessmuster/projekt_flury.html}
 pic <- paste(system.file(package='SoPhy'), 'tracer', 'K06', sep="/")
 h <- xswms2d(xlim=c(0,160), step=1, aniso=TRUE,
              update=FALSE, waterflow=FALSE, pict=pic)
 
-##### repeated call
+### repeated call
 h <- xswms2d(h=h, update=TRUE, waterflow=TRUE)
-}
 
-
-\dontrun{% for unknown reasons the check runs for a too long time
-##### an example for non-atmospheric root uptake
+% for unknown reasons the check runs for a too long time
+### an example for non-atmospheric root uptake
 h <- sophy(xl=c(1,10), yl=c(1,10), step=0.1, new=NULL) ## get standard
 h$root[[1]]$root.condition <- 1   ## dirichlet condition for roots
 h$root[[1]]$root.uptake <- -200   ## value for dirichlet condition
@@ -1744,9 +1742,9 @@ h$water$top.value <- -8 ## value on the boundary
 h <- xswms2d(h=h, update=TRUE, waterflow=TRUE)
 }
 
-% source("/home/schlather/article/R/NEW.RF/RandomFields/R/evalpar.R"); source("/home/schlather/article/R/NEW.RF/RandomFields/R/ShowModels.R"); source("/home/schlather/article/R/SOPHY/SoPhy/R/simu.R"); source("/home/schlather/article/R/SOPHY/SoPhy/R/Sophy.R");try(repeat dev.off()); h1 <- sophy(xlim=c(1, 100), ylim=c(1, 100), step=1)
+% source("/home/schlather/R/RF/RandomFields/R/evalpar.R"); source("/home/schlather/R/RF/RandomFields/R/ShowModels.R"); source("/home/schlather/R/SOPHY/SoPhy/R/simu.R"); source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R");try(repeat dev.off()); h1 <- sophy(xlim=c(1, 100), ylim=c(1, 100), step=1)
     
-% source("/home/schlather/article/R/NEW.RF/RandomFields/R/evalpar.R"); source("/home/schlather/article/R/NEW.RF/RandomFields/R/ShowModels.R"); source("/home/schlather/article/R/SOPHY/SoPhy/R/simu.R"); source("/home/schlather/article/R/SOPHY/SoPhy/R/Sophy.R");try(repeat dev.off());h <- xswms2d(xlim=c(0,160), step=1, aniso=TRUE, update=FALSE, waterflow=FALSE, pict=pic)
+% source("/home/schlather/R/RF/RandomFields/R/evalpar.R"); source("/home/schlather/R/RF/RandomFields/R/ShowModels.R"); source("/home/schlather/R/SOPHY/SoPhy/R/simu.R"); source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R");try(repeat dev.off());h <- xswms2d(xlim=c(0,160), step=1, aniso=TRUE, update=FALSE, waterflow=FALSE, pict=pic)
 
 }
 

@@ -12,7 +12,7 @@ modify.horizons(h, percent=5, level.percent=5, rdistr=rnorm)
 
 \arguments{
   \item{h}{list of the same format as the output of
-    \code{\link{xswms2d}}}
+    \command{\link{xswms2d}}}
   \item{percent}{magnitude of variation of a single point; see Details.}
   \item{level.percent}{magnitude of the length of the translation vector
     for the whole object; see Details.}
@@ -23,7 +23,7 @@ modify.horizons(h, percent=5, level.percent=5, rdistr=rnorm)
     the distribution.}
 }
 \details{
-  The function \code{modify.horizons} changes stochastically the
+  The function \command{modify.horizons} changes stochastically the
   location of the vertices of the defining segments for the
   boundary of a horizon. To this end, 
   the standard deviations \eqn{s_x}{s.x} and \eqn{s_y}{s.y}
@@ -57,23 +57,23 @@ modify.horizons(h, percent=5, level.percent=5, rdistr=rnorm)
     of polygons)). 
 }
   
-  \code{modify.horizons} calls \code{\link{calculate.horizons}}
+  \command{modify.horizons} calls \command{\link{calculate.horizons}}
   before returning the list.
 }
 \value{
-  List of the same format as the output of \code{\link{xswms2d}}.
+  List of the same format as the output of \command{\link{xswms2d}}.
   
-  \code{modify.horizons} calls \code{\link{calculate.horizons}}
+  \command{modify.horizons} calls \command{\link{calculate.horizons}}
   before returning the list.
 }
 
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 
-\seealso{\code{\link{SoPhy}}, \code{\link{xswms2d}}}
+\seealso{\code{\link{SoPhy}}, \command{\link{xswms2d}}}
 \examples{
 %  library(SoPhy, lib="~/TMP"); library(RandomFields)
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/Sophy.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")
 h <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1, new=NULL)
 ##        new=NULL: xswms2d returns the standard definition for h
 ##                          without entering the interactive surface

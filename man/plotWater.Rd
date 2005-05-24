@@ -16,9 +16,9 @@ plotWater(h, instance,
           legend = TRUE, ylim, zlim)
 }
 \arguments{
-  \item{h}{a list as returned by \code{\link{swms2d}} or a list as
-    returned by  \code{\link{xswms2d}};
-    usually \code{\link{create.waterflow}} has been called beforehand.
+  \item{h}{a list as returned by \command{\link{swms2d}} or a list as
+    returned by  \command{\link{xswms2d}};
+    usually \command{\link{create.waterflow}} has been called beforehand.
   }
   \item{instance}{
     the number of the time point for which the data should be plotted.
@@ -34,16 +34,20 @@ plotWater(h, instance,
       \item{\code{vx}}{x-components of the Darcian flux vector vx,}
       \item{\code{vz}}{z-components of the Darcian flux vector vz,}
       \item{\code{Conc}}{solute concentration}
+      \item{\code{logH}}{log of \eqn{-H},}
     }
-    The parameter \code{what} allows also the numbers \eqn{1,\ldots,6}{1,...,6}
-    corresponding to \code{H},...,\code{Conc}.
+    The parameter \code{what} allows also the numbers \eqn{1,\ldots,6}{1,...,7}
+    corresponding to \dQuote{H},...,\dQuote{logH}.
   }
   \item{col.txt}{colour of the title}
   \item{col.simu}{colour spectrum of the simulated field of
     H, Q, \eqn{\theta}{theta}, vx, vz, or conc; areas of stones or air
     are white.}
   \item{col.exception}{vector of 2 components; colour plotted values
-    that are below or above the given range, see \code{zlim}}
+    that are below or above the given range, see \code{zlim}; for
+    \code{what="logH"} and positive water potential,
+    \code{col.exception[1]} is plotted.
+  }
   \item{lim}{value in \eqn{[0,1]} that is used only if \code{zlim} is
     missing or \code{NULL};
     the range \eqn{\code{zlim}} of the plotted values depends on \code{what}.
@@ -51,12 +55,13 @@ plotWater(h, instance,
     \itemize{
       \item \code{H} : \eqn{\code{zlim}=[q(1-\code{lim}); 0]}
       \item \code{theta} :
-      \eqn{\code{zlim}=\command{range}(\{0,
+      \eqn{\code{zlim}=\command{\link[base]{range}}(\{0,
 	\theta_{s,i}\})}{\code{zlim}=\command{range}({0,
 	  theta_{s,i}})}, where the \eqn{i} runs over all horizons
       and polygons. That is, the range is independent of the value of
-      \code{lim}. See \code{\link{xswms2d}} for \eqn{\theta_s}{theta_s}.
+      \code{lim}. See \command{\link{xswms2d}} for \eqn{\theta_s}{theta_s}.
       \item \code{Conc} : \eqn{\code{zlim}=[0, q(\code{lim})]}
+      \item \code{logH} : \eqn{\code{zlim}=[q(1-\code{lim}), 1]}
       \item otherwise :
       \eqn{\code{zlim}=[q(1-\code{lim}), q(\code{lim})]}
     }
@@ -75,7 +80,7 @@ plotWater(h, instance,
     labels of the axes should be scaled relative to the default}
   \item{cex.leg}{A numerical value giving the amount by which the legend text
     should be scaled relative to the default}
-  \item{legend}{logical. If (TRUE) a legend is added.}
+  \item{legend}{logical. If \code{TRUE} a legend is added.}
   \item{ylim}{missing or vector of two components. If missing the range
     of the simulation is used.}
   \item{zlim}{missing or vector of two components. Values below
@@ -97,7 +102,7 @@ plotWater(h, instance,
   if no error has occured and an error message otherwise.
 }
 \seealso{
-  \code{\link{plotRF}}, \code{\link{xswms2d}}
+  \command{\link{plotRF}}, \command{\link{xswms2d}}
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}

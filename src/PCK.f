@@ -2,7 +2,7 @@
 *                                                                     *
 *     an analytic solution of water transport                         *
 *                                                                     *
-*     Martin Schlather and Bernd Huwe (2002, 2003)                    *
+*     Martin Schlather and Bernd Huwe (2002 -- 2005)                  *
 *                                                                     *
 *                                                                     *
 * ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*

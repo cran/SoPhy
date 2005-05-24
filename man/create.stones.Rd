@@ -13,7 +13,7 @@ create.stones(h, trials = 10)
 }
 \arguments{
   \item{h}{a list of the
-    same format as the output of \code{\link{xswms2d}}}
+    same format as the output of \command{\link{xswms2d}}}
   \item{trials}{parameter for the
     number of trials after which the simulation for a horizon terminates
     and a warning is given.
@@ -126,11 +126,11 @@ create.stones(h, trials = 10)
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
-\seealso{\code{\link{SoPhy}}, \code{\link{xswms2d}}}
+\seealso{\code{\link{SoPhy}}, \command{\link{xswms2d}}}
 
 \examples{
 %  library(SoPhy, lib="~/TMP"); library(RandomFields)
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/Sophy.R")
+% source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")
 ## get a standard definition first
 h <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1, new=NULL)
 h <- simulate.horizons(h)

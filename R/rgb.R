@@ -1,8 +1,11 @@
 
-read.picture <- function(picture, extensions=c("tif", "tiff", "gif", "jpeg"),
+read.picture <- function(picture, extensions=c("tif", "tiff",
+                               if (.Platform$OS.type=="unix") c("gif", "jpeg")),
                          PrintLevel=RFparameters()$Print, tmp.dir=".") {
-  if (.Platform$OS.type!="unix")
-    stop("`read.picture' currently only available on unix systems")
+#  if (.Platform$OS.type!="unix") {
+#    warning("`read.picture' currently only available on unix systems")
+#    return(NULL)
+#  }
   ## search for file -- either the file should have one of the `extensions'
   ## or the file name expanded by one of the `extension', in the given sequence
   ##
@@ -61,8 +64,8 @@ read.picture <- function(picture, extensions=c("tif", "tiff", "gif", "jpeg"),
 }
 
 write.picture <- function(picture, tif) {
-  if (.Platform$OS.type!="unix")
-    stop("`write.picture' currently only available on unix systems")
+#  if (.Platform$OS.type!="unix")
+#    stop("`write.picture' currently only available on unix systems")
   stopifnot(is.array(picture), is.numeric(picture))
   storage.mode(picture) <- "integer"
   if (!(rev(strsplit(tif, "\\.")[[1]])[1] %in% c("TIFF", "TIF", "tiff", "tif")))

@@ -356,7 +356,7 @@ risk.index <-
         }
       } else {    
         w <- weights[idx]
-        if (PrintLevel>2) {
+        if (PrintLevel>1) {
           cat("\b\b\b\b", format(round(i * factor), dig=2),"%", sep="")
         }
         
@@ -470,7 +470,8 @@ risk.index <-
          selected.dist=selected.dist,
          selected.rate=selected.rate,
          sel.rate=sel.rate,
-         sel.dist=sel.dist, ## the distances used (in clear text)
+         sel.dist=sel.dist, ## the distances used (Klartext und als
+              ##              Startindex fuer frequency Vektor)
          max.freq = mxfreq,
          values=values,
          method = method,
@@ -520,8 +521,8 @@ analyse.profile <-
  
 ### reading in picture  
   if (debug) cat("reading in picture\n")
-  if (.Platform$OS.type!="unix")
-    stop("'analyse.profile' only available on unix systems")
+#  if (.Platform$OS.type!="unix")
+#    stop("'analyse.profile' only available on unix systems")
  
   if (is.list(picture)) {
     stopifnot(missing(fct) || is.null(fct), missing(param) || is.null(param),

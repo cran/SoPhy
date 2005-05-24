@@ -253,11 +253,12 @@ xswms2d <-
       ylim[2] <- h$grid.y[length(h$grid.y)]
     }
 
-    if (.Platform$OS.type!="unix" && !is.null(picture)) {
-      if (PrintLevel>0)
-        cat("\npictures can currently be loaded only under unix systems\n")
-      picture <- NULL
-    }
+#    if (.Platform$OS.type!="unix" && && !is.null(picture) &&
+#         is.character(picture)) {
+#      if (PrintLevel>0)
+#        cat("\npictures can currently be loaded only under unix systems\n")
+#      picture <- NULL
+#    }
     if (!is.null(picture)) {
       if (is.character(picture))
         picture <- read.picture(picture, PrintLevel=PrintLevel)

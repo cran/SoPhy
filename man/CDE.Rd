@@ -17,7 +17,7 @@
   \item{velocity}{constant velocity}
 }
 \details{
-  \code{ADE} solves the PDE 
+  \command{ADE} solves the PDE 
   \deqn{\frac{\partial C(z,t)}{\partial t} = D \frac{\partial^2
       C(z,t)}{\partial z^2}- v\, \frac{\partial C(z,t)}{\partial z}}{d
     C(z,t) / d t =  D * d^2 C(z,t) / d z^2  - v * d C(z,t) / d z}
@@ -29,21 +29,21 @@
   Further, \eqn{C(0, t)=C_0}{C(0,t)=\code{C0}}.
 }
 \value{
-  \code{ADE} calculates the concentration on a grid given by
+  \command{ADE} calculates the concentration on a grid given by
   \code{z} and \code{time}, i.e.,
-  \code{ADE} returns a (\code{length(z)} x \code{length(time)})-matrix. 
+  \command{ADE} returns a (\code{length(z)} x \code{length(time)})-matrix. 
 }
 
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 \references{
-    Schlather, M. and Huwe, B. (2003)
-   The use of the language interface of R: two examples for modelling water
-   flux and solute transport. \emph{Computers \& Geosciences}.% \emph{journ} \bold{}, 110-11.
-
-   Tindall, J.A. and Kunkel, J.R (1999) \emph{Unsaturated Zone Hydrology
-     for Scientists and Engineers.} New Jersey: Prentice-Hall. % p. 280
-  }
+  Schlather, M. and Huwe, B. (2004)
+  The use of the language interface of R: two examples for modelling water
+  flux and solute transport. \emph{Computers \& Geosciences} \bold{30}, 197-201.
+  
+  Tindall, J.A. and Kunkel, J.R (1999) \emph{Unsaturated Zone Hydrology
+    for Scientists and Engineers.} New Jersey: Prentice-Hall. % p. 280
+ }
 
 \examples{
 par(cex=1.5, mar=c(4.2,4,0.2,0.4))

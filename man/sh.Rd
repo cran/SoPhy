@@ -7,22 +7,22 @@
   in the publications of Schlather and Huwe
 }
 \usage{
-sh.jch(input=NULL, dev=2, pspath="./", txt.result.dir = "./txt/",
-       simu.pspath="simu.ps/", final=TRUE, PrintLevel=0, bw=TRUE,
+sh.jch(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
+       simu.path="simu/", final=TRUE, PrintLevel=0, bw=TRUE,
        readlines=TRUE)
 sh.jh(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
        readlines=TRUE, low.resolution=TRUE)
 }
 \arguments{
   \item{input}{vector of values for automatic choice of the submenues}
-  \item{dev}{device, see \code{\link[RandomFields]{Dev}}}
+  \item{dev}{device, see \command{\link[RandomFields]{Dev}}}
   \item{pspath}{path used for all postscript files in \command{sh.jh}
     and for all postsript files in \command{sh.jch} except those based
     on the extended simulation study
   }
   \item{txt.result.dir}{path used for non-graphic results
   }
-  \item{simu.pspath}{path used for the postscript files based
+  \item{simu.path}{path used for the postscript files based
     on the extended simulation study
   }
   \item{final}{logical. If \code{TRUE} all the parameters
@@ -38,7 +38,7 @@ sh.jh(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
     in black and white, only.
   }
   \item{readlines}{logical. Only used if \code{is.numeric(dev)}. If
-    the operating system is unix and \code{readlines=FALSE} then the system
+    \code{readlines=FALSE} then the system
     waits a second before the next plot is calculated or shown.
     Otherwise the system waits for return.
   }
@@ -57,17 +57,17 @@ sh.jh(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   \code{NULL}
   
   Depending on the value of \code{dev}, see
-  \code{\link[RandomFields]{Dev}}, postscript or pdf files are created.
+  \command{\link[RandomFields]{Dev}}, postscript or pdf files are created.
 }
 \seealso{
-  \code{\link{SoPhy}}
+  \code{\link{SoPhy}}, \command{\link{plotFlow2d}}, \command{\link{plotFlow3d}}
 }
 \references{
-  Schlather, M. and Huwe, B. (2004a)
+  Schlather, M. and Huwe, B. (2005a)
   A stochastic model for 3-dimensional flow patterns in dye tracer
-  experiments. \emph{Submitted to J. Hydrol.}% \bold{}, .
+  experiments. \emph{J. Hydrol.} \bold{In Press}, .
     
-  Schlather, M. and Huwe, B. (2004b)
+  Schlather, M. and Huwe, B. (2005b)
   A risk index for characterising flow pattern in soils
   using dye tracer distributions
   \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
@@ -85,21 +85,17 @@ The vertical distribution of a dye tracer in a layered soil.
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 \examples{
-\dontrun{
-%  library(SoPhy, lib="~/TMP"); 
-% source("/home/schlather/article/R/SOPHY/SoPhy/R/sh.R")
-####################################################################
-##  Note that some functionalities are currently only available   ##
-##  under unix systems!                                           ##
-####################################################################
 
-  final <- FALSE #%   final <- TRUE
-  sh.jh(input=, readlines=FALSE, final=final)
-  sh.jch(input=, final=final)
+% library(SoPhy, lib="~/TMP"); 
+% source("/home/schlather/R/SOPHY/SoPhy/R/sh.R")
 
+  final <- FALSE # final <- TRUE
+  printlevel <- 1 + !interactive()
+  sh.jh(input=if (!interactive()) c(1, 2, 5, 0), final=final,
+       Print=printlevel)
+  sh.jch(input=if (!interactive()) c(1:14, 0), final=final,
+         Print=printlevel)
 
-  
-}
 }
 \keyword{spatial}
 

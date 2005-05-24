@@ -231,7 +231,7 @@ flowpattern <-
            endpoint.tolerance=0,
            measure=function(x) x^2,
            
-           simu.method=NULL,
+           simu.method="TBM3",
            drop.simu.method=NULL,
            register = c(1,2),
            old.paths=NULL,
@@ -241,7 +241,7 @@ flowpattern <-
            compress=TRUE,
            max.points = 5500000
            ) {
-  stopifnot(simu.method=="TBM3",
+  stopifnot(!is.null(simu.method), simu.method=="TBM3",
             length.profile == round(length.profile),
             depth==round(depth))
   raw.xx <- raw.yy <- len.dx <- len.dy <- NULL
@@ -252,7 +252,7 @@ flowpattern <-
   type <- match.arg(type)
   
   
-  dependent.path <- function(startx, starty, depth, model, grid, reg=0) {   
+  dependent.path <- function(startx, starty, depth, model, grid, reg=0) {
     InitGaussRF(x=c(-delta.x, length.profile + delta.x) - length.profile / 2,
                 y=c(-delta.y, width.slice + delta.y) - width.slice / 2,
                 z=c(1, depth) - (1 + depth) / 2,
@@ -486,7 +486,6 @@ flowpattern <-
                                  reg=register[2], method=drop.simu.method),
                          ncol=drops))
   }
-  
   len <- apply(drop.distr(LEN), 1, max)
  
   nc <- ncol(xx)

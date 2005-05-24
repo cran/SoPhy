@@ -37,14 +37,15 @@
     the quader is in the first quadrant with one vertice in the origin}
   \item{col}{vector of colours; the point that is nearest to the sun
     gets the colour \code{col[1]}, the one that is the furthest away
-    \code{rev(col)[1]}}
+    \command{\link[base]{rev}}\code{(col)[1]}.
+    }
   \item{col.frame}{vector of two components. 
     The edges that are visible get colour
     \code{col.frame[2]} the others \code{col.frame[1]}} 
   \item{lty}{vector of two components.  the edges that are visible have
     line type \code{lty[2]} the  others \code{lty[1]}}
   \item{cex.axis}{The magnification to be used for axis annotation
-    relative to the current, see \code{\link{par}}}
+    relative to the current, see \command{\link[graphics]{par}}}
   \item{reverse}{logical. If \code{TRUE} the z-axis is numbered
     upside down}
   \item{unit}{}
@@ -54,29 +55,29 @@
     which will be used by \command{belichtet}, for example.
   }
   \item{font}{font used for the labelling of the axes, see also
-    \code{\link[graphics]{font}}}
+    \command{\link[graphics]{font}}}
   \item{srt}{angle for the character rotation when labelling the y axis;
     if \code{NULL} the angle is calculated, but might be not always the
     best choice.
   }
 }
 \value{
-  The functions \code{belichtet} and \code{quader} return \code{NULL},
-  the function \code{pos3D} returns a matrix of 2 rows and
+  The functions \command{belichtet} and \command{quader} return \code{NULL},
+  the function \command{pos3D} returns a matrix of 2 rows and
   \code{ncol(x)} coloumns.
 }
 \details{
-  The function \code{quader} must be called first with \code{add=FALSE}.
-  \code{quader} plots a perspective quader and provides global variables
+  The function \command{quader} must be called first with \code{add=FALSE}.
+  \command{quader} plots a perspective quader and provides global variables
   whose name starts with \code{.p3d}.
-  If, for the second time, \code{quader} is called solely by the argument
+  If, for the second time, \command{quader} is called solely by the argument
   \code{add=TRUE}, the original quader is redrawn.
 
-  The auxiliary function \code{pos3D} calculates the two-dimensional
+  The auxiliary function \command{pos3D} calculates the two-dimensional
   projected positions of the three dimensional points. If \code{inf} is
-  not given, the one given in \code{quader} is used.
+  not given, the one given in \command{quader} is used.
 
-  \code{belichtet} plots the three dimensional points in perspective view.
+  \command{belichtet} plots the three dimensional points in perspective view.
 }
 \examples{
   % library(SoPhy, lib="~/TMP")

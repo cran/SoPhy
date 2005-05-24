@@ -8,7 +8,8 @@
   from TIF, it is first convert-ed to TIF.
 }
 \usage{
-read.picture(picture, extensions=c("tif", "tiff", "gif", "jpeg"),
+read.picture(picture, extensions=c("tif", "tiff",
+                      if (.Platform$OS.type=="unix") c("gif", "jpeg")),
              PrintLevel=RFparameters()$Print, tmp.dir=".")
 }
 \arguments{
@@ -50,17 +51,12 @@ read.picture(picture, extensions=c("tif", "tiff", "gif", "jpeg"),
   }
   If the file is neither TIF nor TIFF it is first convert-ed.
 }
-\seealso{\code{\link{plotRGB}, \code{\link{write.picture}}}
+\seealso{\command{\link{plotRGB}, \command{\link{write.picture}}}
 }
 \examples{
-####################################################################
-##  Note: this function currently works only under unix systems!  ##
-####################################################################
-#ifdef unix
-  fig <- read.picture(paste(system.file(package='SoPhy'),
-                      'tracer', 'K06', sep="/"), Pr=3)
-  plotRGB(fig)
-#endif
+fig <- read.picture(paste(system.file(package='SoPhy'),
+                    'tracer', 'K06', sep="/"), Pr=3)
+plotRGB(fig)
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}

@@ -5,7 +5,7 @@
  library for modeling water flux and solute transport:
    makes TIFFReadRGBAImage available in R
     
- Copyright (C)  2003 Martin Schlather, 
+ Copyright (C)  2003 -- 2005  Martin Schlather, 
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,15 +22,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifdef unix
+// #ifdef unix
 
-extern "C" {
 #include <R.h>
 #include <Rdefines.h>
 #include <assert.h>
-#include <tiffio.h>
 #include "SoPhy.h"
-}
+#include "win_linux_aux.h"
 
 SEXP writetiff(SEXP picture, SEXP filename) {
   FILE *file;
@@ -61,56 +59,25 @@ SEXP writetiff(SEXP picture, SEXP filename) {
 }
 
 SEXP readtiff(SEXP filename) {
-  uint32 Length, Width, total2, total3, i, *lr;
-  unsigned long int total;
-  int x,Error, *r;
-  TIFF* file;
+  unsigned long int Length, Width;
+  int x, Error, *r;
   SEXP raster;
   SEXP dim;
 
   assert(sizeof(x)==4);
-  lr = NULL;
 
-  if ((file = TIFFOpen(STRING_VALUE(filename), "r")) == NULL) {
-    Error = 1;
+  if ((Error = getTIFFinfo(STRING_VALUE(filename), &Length, &Width)) != 0)
     goto ErrorHandling2;
-  } 
-  if ((Error=TIFFGetField(file, TIFFTAG_IMAGELENGTH, &Length))!=1) {
-    goto ErrorHandling2;
-  }
-  if ((Error=TIFFGetField(file, TIFFTAG_IMAGEWIDTH, &Width))!=1) {
-    goto ErrorHandling2;
-  }
-  
-// printf("width=%d   height=%d \n", Width,Length);
-  
+
   PROTECT(dim=allocVector(INTSXP, 3));
   INTEGER_POINTER(dim)[0] = Width;
   INTEGER_POINTER(dim)[1] = Length;
   INTEGER_POINTER(dim)[2] = 4;
   PROTECT(raster=allocArray(INTSXP, dim));
   r = (int*) INTEGER_POINTER(raster);
-  total = Length * Width; 
-
-//printf("total %d %e %e %e %d\n",
-// total, (double) total, (double) Width, (double) Length,  sizeof(u_long));
-
-  lr = (uint32*) malloc(total * sizeof(uint32));
-  if ((Error = TIFFReadRGBAImage(file, Width, Length, lr, 1))!=1) {
-    Error = 999;
+  if ((Error = getTIFFimage(STRING_VALUE(filename), Length, Width, r)) != 0)
     goto ErrorHandling;
-  }
-  total2 = total * 2;    
-  total3 = total * 3;   
-  for (i=0; i<total; i++) {
-    r[i + total3] = TIFFGetA(lr[i]);
-    r[i + total2] = TIFFGetB(lr[i]);
-    r[i + total ] = TIFFGetG(lr[i]);
-    r[i] = TIFFGetR(lr[i]);
-  }
   UNPROTECT(2);
-
-  free(lr);
   return raster;
 
  ErrorHandling:
@@ -118,8 +85,7 @@ SEXP readtiff(SEXP filename) {
  ErrorHandling2:
   PRINTF("error nr %d occured. \n", Error);
   raster=allocVector(INTSXP, 0);
-  if (lr != NULL) free(lr);
   return raster;
 }
 
-#endif // unix
+//#endif // unix

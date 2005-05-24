@@ -18,7 +18,7 @@
 
 \arguments{
   \item{h}{a list of the same format as the output
-    of \code{\link{xswms2d}}}
+    of \command{\link{xswms2d}}}
   \item{areas}{logical.  If \code{TRUE} the horizons are plotted in
     different colours.  If \code{FALSE} only the boundary lines are
     plotted.}
@@ -55,9 +55,9 @@
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 
 \seealso{
-  \code{\link{modify.horizons}},
+  \command{\link{modify.horizons}},
   \code{\link{SoPhy}},
-  \code{\link{xswms2d}}
+  \command{\link{xswms2d}}
 }
 \examples{
    ## see  \link{modify.horizons}  for an example
