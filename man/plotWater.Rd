@@ -48,6 +48,7 @@ plotWater(h, instance,
     \code{what="logH"} and positive water potential,
     \code{col.exception[1]} is plotted.
   }
+  
   \item{lim}{value in \eqn{[0,1]} that is used only if \code{zlim} is
     missing or \code{NULL};
     the range \eqn{\code{zlim}} of the plotted values depends on \code{what}.
@@ -56,8 +57,9 @@ plotWater(h, instance,
       \item \code{H} : \eqn{\code{zlim}=[q(1-\code{lim}); 0]}
       \item \code{theta} :
       \eqn{\code{zlim}=\command{\link[base]{range}}(\{0,
-	\theta_{s,i}\})}{\code{zlim}=\command{range}({0,
-	  theta_{s,i}})}, where the \eqn{i} runs over all horizons
+	\theta_{s,i}\}, max(\code{h$hQThFlC}))}{\code{zlim}=\command{range}({0,
+	  theta_{s,i}}, max(\code{h$hQThFlC}))},
+      where the \eqn{i} runs over all horizons
       and polygons. That is, the range is independent of the value of
       \code{lim}. See \command{\link{xswms2d}} for \eqn{\theta_s}{theta_s}.
       \item \code{Conc} : \eqn{\code{zlim}=[0, q(\code{lim})]}
@@ -65,6 +67,7 @@ plotWater(h, instance,
       \item otherwise :
       \eqn{\code{zlim}=[q(1-\code{lim}), q(\code{lim})]}
     }
+    
     quantile for the upper bound
     of the values of the random field; this variable should be
     less than 1 if the random field contains some extreme values, since

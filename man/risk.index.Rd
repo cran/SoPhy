@@ -7,10 +7,12 @@
 \usage{
 risk.index(data, selected.dist=0.95, 
            selected.rate=cbind(c(0.5, 0.8), c(0.4, 0.9), c(0.3, 1.0)),
-           weights=1, measure=function(x) x^2, method=c('fix.m', 'optim.m'),
+           weights=1, measure=function(x) x^2,
+           method=c('fix.m', 'optim.m', 'ml'),
            min.neg.xi = -10, max.neg.xi = -0.1, max.pos.xi = 10,
            endpoint.tolerance = 0, front.factor = 2,
-           min.no.paths=max(data[, 2]), max.no.paths=10 * max(data[, 2]),
+           # min.no.paths=max(data[, 2]),
+           max.no.paths=10 * max(data[, 2]),
            PrintLevel=RFparameters()$Print)
 }
 
@@ -88,11 +90,11 @@ risk.index(data, selected.dist=0.95,
     
     The value should best not be changed.
  }
-  \item{min.no.paths}{the number of paths is estimated as nuisance
-    parameter when estimating the risk index; \code{min.no.paths} and
-    \code{max.no.paths} give the bounds for the nuisance parameter.}
-  \item{max.no.paths}{see \code{min.no.paths}}
-  \item{PrintLevel}{
+ \item{max.no.paths}{the number of paths is estimated as nuisance
+   parameter when estimating the risk index; 
+   \code{max.no.paths} give the upper bound for the nuisance
+   parameter in the optimisation.}
+ \item{PrintLevel}{
     The higher the value of \code{PrintLevel} the more tracing
     information is given. Up to value 2, no information is given.
 %     \itemize{
@@ -159,8 +161,8 @@ risk.index(data, selected.dist=0.95,
 
   Schlather, M. and Huwe, B. (2005)
   A risk index for characterising flow pattern in soils
-  using dye tracer distributions
-  \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
+  using dye tracer distributions.
+  \emph{J. Contam. Hydrol.} \bold{79}, to appear.
  }
 
 \seealso{

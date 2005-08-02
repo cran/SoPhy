@@ -143,6 +143,7 @@ quader <- function(size, inf, sun,
   
   assign(".p3d.range.dist",
          range(sqrt(apply((cbind(qq1, qq2) - sun)^2, 2, sum))), envir=.ENV)
+
   assign(".p3d.colfct", function(d)
          pmin(length(col),
               pmax(1, (d - .p3d.range.dist[1]) / diff(.p3d.range.dist) *
@@ -166,17 +167,21 @@ belichtet <- function(x, radius=1, fix.scale=TRUE, correction=1.2) {
   ##       (Wert fuer eps-Dateien, nicht X11!)
   x <- as.matrix(x)
   x <- x[, order(x[2,], decreasing=TRUE)]
+  
   col <- get(".p3d.colfct",env=.ENV)(sqrt(rep(1, nrow(x)) %*%
                              (x - get(".p3d.sun", env=.ENV))^2))
+
   if (fix.scale) {
     radius = radius / get(".p3d.profile", env=.ENV)[1] * par()$pin[1] /
       par()$cin[1] #par()$csi
+   
    points(t(pos3D(x, get(".p3d.inf", env=.ENV))), pch=16,
            col=get(".p3d.col", env=.ENV)[col],
            #col=rainbow(50),
            cex= (2 * correction)*
            ##           * 2, von radius zu durchmesser
            radius * exp(-get(".p3d.inf", env=.ENV)[3] * x[2, ]))
+    
   } else {
     x <- t(pos3D(x, get(".p3d.inf", env=.ENV)))
     alpha <- seq(0, 2 * pi, len=15)[-1]
@@ -227,11 +232,11 @@ flowpattern <-
            ## risk index calculation
            selected.dist = 2/3,
            front.factor=2, ## should not be changed
-           method = 'fix.m',
+           method = NULL, # 'fix.m',
            endpoint.tolerance=0,
            measure=function(x) x^2,
            
-           simu.method="TBM3",
+           simu.method=if (type %in% c("dependent", "all")) "TBM3",
            drop.simu.method=NULL,
            register = c(1,2),
            old.paths=NULL,
@@ -241,9 +246,6 @@ flowpattern <-
            compress=TRUE,
            max.points = 5500000
            ) {
-  stopifnot(!is.null(simu.method), simu.method=="TBM3",
-            length.profile == round(length.profile),
-            depth==round(depth))
   raw.xx <- raw.yy <- len.dx <- len.dy <- NULL
   register <- rep(register, len=2)
   if (missing(old.paths)) old.paths <- NULL
@@ -251,26 +253,59 @@ flowpattern <-
     eval(parse(text=paste(names(old.paths), "<- old.paths$", names(old.paths)))) 
   type <- match.arg(type)
   
+  if (any(unlist(RFparameters()[c("TBM2.simulinefactor","TBM2.simulinefactor")])
+          != 0.0) && (is.null(simu.method) || simu.method="TBM3" ||
+                  simu.method=="TBM2")) {
+    stop("simulinefactor must be zero for this function; see RFparameters for this global parameter")
+  }
+  stopifnot(!type %in% c("dependent", "all") ||
+            length.profile == round(length.profile),
+            depth==round(depth) )
+ 
+# library(SoPhy, lib="~/TMP"); source("~/R/SOPHY/SoPhy/R/3dplot.R"); example(flowpattern);
   
   dependent.path <- function(startx, starty, depth, model, grid, reg=0) {
-    InitGaussRF(x=c(-delta.x, length.profile + delta.x) - length.profile / 2,
-                y=c(-delta.y, width.slice + delta.y) - width.slice / 2,
-                z=c(1, depth) - (1 + depth) / 2,
-                grid=FALSE, model=model, reg=9, method=simu.method)
+
+#    print(startx)
+#    print(starty)
+#    str(depth)
+#    str(model)
+#    str(grid)
+    
+    InitGaussRF(x=c(-delta.x, length.profile + delta.x),
+                y=c(-delta.y, width.slice + delta.y),
+                z=c(1, depth),
+                grid=FALSE, model=model, reg=reg, method=simu.method)
+
+#str(GetRegisterInfo(reg), vec=20)
+#str(RFparameters())
+    
+    mem <- GetRegisterInfo(reg)$method[[1]]$mem
     if (grid) {
-      InitGaussRF(x=startx - length.profile / 2,
-                  y=starty - width.slice / 2,
-                  z=(1:depth) - (1 + depth) / 2,
-                  grid=grid, model=model, reg=reg, method=simu.method)
-      pokeTBM(9, reg)
-      t(matrix(DoSimulateRF(reg=reg), ncol=depth))
+      t(matrix(GaussRF(x=startx,
+                       y=starty,
+                       z=1:depth,
+                       grid=grid, model=model, reg=reg, method=simu.method,
+                       TBM2.linesimufactor=0.0, TBM2.linesimustep=0.0,
+                       TBM3.linesimufactor=0.0, TBM3.linesimustep=0.0,
+                       TBM.points=length(mem$l),
+                       TBM.center=if (!is.null(mem$aniso)) solve(mem$aniso,
+                         mem$center) + 0.0 else 0.0
+                       ),
+               ## +0.0: force double value for TBM.center...
+               ncol=depth))
     } else {
-      InitGaussRF(x=rep(startx, each=depth) - length.profile / 2,
-                  y=rep(starty, each=depth) - width.slice / 2,
-                  z=rep(1:depth, length(startx)) - (1+depth) / 2,
-                  grid=grid, model=model, method=simu.method, reg=reg)
-      pokeTBM(9, reg)
-      matrix(DoSimulateRF(reg=reg), nrow=depth)
+      matrix(GaussRF(x=rep(startx, each=depth),
+                     y=rep(starty, each=depth),
+                     z=rep(1:depth, length(startx)),
+                     grid=grid, model=model, method=simu.method, reg=reg,
+                     TBM2.linesimufactor=0.0, TBM2.linesimustep=0.0,
+                     TBM3.linesimufactor=0.0, TBM3.linesimustep=0.0,
+                     TBM.points=length(mem$l),
+                     TBM.center=if (!is.null(mem$aniso)) solve(mem$aniso,
+                       mem$center) + 0.0 else 0.0
+                     ),
+             nrow=depth)
     }
   }
   
@@ -359,7 +394,6 @@ flowpattern <-
 
       if (PrintLevel>2)
         cat("idxlength=", idxlength, "    true length=", length(ALLSTARTX), "\n")
-      
       idxmax <- min(idxlength, length(ALLSTARTX))
       startx <- ALLSTARTX[1:idxmax]
       starty <- ALLSTARTY[1:idxmax]
@@ -371,10 +405,10 @@ flowpattern <-
     repeat {
       yy <- switch(type,
                    identical = GaussRF(x=1:depth, grid=TRUE, model=y.model,
-                     n=rp, reg=register[1], method=simu.method),
+                     n=rp, reg=register[1], method=simu.method, pch=""),
                    unif=matrix(0, nrow=depth, ncol=rp),
                    independent = GaussRF(x=1:depth, grid=TRUE, model=y.model,
-                     n=rp, reg=register[1], method=simu.method
+                     n=rp, reg=register[1], method=simu.method, pch=""
                      ),
                    dependent=dependent.path(startx, starty, depth, y.model,
                      grid=grid, reg=register[1]),
@@ -552,8 +586,9 @@ plotFlow3d <- function(paths, horizons=c("no", "absorbing", "breakthrough"),
                        dev=1, ps="3d.dye.pattern", ps.background=FALSE,
                        profileheight=4, unit="cm", unit.scale=1, inf, sun,
                        rl = function(x) readline(paste(x, ": press return")),
-                       low.resolution = TRUE
-                       ){
+                       low.resolution = TRUE,
+                       col=grey(pmin(1, pmax(0, seq(0.95,0,-0.001))))
+                       ){  
   if (missing(drop.distr)) drop.distr <- paths$input$drop.distr
   horizons <- match.arg(horizons)
   xx <- paths$intermediate$xx
@@ -606,7 +641,7 @@ plotFlow3d <- function(paths, horizons=c("no", "absorbing", "breakthrough"),
                paths$inp$depth),
              inf=inf, sun=sun,
              cex.axis=1.8, # 1.2
-             col=grey(pmin(1, pmax(0, seq(0.95,0,-0.001)))),
+             col=col,
              plot=plot,
              unit=unit
              )
@@ -649,7 +684,7 @@ plotFlow3d <- function(paths, horizons=c("no", "absorbing", "breakthrough"),
 plotFlow2d <- function(coord, 
                        pointradius=1, slice=2 * pointradius, full.size=TRUE,
                        Profiles=1, dev=1, ps="",  
-                       height=4,  unit="cm", cex=2, correction=1.2,
+                       height=4,  unit="cm", cex=2, correction=1.2, col=1,
                        rl = function(x) readline(paste(x, ": press return"))
 )
 {
@@ -687,6 +722,7 @@ plotFlow2d <- function(coord,
     points(coord[idx, 1], coord[idx, 3], pch=16,
            cex = (if (full.size) radius else radius *
                   sqrt(1 - a * (coord[idx, 2] - m[i])^2)),
+           col=col
            )
     Dev(FALSE)
     if (is.numeric(dev) && dev!=1 && i<Profiles) rl(psname)

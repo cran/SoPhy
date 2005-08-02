@@ -11,7 +11,7 @@
 \usage{
 plotFlow2d(coord, pointradius=1, slice=2 * pointradius,
            full.size=TRUE, Profiles=1, dev=1, ps="",
-           height=4, unit="cm", cex=2, correction=1.2,
+           height=4, unit="cm", cex=2, correction=1.2, col=1,
            rl = function(x) readline(paste(x, ": press return")))
 
 plotFlow3d(paths, horizons=c("no", "absorbing", "breakthrough"),
@@ -19,7 +19,8 @@ plotFlow3d(paths, horizons=c("no", "absorbing", "breakthrough"),
            dev=1, ps="3d.dye.pattern", ps.background=FALSE,
            profileheight=4, unit="cm", unit.scale=1, inf, sun,
            rl = function(x) readline(paste(x, ": press return")),
-           low.resolution = TRUE)
+           low.resolution=TRUE,
+           col=grey(pmin(1, pmax(0, seq(0.95, 0, -0.001)))))
 }
 \arguments{
   \item{coord}{output of \command{plotFlow3d}: \eqn{n x 3}{n x 3} matrix;
@@ -52,6 +53,8 @@ plotFlow3d(paths, horizons=c("no", "absorbing", "breakthrough"),
      This constant takes into account that the plotting procedure used
      in the function does not plot a circle of exactly the given radius.
    }
+   \item{col}{colour of the points; \command{plotFlow3d} needs a vector
+     of colours starting with the colour of the nearest points}
    \item{paths}{list as returned by \command{\link{flowpattern}}}
    \item{horizons}{
      Temptative parameter.

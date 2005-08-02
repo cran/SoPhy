@@ -75,12 +75,12 @@
 
   Schlather, M. and Huwe, B. (2005a)
   A stochastic model for 3-dimensional flow patterns in dye tracer
-  experiments. \emph{J. Hydrol.} \bold{In press}, .
+  experiments. \emph{J. Hydrol.} \bold{310}, 17-27.
     
   Schlather, M. and Huwe, B. (2005b)
   A risk index for characterising flow pattern in soils
   using dye tracer distributions
-  \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
+  \emph{J. Contam. Hydrol.} \bold{79}, to appear.
    
   Schlather, M. and Huwe, B. (2006)
   Modelling inhomogeneous soils: Part I, Theory \emph{In preparation}% \bold{}, .
@@ -113,18 +113,20 @@
 
 \section{Installation}{
 
-  [linux]
+  LINUX: 
   The tiff-library is avalailable from
   \url{http://www.remotesensing.org/libtiff}.
   SuSe-users install libtiff and libtiff-devel.
   
-  [windows]
+  WINDOWS: 
   The binaries are available from
   \url{gnuwin32.sourceforge.net/packages/tiff.htm}.
   Before starting the R session, add in the 
   system variable \$PATH the path to the
   libtiff3.dll file; the standard path to be added 
   is C:\\Programme\\GnuWin32\\bin.
+  Further, make sure that zlib1.dll and jpeg62.dll
+  are present.
 
 %  After installation copy the files in GnuWin32/lib and GnuWin32/include
 %  to MinGW

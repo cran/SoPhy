@@ -45,7 +45,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
 
   %## chemical data
   chemical=list(
-     lChem=TRUE, Epsi=1, lUpW=1, lArtD=FALSE, PeCr=10, tPulse=500,
+     lChem=FALSE, Epsi=2, lUpW=1, lArtD=FALSE, PeCr=10, tPulse=500,
      top.bound=2, top.value=1, bottom.bound=1, bottom.value=0,
      root.uptake=0, intern.source=0,
   ),
@@ -128,7 +128,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   areas=is.null(h$picture), PrintLevel=RFparameters()$Print,
   new=TRUE, X11.width=9.5, X11.height=X11.width * 0.789,
   frequent.reset = TRUE, update=FALSE, waterflow=FALSE, 
-  zlim = NULL,
+  zlim = NULL, Zlim = NULL,
   %## postscript output
   print.par=list(ps="sophy", height=3, titl=TRUE, legend = TRUE)   
 )
@@ -1082,6 +1082,9 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     limits for the plotted values in the \command{\link[graphics]{image}}s. If
     \code{NULL} then \code{zlim} is calculated internally, cf.
     \command{\link{plotWater}}.
+  }
+  \item{Zlim}{vector of 2 components or \code{NULL} which gives the
+    limits for the plotted values in \command{\link[RandomFields]{ShowModels}}.
   }
   %
   \item{print.par}{

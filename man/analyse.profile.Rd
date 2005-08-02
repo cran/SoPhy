@@ -8,7 +8,7 @@
 \usage{
  analyse.profile(picture, fct, param, lower, upper, loc,
            estimate.all=NULL, selected.dist=0.95, selected.rate=c(0.5, 0.8),
-           measure=function(x) x^2, method=c("fix.m","optim.m"),
+           measure=function(x) x^2, method=c("fix.m","optim.m", "ml"),
 	   endpoint.tolerance=-10,
            ppi.par = 5,
            ppi.xy = c(xlow=2, xup=2, ylow=2, yup=2),
@@ -143,7 +143,8 @@
     number of stained pixels for the currently considered distances or
     depths (\code{'fix.m'}) or fitted within the optimisation algorithm
     (\code{'optim.m'}). Usually, it is not worth using the slower
-    \code{'optim.m'} option.}
+    \code{'optim.m'} option. As third new option the maximum likelihood
+    method "ml" is available.}
   \item{endpoint.tolerance}{optimisation parameter.  If the shape
     parameter is negative then the distribution has a finite upper
     endpoint.  Hence, mathematically, the lowest upper end point of the
@@ -225,9 +226,6 @@
   \item{title}{title for the interactive plot; if not given the picture
     name is used (usually the file name)}
 }
-\note{
-  This function works on Linux systems, only.
-}
 \details{
   If the picture is read in from the file the following particular case
   may appear.  In soil profiles often a metal grid is placed of size 1m
@@ -288,6 +286,8 @@
     see the function \command{\link{risk.index}}.
 
     The raw risk index is usually not used.
+  }
+  \item{absfreq}{vector. Number of blue pixels per line (from top)
   }
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}

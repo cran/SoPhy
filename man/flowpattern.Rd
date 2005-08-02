@@ -19,10 +19,11 @@ flowpattern(type=c('identical', 'unif', 'independent',
       drop.distr=function(x) x * 80, drop.name='whittle',
       drop.scale=1, drop.kappa=2, drops=1,
            
-      selected.dist = 2/3, front.factor=2, method = 'fix.m',
+      selected.dist = 2/3, front.factor=2, method = NULL,
       endpoint.tolerance=0, measure=function(x) x^2,
            
-      simu.method="TBM3", drop.simu.method = NULL, register=c(1,2),
+      simu.method=if (type \%in\% c("dependent", "all")) "TBM3",
+      drop.simu.method = NULL, register=c(1,2),
       old.paths=NULL, PrintLevel=RFparameters()$Print, wait=FALSE,
       raw=FALSE, compress=TRUE, max.points = 5500000)
 }
@@ -157,7 +158,6 @@ flowpattern(type=c('identical', 'unif', 'independent',
     function gets and returns a vector; used for estimating the risk
     index, see \command{\link{risk.index}}}
   \item{simu.method}{\code{NULL} or string;
-    Currently, only \dQuote{TBM3} is allowed.
     Method used for simulating
     the Gaussian random fields for the paths,
     see \link[RandomFields]{RFMethods}
@@ -165,7 +165,12 @@ flowpattern(type=c('identical', 'unif', 'independent',
     to get all options.
     If \code{model} is given as list then \code{method} may not be
     set if \code{model[[i]]$Method}, \eqn{i=1,3,..} is given, and vice
-    versa.}
+    versa
+
+    \dQuote{TBM3} allows for some special effect:
+    grid points and arbitrary points can taken from
+    the same realisation by two subsequent calls of the function.
+  }
   \item{drop.simu.method}{\code{NULL} or string; Method used for simulating
     the Gaussian random fields for the drops, see \code{simu.method}}
   \item{register}{vector of 2 components. The first compontent gives the
@@ -275,14 +280,13 @@ flowpattern(type=c('identical', 'unif', 'independent',
     \item
     Schlather, M. and Huwe, B. (2005a)
     A stochastic model for 3-dimensional flow patterns in dye tracer
-    experiments. \emph{J. Hydrol.} \bold{In press}, .
+    experiments. \emph{J. Hydrol.} \bold{310}, 17-27.
     
     \item
     Schlather, M. and Huwe, B. (2005b)
     A risk index for characterising flow pattern in soils
-    using dye tracer distributions
-    \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
-   
+    using dye tracer distributions.
+    \emph{J. Contam. Hydrol.} \bold{79}, to appear.
   }
 }
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
@@ -295,14 +299,12 @@ flowpattern(type=c('identical', 'unif', 'independent',
 ############################################################
 %fertig
 %    library(SoPhy)
-library(RandomFields)
-RFparameters(TBM3D3.lines=100, TBM3D3.linesimustep=0.3,
-             TBM3D3.linesimufactor=0,
-             TBM3D2.lines=100, TBM3D2.linesimustep=0.3,
-             TBM3D2.linesimufactor=0, Print=1)
+%library(RandomFields)
+%    source("~/R/SOPHY/SoPhy/R/3dplot.R")
+RFparameters(TBM3.lines=100, TBM3.linesimustep=0.3,
+             TBM3.linesimufactor=0, Print=1)
 fp3 <- flowpattern(type="all", lambda=0.1, length.profile=50,
-                  depth=80, width=50, Print=2, simu.me="TBM3",
-                  method=NULL)
+                  depth=80, width=50, Print=20)
 fp2 <- plotFlow3d(fp3, inf=c(1300, -500, 1/2000),
                   sun=c(100, -1500, 0))
 plotFlow2d(fp2)

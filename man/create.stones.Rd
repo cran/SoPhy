@@ -108,7 +108,7 @@ create.stones(h, trials = 10)
 }
 \references{
   
-  Schlather, M. and Huwe, B. (2005) Modelling inhomogeneous soils:
+  Schlather, M. and Huwe, B. (2006) Modelling inhomogeneous soils:
   Theory. \emph{In preparation.} %\bold{}, - .
   \cr
 

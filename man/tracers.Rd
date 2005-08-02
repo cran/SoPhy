@@ -75,8 +75,8 @@
 
     \item Schlather, M. and Huwe, B. (2005)
     A risk index for characterising flow pattern in soils
-    using dye tracer distributions
-    \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
+    using dye tracer distributions.
+    \emph{J. Contam. Hydrol.} \bold{79}, to appear.
   }  
 }
 \examples{

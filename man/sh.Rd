@@ -8,10 +8,10 @@
 }
 \usage{
 sh.jch(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
-       simu.path="simu/", final=TRUE, PrintLevel=0, bw=TRUE,
-       readlines=TRUE)
+       simu.path="simu/", standard.method = "fix.m",
+        final=TRUE, PrintLevel=0, bw=TRUE, readlines=TRUE)
 sh.jh(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
-       readlines=TRUE, low.resolution=TRUE)
+       readlines=TRUE, low.resolution=TRUE, bw=TRUE)
 }
 \arguments{
   \item{input}{vector of values for automatic choice of the submenues}
@@ -24,6 +24,9 @@ sh.jh(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   }
   \item{simu.path}{path used for the postscript files based
     on the extended simulation study
+  }
+  \item{standard.method}{standard \code{method} for estimating the
+    \code{\link{risk.index}}
   }
   \item{final}{logical. If \code{TRUE} all the parameters
     are identical to those used in the papers; then at least 1GB of
@@ -48,7 +51,7 @@ sh.jh(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   }
 }
 \details{
-  Additionally to the figures in Schlather and Huwe (2004a,b),
+  Additionally to the figures in Schlather and Huwe (2005a,b),
   sh.jh allows for the simulation of profiles given in
   Crestana and Posadas (1998) and
   Schwartz et al. (1999).
@@ -65,12 +68,12 @@ sh.jh(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
 \references{
   Schlather, M. and Huwe, B. (2005a)
   A stochastic model for 3-dimensional flow patterns in dye tracer
-  experiments. \emph{J. Hydrol.} \bold{In Press}, .
+  experiments. \emph{J. Hydrol.} \bold{310}, 17-27.
     
   Schlather, M. and Huwe, B. (2005b)
   A risk index for characterising flow pattern in soils
-  using dye tracer distributions
-  \emph{Submitted to J. Contam. Hydrol.} % \bold{}, .
+  using dye tracer distributions.
+  \emph{J. Contam. Hydrol.} \bold{79}, to appear.
 
   Crestana, S. and  Posadas, A.N.D. (1998)
   k 2-d and 3-d fingering in unsaturated soils investigated by fractal

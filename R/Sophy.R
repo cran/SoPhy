@@ -51,8 +51,8 @@ xswms2d <-
 
            ## chemical data
            chemical=list(
-             lChem = TRUE,             
-             Epsi=1, ## epsi is transformed in create.water!!!
+             lChem = FALSE,             
+             Epsi=2, ## epsi is transformed in create.water!!!
              lUpW=1, ## lUpW is transformed in create.water!!!
              lArtD=FALSE, PeCr=10, tPulse=500,
              top.bound = 2,
@@ -202,6 +202,7 @@ xswms2d <-
            update = FALSE,
            waterflow = FALSE,
            zlim=NULL,
+           Zlim=NULL,
 
            ## postscript output
            print.par = list(ps="sophy", height=3, titl=TRUE, legend=TRUE)
@@ -666,10 +667,11 @@ xswms2d <-
          list(name="size reduction", var="red", val=paste("  ",1:7)),
          list(name="printed variable", var="print",
               val=paste(" ", print.list),
-              what="none"), ## what is used by `simulate'
+              what="none", update=TRUE), ## what is used by `simulate'
          list(name="show FE mesh", var="mesh", val=TRUE, what="none"),
          list(name="upper quantile for random field plot", var="lim.rf",
-              what="none", delta=FALSE, val=function(d, v) pmin(1, pmax(0, d))),
+              what="none", delta=FALSE, val=function(d, v) pmin(1, pmax(0, d)),
+              update=TRUE),
          list(name="quantile for swms2s plot", var="lim.swms2d",
               what="none", delta=FALSE, val=function(d, v) pmin(1, pmax(0, d))),
          ##
@@ -727,7 +729,8 @@ xswms2d <-
          list(name="pulse duration", var="tPulse",
               delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=1, maxi=100)),
          ##
-         list(name="Chem. Swms2d Boundary Cond.", var=NULL, col=col.subord),
+         list(name="Chem. Swms2d Boundary Cond.", var=NULL, col=col.subord,
+              val="simulate"),
          list(name="top", var="top.bound",
               val=c("impermeable", "Conc. constant (Dirichlet)",
                 "Q constant (Neumann)",
@@ -751,11 +754,12 @@ xswms2d <-
   print.all.list <- 
     c(lapply(as.list(print.list), function(i)
              list(name=i, var=NULL, col=col.rect,
-                  val=paste("pl.water(pr.par$ps, pr.par$height,pr.par$titl, pr.par$legend'",
-                    i, "')", sep=""))),
+                  val=paste("pl.water(pr.par$ps, pr.par$height,pr.par$titl,",
+                    "pr.par$legend, '", i, "')", sep=""))),
       list(list(name="all smws2d results", var=NULL, col=col.rect,
-                val=paste("pl.water(pr.par$ps, pr.par$height, pr.par$titl, pr.par$legend, c('",
-                  paste(print.list, collapse="','"),"'))", sep=""))))
+                val=paste("pl.water(pr.par$ps, pr.par$height, pr.par$titl,",
+                  "pr.par$legend, c('", paste(print.list, collapse="','"),"'))",
+                  sep=""))))
   
   choice <- function(s, txt="", cex=1, col="blue", h.f=1.4, sp="", adj=0) {
     ## function used to draw the menue for selection the atmosphericial period,
@@ -1165,7 +1169,7 @@ xswms2d <-
   planttype.pos <- which(sapply(uptake.entry,function(x)
                                 !is.expression(x$name) && x$name=="plant type"))
   
-  assign("precise", NULL, envir=ENVIR)
+  assign("precise", if (is.null(h$hQThFlC)) NULL else FALSE, envir=ENVIR)
   reset.screen()
   if (update) assign("h", simulate(h, 1, 0), envir=ENVIR)
   if (exists(".dev.orig")) Dev(FALSE)
@@ -1359,7 +1363,7 @@ xswms2d <-
                               link.fct=m.link, covx.default=30,
                               update=update, Col.main="green",
                               # debug=TRUE,
-                              col=col.rf, #, Zlim=zlim
+                              col=col.rf, Zlim=Zlim,
                               cex.eval=cex.eval
                               )
                  model <-
@@ -1560,7 +1564,6 @@ xswms2d <-
                         list(name="ps base name", var="ps")
                         )
                    )
-               str(print.par.entry)
                print.par <-
                  eval.parameters("pr.par", print.par.entry, pr.par =print.par,
                                  pl.water=pl.water, pl.rf = pl.rf,

@@ -553,7 +553,8 @@ C      ldebug = .true.
                call FlxOut(Vx,Vz,x,y,NumNP,t, hQThF, MPL, nnn)
                call QOut  (Q,x,y,NumNP,t, hQThF, MPL, nnn)
             endif
-            IntVec(23) = nnn
+            if (lChem) call cOut(NumNP, Conc, x, y, t, hQThF, MPL, nnn)
+           IntVec(23) = nnn
          end if
       end if
       if (ldebug) write(*,*) "end P-Level"

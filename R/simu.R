@@ -1392,7 +1392,6 @@ plotWater <- function(h, instance,
                       col.exception = c("yellow", "darkred"), lim=1,
                       titl=TRUE, line=0.2, quadratic=TRUE, cex=1, cex.leg=0.8,
                       legend=TRUE, ylim, zlim){
-
   what.list <- eval(formals()$what)
   what <- if (!is.null(swp <- h$water$print) && length(what)==7) swp else what
   what.nr <- if (is.numeric(what)) what else pmatch(what, what.list)
@@ -1422,13 +1421,14 @@ plotWater <- function(h, instance,
     xlim[2] <- xlim[1] + m
     ylim[1] <- ylim[2] - m
   }
+  
   if (missing(zlim) || is.null(zlim)) {
-    zlim <- result[is.finite(result)]  
+    zlim <- result[is.finite(result)]
     zlim <- switch(what, 
                    H=c(min(0, quantile(zlim, probs=1-lim)), 0), 
                    Q=quantile(zlim, probs=c(1-lim, lim)), 
                    theta=range(0, unlist(lapply(h[1:10], 
-                     function(x) x$materials$ths))), 
+                     function(x) x$materials$ths)), max(zlim)), 
                    vx=quantile(zlim, probs=c(1-lim, lim)), 
                    vz=quantile(zlim, probs=c(1-lim, lim)), 
                    Conc=c(0, max(0, quantile(zlim, probs=lim))),

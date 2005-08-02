@@ -34,9 +34,6 @@ read.picture(picture, extensions=c("tif", "tiff",
   dimensions of the graphic, and the third dimension has length 4, for
   red, green, blue and alpha.
 }
-\note{
-  This function works on Linux systems, only.
-}
 \details{
   
   The procedure of finding the graphic is the following.

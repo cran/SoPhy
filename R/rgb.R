@@ -106,6 +106,9 @@ plotRGB <- function(picture, x=1:dp[1], y=if (reverse) dp[2]:1 else 1:dp[2],
     axis(1, cex.axis=cex.axis)
     pry <- pretty(y)
     axis(2, at=pry, labels=-pry, cex.axis=cex.axis)
-   }
+  }
+  par(new=TRUE)
+  plot(Inf, Inf, axes=FALSE, frame.plot=TRUE, xlim=0:1, ylim=0:1,
+       xlab="", ylab="")
   invisible()
 }

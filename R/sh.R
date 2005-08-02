@@ -1,9 +1,9 @@
 ## code used in the papers by Schlather and Huwe
 ################################################
-
+# library(SoPhy); RFparameters(Print=7); source("~/R/SOPHY/SoPhy/R/sh.R"); source("~/R/SOPHY/SoPhy/R/3dplot.R");sh.jch(11, bw=TRUE, readlines=FALSE, dev=TRUE, final=TRUE, Print=0)
 
 sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
-                   simu.path="simu/",
+                   simu.path="simu/", standard.method = "fix.m",
                    final=TRUE, PrintLevel=0, bw=TRUE, readlines=TRUE
                    ) {
   ## additional, last input value = Inf to exit safely after simulation
@@ -18,7 +18,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
     tinylambda <- 0.01
     largelambda <- 0.6
     simu.repet <- 100
-    all.methods <- c("fix.m", "optim.m") ## used in all.estimated
+   # all.methods <- c("fix.m", "optim.m") ## used in all.estimated
+    all.methods <- c("fix.m", "optim.m", "ml") ## used in all.estimated
     all.measures <- c("robust", "lsq")   ## dito
     sens.nlines <- 500
     sens.measure <- "robust"
@@ -42,7 +43,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
     tinylambda <- 0.01
     largelambda <- 0.01
     simu.repet <- 2
-    all.methods <- c("fix.m")   ## used in all.estimated
+    all.methods <- c(standard.method)   ## used in all.estimated
     all.measures <- c("lsq") ## dito
     sens.nlines <- 10
     sens.measure <- "lsq"
@@ -140,7 +141,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
   med.max <- 0.8
   length.for.largelambda <- 500
   depth <- 100
-  method <- "fix.m"
+  method <- standard.method
   measure <- "robust"
   simu.eval.variables <- 1 ## subset of c(1,2); 1:xi, 2:sigma
   #continue <- TRUE   ### continue simulation if stopped -- do not restart
@@ -218,9 +219,11 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
   seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
   close.screen(close.screen())
   Measures <- list(robust=function(x) abs(x), lsq=function(x) x^2)
-  Methods <- c("fix.m", "optim.m") #2: m not optimised, 4:m optimised
-  ParIdx <- function(method, measure) which(method==Methods) +
-    (which(measure==names(Measures)) - 1) * length(Methods)
+  Methods <- c("fix.m", "optim.m", "ml") #2: m not optimised, 4:m optimised
+  ParIdx <- function(method, measure) {
+    which(method==Methods)
+      (which(measure==names(Measures)) - 1) * length(Methods)
+  }
   
   selected.rate <- c(med.max, med.min)
   if (exists(".dev.orig")) Dev(FALSE)
@@ -237,7 +240,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
     tt.cmp <- NULL
     filename <- paste(simu.dir, delta.name, sep="")
     if (file.exists(filename)) load(filename)
-    else cat("Prelimary calculations. This takes some seconds...\n")
+    else cat("Prelimary calculations. This will take some seconds...\n")
     tt <- list()
     for (typ in 1:length(type)) {
       for (nt in names(type[[typ]])) {
@@ -247,11 +250,11 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
       if (tt$type!="independent") next
       if (length(tt.cmp) != length(tt) || !all(unlist(tt.cmp)==unlist(tt),
                   na.rm=TRUE) || sum(is.na(unlist(tt.cmp)==unlist(tt)))!=2) { 
-        fp <-
-          flowpattern(type=tt$type,
-                      x.h.scale=NA, x.v.scale=tt$x.v.scale, x.var=tt$x.var,
-                      length=100, lambda=1, width=100, delta.x=0, delta.y=0,
-                      method=NULL, PrintLevel=0)$intermediate[c("xx", "yy")]
+        fp <- flowpattern(type=tt$type,
+                          x.h.scale=NA, x.v.scale=tt$x.v.scale, x.var=tt$x.var,
+                          length=100, lambda=1, width=100, delta.x=0, delta.y=0,
+                          method=NULL, simu.method=NULL,  drop.simu.method=NULL,
+                          PrintLevel=0)$intermediate[c("xx", "yy")]
         fp$xx <- abs(fp$xx - fp$xx[, 1])
         fp$yy <- abs(fp$yy - fp$yy[, 1])
         delta <- max(quantile(fp$xx, p.sideeffect),
@@ -268,8 +271,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
 
  
   rl <- if (readlines) # || .Platform$OS.type!="unix")
-    function(x) if (x=="") readline("press return")
-    else readline(paste(x, ": press return"))
+    function(x) readline(if (x=="")"press return" else paste(x,": press return"))
   else function(x) { cat(x); sleep.milli(1000); cat("\n")}
 
   sketches <- function(dev, bw) {
@@ -490,10 +492,11 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
     } else {
       start <- TRUE
     }
-    RFparameters(Print=RFPrintLevel, pch="", # TBM3D3.every=50,
-                 TBM3D3.lines=sens.nlines,TBM3D2.lines=sens.nlines, 
-                 TBM3D3.linesimus=sens.linesimustep,
-                 TBM3D2.linesimus=sens.linesimustep,
+    RFparameters(Print=RFPrintLevel, pch="", # TBM3.every=50,
+                 TBM3.lines=sens.nlines,
+                 TBM3.linesimufactor = 0.0,
+                 TBM2.linesimufactor = 0.0,
+                 TBM3.linesimus=sens.linesimustep,
                  TBM2.linesimus=sens.linesimustep)
     split.screen(c(2,2))
     screen(1, new=FALSE)
@@ -970,7 +973,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
         xlab <- expression(m(D)/m(0))
         y.coord  <- m[[ms]]$r.i$par[1, idx]
         fr.name <- "xi.relfreq"
-        col <- rep(if (bw) "grey" else "darkgreen", length(x.coord))
+        col <- rep(if (bw) grey(0.5) else "darkgreen", length(x.coord))
         pch <- rep(if (bw) 20 else 16, length(x.coord))
         Idx <- x.coord<=med.max & x.coord>=med.min
         col[Idx] <- if (bw) "black" else "red"
@@ -1217,8 +1220,10 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
       "Fig. 7",
                )
   while (TRUE) {
-    RFparameters(Print=PrintLevel, pch="", TBM3D3.linesimus=linesimustep,
-                 TBM3D2.linesimus=linesimustep, TBM2.linesimus=linesimustep)
+    RFparameters(Print=PrintLevel, pch="", TBM3.linesimus=linesimustep,
+                  TBM2.linesimus=linesimustep, TBM3.linesimufactor = 0.0,
+                 TBM2.linesimufactor = 0.0,
+)
     if (length(input)==0) input <- menu(items)
     if (input[1] > length(items) || input[1]==0) break
     if (PrintLevel>1) cat(input[1], ":", items[input[1]], "\n")
@@ -1315,8 +1320,13 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
 ######################################################################
   
 sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
-                  readlines=TRUE, low.resolution=TRUE
+                  readlines=TRUE, low.resolution=TRUE, bw=TRUE
                   ) {
+  blue <- if (bw) 1 else "#0000FF"
+  hex <- function(x) {
+    h <- c(0:9, LETTERS[1:6])
+    paste(h[1 + x / 16], h[1 + x %% 16], sep="")
+  }
   default.first <- FALSE
   #  default.first <- TRUE
   ## basic definitions
@@ -1471,7 +1481,7 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   mai <- c(1.2, 1.2, 0.2, 0.3)
   profileheight <- 4
   totalheight <- profileheight + mai[1] + mai[3]
-  colour <- grey(seq(1, 0, len=100))
+  colour <- if (bw) grey(seq(1, 0, len=100)) else rainbow(100)
   reverse <- TRUE ## labelling of the y axis
   quiet <- PrintLevel>1
   
@@ -1484,8 +1494,10 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
   RFparameters(Print=1, pch="", PracticalRange=11,
                TBM2.num=TRUE, TBMCE.forc=TRUE,
-               TBM3D3.lines=nlines, TBM3D2.lines=nlines, CE.userfft=TRUE,
-               TBM3D3.linesimus=linesimustep, TBM3D2.linesimus=linesimustep,
+               TBM3.lines=nlines, CE.useprimes=TRUE,
+               TBM3.linesimufactor = 0.0,
+               TBM2.linesimufactor = 0.0,
+               TBM3.linesimus=linesimustep, 
                TBM2.linesimus=linesimustep)
   for (name in c(pspath)) {
     if (PrintLevel>2) cat("path", name, "\n")
@@ -1510,7 +1522,7 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
     par(mar=c(4, 4.5, 0.2, 0.2))
     plot(p, x, type="l", axes=FALSE, frame=TRUE, cex=2,
          ylab="depth", xlab="x [units]",
-         cex.lab=2, lwd=3)
+         cex.lab=2, lwd=3, col=if (bw) 1 else "brown")
     axis(1, cex.axis=2)
     axis(2, at=seq(0, 100, 20), labels=seq(100, 0, -20), cex.axis=2)
     Dev(FALSE)
@@ -1521,7 +1533,8 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
     ip <- cumsum(sqrt(diff(x)^2 + diff(p)^2))
     plot(c(0, x[-1]), c(0,ip), type="l", axes=TRUE, frame=TRUE, cex=2,
          xlab="depth", ylab="integrated path length",
-         cex.lab=2, cex.axis=2, lwd=3, xaxs="i", yaxs="i")
+         cex.lab=2, cex.axis=2, lwd=3, xaxs="i", yaxs="i",
+         col=if (bw) 1 else "brown")
     D <- 450
     i <- sum(ip <= D) + 1
     xD <- x[i] + (D-ip[i-1])/(ip[i] - ip[i-1]) * (x[i+1] - x[i])
@@ -1538,11 +1551,19 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   while (TRUE) {
     if (length(input)==0) {
       input <-
-        menu(c("Fig. 4/5", "Fig. 2b/c/f/g/h", "Fig. 10", "nu (xy)", "Fig. 11",
-               "Fig. 6", "Fig. 8", "Fig. 9", "Fig. 7 u 2a", "Fig. 2d/e",
-               "Crestana & Posadas (1998, Fig. 8)",
-               "Schwartz et al. (1999, Fig. 4)",
-               "Fig. 3 (sketches)",
+        menu(c("Fig. 4/5",
+               "Fig. 2b/c/f/g/h, 1b", #
+               "Fig. 10",
+               "nu (xy)",
+               "Fig. 11",
+               "Fig. 6",
+               "Fig. 8",
+               "Fig. 9",
+               "Fig. 7 u 3a", #
+               "Fig. 2d/e", #
+               "Crestana & Posadas (1998, Fig. 8)", #
+               "Schwartz et al. (1999, Fig. 4)", # 
+               "Fig. 3 (sketches)",#
                )
              )
     }
@@ -1561,6 +1582,8 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
     nxt <- 0
     firstplot <- TRUE
     for (typ in slct[input[1]]:length(type)) {
+      ## length(type) is above is dummy nxt=1 breaks, see below and
+      ## the definition of type above
       if (PrintLevel>1) cat("typ",typ, "\n")
       for (nt in names(type[[typ]])) {
         txt <- paste("tt$", nt, "<-", "type[[typ]]$", nt)
@@ -1654,7 +1677,10 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
                         ps.background=FALSE,
                         inf=inf, sun=sun, rl=rl,
                         unit=tt$unit, unit.scale=tt$unit.scale,
-                        low.resolution = low.resolution
+                        low.resolution = low.resolution,
+                        col = if (bw) grey(pmin(1, pmax(0, seq(0.95,0,-0.001))))
+                        else paste("#0000", hex(seq(0, 255,
+                          length=100)),sep="")
                         )
         if (is.null(tt$Profile) || tt$Profiles<1) {
           if (PrintLevel>1) cat("profiles jumped \n")
@@ -1663,13 +1689,14 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
         plotFlow2d(x, ps=paste(pspath, base.name, ".profile.", sep=""),
                    dev=dev, Profiles=tt$Profiles,
                    pointradius=tt$radius, unit=tt$unit, 
-                   full.size=fullsize, rl=rl)
+                   full.size=fullsize, rl=rl, col=blue)
         if (is.numeric(dev)) rl(paste(base.name, "profile"))
         
         if (tt$raw) {
           plotFlow2d(x, ps=paste(pspath, base.name, ".profile.raw.", sep=""),
                      dev=dev, Profiles=tt$Profiles, pointradius=tt$radius,
-                     full.size=FALSE, slice=0.1, rl=rl)
+                     full.size=FALSE, slice=0.1, rl=rl,
+                     col=blue)
           if (is.numeric(dev)) rl(paste(base.name, "profile.raw"))
         }
         lab <- pretty(c(0, inp$depth))
@@ -1725,7 +1752,7 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
                       rep(inp$length.profile * 1.1, 2),
                       rep(-5, 2)),
                     y=c(-z[,i], -z[nrow(z), i], 5, 5, -z[1,i]),
-                    col="black")
+                    col=blue)
             Dev(FALSE)
             if (is.numeric(dev)) rl(paste(base.name, "raw", ii))
           } ## ii

@@ -86,16 +86,15 @@ risk.index <-
 		##           should be the exeption ! -- otherwise the 
                 ##           algorithm will not work well
                 measure=function(x) x^2, ## distance function for least "squares"
-                method=c('fix.m', 'optim.m'),
-                min.neg.xi = -10,
-                max.neg.xi = -0.1,
-                max.pos.xi = 10,
+                method=c('fix.m', 'optim.m', 'ml'),
+                min.neg.xi = -10, # used for fix.m and optim.m
+                max.neg.xi = -0.1,# used for fix.m and optim.m
+                max.pos.xi = 10,  # used for fix.m and optim.m
                 endpoint.tolerance = 0, # if pos then tol w.r.t. to freq
                 ##                       if neg then tol w.r.t. to scale
 		front.factor=2, ## 1.2 is too small; results for 2 and
                 ##                 20 are not distinguishable
                 ##                 (preliminary examination) 
-                min.no.paths=max(data[, 2]), ## minima # of paths
                 max.no.paths=10 * max(data[, 2]),
                 PrintLevel=RFparameters()$Print
                 )
@@ -250,6 +249,7 @@ risk.index <-
       targetLS <- function(eta) {
         ## 1E-50 avoid error messages in case of positive eta and non-working
         ## optim (parameters out of bounds)
+
         ## theo <-min.no.paths *(pmax(0, 1 + eta[1] * dist / eta[2]))^(-1/eta[1])
         ## max.freq <- max(freq[w==max(w, na.rm=TRUE)], freq[1])
         max.freq <- max(freq)
@@ -328,8 +328,49 @@ risk.index <-
       n.param <- 2  ## number of parameters returned (for xi=0, less parameters
       ##               are optimized. 
       
-    } 
-  
+    } else if (method=="ml") {
+      target <- function(x) {
+        zero <- 1e-30
+        xi <- x[1]
+        s <- x[2]
+        n <- x[3]
+        - sum(lgamma(n + 1) - lgamma(n - freq + 1)
+              - freq / xi * log(pmax(zero, 1 + xi * ml.dist / s))
+              + (n - freq) * log(1 - pmax(zero, 1 + xi * ml.dist / s)^(-1 / xi)))
+      }
+      target0 <- function(x) {
+        zero <- 1e-30
+        s <- x[1]
+        n <- x[2]
+        - sum(lgamma(n + 1) - lgamma(n - freq + 1) - freq * ml.dist / s +
+              (n - freq) * log(1 - exp(-ml.dist / s)))
+      }
+      
+      target <- list(target0, # exp
+                     target, # pos
+                     target) # neg
+    
+      front <- data[max(which(data[,2]>0)), 1]
+      nk <- c(1, 1, 1)
+      ini <- function(k)
+         c(switch(k[1], NULL, 1, -1),
+           switch(k[1], max.dist/5, max.dist/5, max(ml.dist[which(freq>0)])),
+           max(freq) + 1
+           )
+      
+      ## bounds, depending on xi=0, pos, neg
+      lower <- 0.0001
+      low <- function(k) c(switch(k, NULL, lower, -Inf), lower, max(freq)+0.001)
+      up <- function(k) c(switch(k, NULL, Inf, -lower), Inf, Inf)
+    
+      ## after optimisation, transform the optimised parameters to
+      ## readable, standardised parameters
+      param <- function(k, par) return(if (k==1) c(0, par) else par)
+      
+      n.param <- 3  ## number of parameters returned (for xi=0, less parameters
+      ##               are optimized. 
+    } else stop(paste("unknown method:", method))
+    
     total.par <- matrix(nrow=n.param, ncol=length(sel.dist)) ## total.par
     ## stored the optimal parameter for each distance, above which data
     ## are used for fitting
@@ -346,6 +387,7 @@ risk.index <-
       idx <-  sel.dist[i] : nrow(data)
       idx <- idx[is.finite(data[idx, 2])]
       dist <- data[idx, 1] - min(data[idx, 1])
+      ml.dist <- dist + 1
       freq <- data[idx, 2]
       if (sum(freq>0) <= 1) {
         for (signum in 1:3) { # 0, +, -
@@ -379,8 +421,8 @@ risk.index <-
                       try(optim(PARAM, fn=target[[signum]], lower=low(signum), 
                                 upper=up(signum), meth="L-BFGS-B",
                                 control=list(fnscale=c(if (signum!=1) 1,
-                                               max.dist/3, if (method=="optim.m")
-                                               min.no.paths))
+                                               max.dist/3, if (method!="fix.m")
+                                               max(data[, 2])))
                                 ))))
             {
               ## it may happen that the optim algorithm fails without any real
@@ -418,9 +460,9 @@ risk.index <-
         idx.i <- sum(idx > nkcum)
         total.par[, i] <- param(idx.i, lsq[[idx]]$par)
         if (PrintLevel>2) {
-
-          for (jj in 2:11) cat(param(2, lsq[[jj]]$par)[1], "")
-          cat("\n")
+          
+          #for (jj in 2:11) cat(param(2, lsq[[jj]]$par)[1], "")
+          #cat("\n")
           
           eta <-  total.par[, i]
           print(log(value))
@@ -435,10 +477,10 @@ risk.index <-
                         *(pmax(0, 1 + eta[1] * dist /
                                eta[2]))^(-1/eta[1]))
                   )
-            lines(dist, switch(method, fix.m=max(freq), optim.m=eta[3])
+            lines(dist, switch(method, fix.m=max(freq), optim.m=eta[3], ml=dist)
                   *(pmax(0, 1 + eta[1] * dist /
                          eta[2]))^(-1/eta[1]), col="red")
-            lines(dist, switch(method, fix.m=freq[1], optim.m=eta[3]) * 
+            lines(dist, switch(method, fix.m=freq[1], optim.m=eta[3], ml=dist) * 
                   ppareto(dist, xi=eta[1], s=eta[2], l=FALSE),
                   lty=2, col="blue")
             if (PrintLevel>5) readline()
@@ -485,7 +527,7 @@ risk.index <-
 analyse.profile <-
   function(picture, fct, param, lower, upper, loc,          
            estimate.all=NULL, selected.dist=0.95, selected.rate=c(0.5, 0.8),
-           measure=function(x) x^2, method=c("fix.m","optim.m"),
+           measure=function(x) x^2, method=c("fix.m","optim.m", "ml"),
 	   endpoint.tolerance=-10,
            ppi.par = 5, ## point per interval
            ##                                    names important, not sequence
@@ -884,25 +926,32 @@ analyse.profile <-
   if (debug) cat("interactive end\n")
   picture$r.i <- picture$risk.index <-
     picture$raw.risk.index <- NULL
+
+  if (is.null(picture$loc))
+    picture$loc <- rep(list(list(x=c(1, dp[1]), y=c(1,dp[2]))), 3)
+  else stopifnot(is.list(picture$loc), length(picture$loc)==3,
+                 is.list(picture$loc[[1]]))
+
+  ## count the number of blue pixels
+  old.picture <-
+    old.picture[picture$loc[[1]]$x[1]:picture$loc[[1]]$x[2],
+                picture$loc[[1]]$y[1]:picture$loc[[1]]$y[2]]
+    
+  absfreq <- apply(old.picture, 2, sum, na.rm=TRUE)
+  weights <- apply(!is.na(old.picture), 2, sum)
+  uw <- unique(weights)
+  if (length(uw)!=1 && (length(uw)!=2 || all(uw!=0)))
+    warning("number of NAs differs among the lines")
   
+  ## correct/estimate number of blue points in case parts 
+  ## are not visible
+  freq <- absfreq # / weights * nrow(old.picture)
+  weights <- sqrt(weights)
+  absfreq[weights==0] <- NA
+  picture$absfreq <- rev(absfreq)
+  
+  ## estimation of riskindex.
   if (!is.null(estimate.all)) {
-    if (is.null(picture$loc))
-      picture$loc <- rep(list(list(x=c(1, dp[1]), y=c(1,dp[2]))), 3)
-    else stopifnot(is.list(picture$loc), length(picture$loc)==3,
-                   is.list(picture$loc[[1]]))
-    old.picture <-
-      old.picture[picture$loc[[1]]$x[1]:picture$loc[[1]]$x[2],
-                  picture$loc[[1]]$y[1]:picture$loc[[1]]$y[2]]
-    
-    freq <- apply(old.picture, 2, sum, na.rm=TRUE)
-    weights <- apply(!is.na(old.picture), 2, sum) 
-    
-    ## correct/estimate number of blue points in case parts 
-    ## are not visible
-    freq <- freq / weights * nrow(old.picture)
-    weights <- sqrt(weights)
-    
-    ## estimation of riskindex.
     picture$r.i <-
       risk.index(cbind(length(freq):1, freq),
                          weights=weights, 
@@ -982,7 +1031,7 @@ analyse.profile <-
             result <- picture$fct(figure, as.list(param))
             freq <- apply(result, 2, sum, na.rm=TRUE)
             weights <- apply(!is.na(result), 2, sum)
-            freq <- freq / weights * nrow(figure)
+            # freq <- freq / weights * nrow(figure)
             weights <- sqrt(weights)
             
             a <- risk.index(cbind(length(freq):1, freq),
