@@ -1350,7 +1350,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     stones are simulated, then the roots.
     If \sQuote{water flow}=\sQuote{yes}
     then the SWMS2D simulation is performed.  See
-    \command{\link{simulate.horizons}}
+    \command{\link{simulateHorizons}}
     and the references therein for further details on the stochastic
     simulation.  See the SWMS2D manuscript for details on SWMS2D.
 
@@ -1553,7 +1553,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     Each element contains the random seed for the
     simulation of the Gaussian random field in the respective horizon.
     \code{random.seed} is \code{NULL} if
-    \command{\link{simulate.horizons}}
+    \command{\link{simulateHorizons}}
     has not been called yet.
   }
   \item{stone.random.seed}{The random seed for the simulation of the
@@ -1601,7 +1601,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
 
       \item distance to the preceding knot
     }
-    \code{plants} is \code{NULL} if \command{\link{simulate.horizons}}
+    \code{plants} is \code{NULL} if \command{\link{simulateHorizons}}
     has not been called yet, or any parameter in \code{root}
     has been changed.
   }
@@ -1609,7 +1609,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     plant type (\eqn{1,\ldots,\code{plant.types}}{1,...,\code{plant.types}})
     of the \code{i}th simulated plant.
     \code{plants.idx} is \code{NULL} if
-    \command{\link{create.roots}} or \command{\link{simulate.horizons}}
+    \command{\link{create.roots}} or \command{\link{simulateHorizons}}
     has not been called yet.}
   
   \item{water.x}{the coordinates of \code{grid.x} after thinning by
@@ -1699,7 +1699,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   \command{\link{modify.horizons}},
   \command{\link{plotRF}},
   \command{\link{plotWater}},
-  \command{\link{simulate.horizons}},
+  \command{\link{simulateHorizons}},
   \code{\link{SoPhy}}, 
   \command{\link{swms2d}}
 }

@@ -1,15 +1,15 @@
-\name{simulate.horizons}
-\alias{simulate.horizons}
+\name{simulateHorizons}
+\alias{simulateHorizons}
 \title{
   Simulation of the stochastic part of the definition of the horizons 
 }
 \description{
-  \command{simulate.horizons} simulates the Gaussian random fields that
+  \command{simulateHorizons} simulates the Gaussian random fields that
   define the Miller-similar medium, the stones and the roots according
   to the definition of the horizons.
 }
 \usage{
-simulate.horizons(h, first = 1, what = 'all',
+simulateHorizons(h, first = 1, what = 'all',
                   PrintLevel = RFparameters()$Print,
                   message = function(s) {print(s)}, stone.trials=50)
 }
@@ -26,7 +26,7 @@ simulate.horizons(h, first = 1, what = 'all',
     Assume the random fields for all horizons of the profile
     have been generated.  Then the random field parameter of the \eqn{n}th
     horizon is changed.  For updating the simulated random fields it
-    suffices now to call \command{simulate.horizons} by \code{first=n}}
+    suffices now to call \command{simulateHorizons} by \code{first=n}}
   \item{what}{\code{what} is a second parameter afer \code{first} that
     is used to determine the starting point of the updating procedure:
     \describe{
@@ -115,7 +115,7 @@ h$H2$model <- list(model=list(list(model='nugget', var=0.5, scale=1)),
 h$H2$stone$lambda <- 0.005  ## intensity of the stones in the 2nd horizon
 h <- calculate.horizons(h)
 for (i in 1:2) { 
-  plotRF(simulate.horizons(h)) ##
+  plotRF(simulateHorizons(h)) ##
   readline("Press return")
 }
 

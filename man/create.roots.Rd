@@ -183,7 +183,7 @@ create.roots(h, trials = 10, PrintLevel=RFparameters()$PrintLevel,
 ## get a standard definition first
 h <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1, new=NULL)
 h$root[[1]]$plants.lambda <- 0.02
-h <- simulate.horizons(h)
+h <- simulateHorizons(h)
 for (i in 1:5) {
   plotRF(create.roots(h), cex.pch=0.5, pch=16, root.col=1) 
   readline("Press return")

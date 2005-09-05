@@ -21,7 +21,7 @@ read.picture            Reading TIF pictures and conversion to RGB
 read.swms2d.table       Standard SWMS2D input files
 risk.index              Risk index for soil leaching
 sh.jh                   Sample code
-simulate.horizons       Simulation of the stochastic part of the
+simulateHorizons        Simulation of the stochastic part of the
                         definition of the horizons
 SoPhy                   Soil physics tools
 swms2d                  SWMS2D function call

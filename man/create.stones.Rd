@@ -133,7 +133,7 @@ create.stones(h, trials = 10)
 % source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")
 ## get a standard definition first
 h <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1, new=NULL)
-h <- simulate.horizons(h)
+h <- simulateHorizons(h)
 h$H1$stone$lambda <- 0.002       ## in average 20 stones 
 h$H1$stone$no.overlap  <- FALSE ## allow for overlapping stones
 for (i in 1:5) {

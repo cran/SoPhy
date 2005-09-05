@@ -16,7 +16,7 @@ if (TRUE) {
 
 h <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1, new=NULL)
 h$H2$model$model[[1]]$model <- "nugget" ## * * * * * * * * * * * *
-h <- simulate.horizons(h)        ## simulate stochastic components
+h <- simulateHorizons(h)        ## simulate stochastic components
 swms2d.out <- swms2d(h, iter.print=1) ## numerical simulation
 
 
@@ -37,7 +37,7 @@ example(read.picture) #ok
 example(read.swms2d.table) # ok
 example(risk.index) #ok
 example(sh.jh) # ok
-example(simulate.horizons) #ok
+example(simulateHorizons) #ok
 example(swms2d)  #  *** not ok!!
 example(tracer) #ok
 example(xswms2d)#ok

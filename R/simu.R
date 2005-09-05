@@ -389,7 +389,7 @@ create.roots <- function(h, trials=10, PrintLevel=RFparameters()$PrintLevel,
 }
 
 
-simulate.horizons <- function(h, first=1, what='all',
+simulateHorizons <- function(h, first=1, what='all',
                               PrintLevel=RFparameters()$Print,
                               message=function(s) {print(s)}, stone.trials=50
                               ) {

@@ -50,7 +50,7 @@ calculate.horizons(h)
   \command{\link{modify.horizons}},
   \command{\link{plotRF}},
   \command{\link{plotWater}},
-  \command{\link{simulate.horizons}},
+  \command{\link{simulateHorizons}},
   \code{\link{SoPhy}},
   \command{\link{swms2d}} 
   \command{\link{xswms2d}} 
@@ -81,7 +81,7 @@ h <- calculate.horizons(h)       ## update the internal parameters
 draw.horizons(h)                 ## plot the profile
 
 ############ simulate water flux for the specified profile ########
-h <- simulate.horizons(h)        ## simulate stochastic components
+h <- simulateHorizons(h)        ## simulate stochastic components
 plotRF(h)                        ##   plot the simulated random field
 swms2d.out <- swms2d(h, iter.print=1) ## numerical simulation
 if (is.character(swms2d.out)) {

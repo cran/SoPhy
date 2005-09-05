@@ -79,6 +79,6 @@
 \author{Martin Schlather, \email{schlath@hsu-hh.de}
   \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
 \examples{
-   ## see \link{simulate.horizons}
+   ## see \link{simulateHorizons}
   }
 \keyword{hplot}

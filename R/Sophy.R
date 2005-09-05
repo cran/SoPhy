@@ -852,11 +852,11 @@ xswms2d <-
 
     ## simulate the random fields first, including stones and roots
     if (length(rf.choice)>0) {
-      h <- simulate.horizons(h, first=first, PrintLevel=PrintLevel,
+      h <- simulateHorizons(h, first=first, PrintLevel=PrintLevel,
                              message=message, what=rf.menu[rf.choice],
                              stone.trials=50)
       if (is.null(h$Root.RF)) {
-        ##message("simulation failed")#message already given by simulate.horizons
+        ##message("simulation failed")#message already given by simulateHorizons
         return(h)
       }
       screen(simu.dev)

@@ -104,7 +104,7 @@ create.waterflow(h, Kat = 2, MaxIt = 20, hTab = c(0.001, 200),
          \command{\link{modify.horizons}},
          \command{\link{plotRF}},
          \command{\link{plotWater}},
-         \command{\link{simulate.horizons}},
+         \command{\link{simulateHorizons}},
          \code{\link{SoPhy}},
          \command{\link{swms2d}},
 	 \command{\link{xswms2d}}
@@ -119,7 +119,7 @@ h <- xswms2d(xlim=c(1, 50), ylim=c(1, 30), step=1, new=NULL)
 h$water$red <- 1
 h$water$top.value <- -50   ## pressure head at surface
 h$water$TPrint <- 10
-h <- simulate.horizons(h)  ## simulation of the stochastic components
+h <- simulateHorizons(h)  ## simulation of the stochastic components
 plotRF(h)
 swms2d.in <- create.waterflow(h) ## rewrite h as a list readable by
 ##        swms2d; the following function can also directly be called 
