@@ -205,15 +205,15 @@ risk.index <-
                      targetLS, # pos
                      targetLSneg) # neg
       
-      front <- data[max(which(data[,2]>0)), 1]
+      front <- data[max(1, which(data[,2] > 0)), 1]
       nk <- c(1, 10, 1)
       ini <- function(k) {
         ## different scales, for initial xi values of 0, 1, -1
         scale <- switch(k[1],
                         max.dist / nk[k[1]] * k[2],
                         max.dist / nk[k[1]] * k[2],
-                        max(dist[which(freq>0)]))
-        c(switch(k[1], scale, c(1, scale), c(-1, scale)), 1.1*max(freq))
+                        max(1, dist[which(freq>0)]))
+        c(switch(k[1], scale, c(1, scale), c(-1, scale)), 1.1*max(0, freq))
       }
       
       ## bounds, depending on xi=0, pos, neg
@@ -221,11 +221,11 @@ risk.index <-
       low <- function(k) {
         c(switch(k, lower, c(0.0001, lower),
                  c(min.neg.xi, 
-                   max(1, if (endpoint.tolerance <= 0)
-                       max(dist[which(freq>0)]) + endpoint.tolerance
-                   else max(dist[which(freq > endpoint.tolerance)]))
+                   if (endpoint.tolerance <= 0) {
+                     max(1, dist[which(freq>0)]) + endpoint.tolerance
+                   } else max(1, dist[which(freq > endpoint.tolerance)])
                    )),
-          max(freq)
+          max(0, freq)
           )
       }   
       upper <- Inf
@@ -252,7 +252,7 @@ risk.index <-
 
         ## theo <-min.no.paths *(pmax(0, 1 + eta[1] * dist / eta[2]))^(-1/eta[1])
         ## max.freq <- max(freq[w==max(w, na.rm=TRUE)], freq[1])
-        max.freq <- max(freq)
+        max.freq <- max(0, freq)
         if (eta[1] > max.pos.xi) {
           theo <- 
             max.freq * (pmax(0, 1 + max.pos.xi * dist / eta[2]))^(-1/max.pos.xi)
@@ -271,7 +271,7 @@ risk.index <-
         ## 1E-50 avoid error messages in case of positive eta and non-working
         ## optim (parameters out of bounds)
         ## theo <- freq[1] * (pmax(0, 1 - dist / eta[2]))^(-1/eta[1])
-        theo <- max(freq)* (pmax(0, 1 - dist / eta[2]))^(-1/eta[1])
+        theo <- max(0, freq) * (pmax(0, 1 - dist / eta[2]))^(-1/eta[1])
         res <- sum(w * measure(theo - freq))
         if (is.finite(res) && res < VALUE) {
           assign("VALUE", res, envir=ENVIR)
@@ -280,12 +280,12 @@ risk.index <-
         res
       }
       
-      target <- list(targetLSexp=function(eta) { sum(w * measure(max(freq) *
+      target <- list(targetLSexp=function(eta) { sum(w * measure(max(0, freq) *
                        exp(- dist / eta[1]) - freq))}, # exp
                      targetLS, # pos
                      targetLSneg) # neg
       
-      front <- data[max(which(data[,2]>0)), 1]
+      front <- data[max(1, which(data[,2]>0)), 1]
       nk <- c(1, 10, 1)
       ini <- function(k) {
         ## different scales, for initial xi values of 0, 1, -1
@@ -297,19 +297,19 @@ risk.index <-
                           max.dist * basis^(k[2] - kneg)
                           ##  max.dist / nk[k[1]] * k[2],
                         },
-                        max(dist[which(freq>0)]))
+                        max(1, dist[which(freq>0)]))
                                         # scale <- diff(range(dist)) / nk * k.m
         switch(k[1], scale, c(1, scale), c(-1, scale))
       }
       
       ## bounds, depending on xi=0, pos, neg
       lower <- 0.0001
-      low <- function(k) {
+      low <- function(k) {       
         switch(k, lower, c(0.0001, lower),
                c(min.neg.xi, 
-                 max(1, if (endpoint.tolerance <= 0)
-                     max(dist[which(freq>0)]) + endpoint.tolerance
-                 else max(dist[which(freq > endpoint.tolerance)]))
+                 if (endpoint.tolerance <= 0) {
+                     max(1, dist[which(freq>0)]) + endpoint.tolerance
+                 } else max(1, dist[which(freq > endpoint.tolerance)])
                  ))
       }
       
@@ -335,32 +335,33 @@ risk.index <-
         s <- x[2]
         n <- x[3]
         - sum(lgamma(n + 1) - lgamma(n - freq + 1)
-              - freq / xi * log(pmax(zero, 1 + xi * ml.dist / s))
-              + (n - freq) * log(1 - pmax(zero, 1 + xi * ml.dist / s)^(-1 / xi)))
+              - freq / xi * log(pmax(zero, 1 + xi * ML.DIST / s))
+              + (n - freq) * log(1 - pmax(zero, 1 + xi * ML.DIST / s)^(-1 / xi)))
       }
       target0 <- function(x) {
         zero <- 1e-30
         s <- x[1]
         n <- x[2]
-        - sum(lgamma(n + 1) - lgamma(n - freq + 1) - freq * ml.dist / s +
-              (n - freq) * log(1 - exp(-ml.dist / s)))
+        - sum(lgamma(n + 1) - lgamma(n - freq + 1) - freq * ML.DIST / s +
+              (n - freq) * log(1 - exp(-ML.DIST / s)))
       }
       
       target <- list(target0, # exp
                      target, # pos
                      target) # neg
     
-      front <- data[max(which(data[,2]>0)), 1]
+      front <- data[max(1, which(data[,2]>0)), 1]
       nk <- c(1, 1, 1)
       ini <- function(k)
          c(switch(k[1], NULL, 1, -1),
-           switch(k[1], max.dist/5, max.dist/5, max(ml.dist[which(freq>0)])),
-           max(freq) + 1
+           switch(k[1], max.dist/5, max.dist/5, max(0, ML.DIST[which(freq>0)])),
+           max(0, freq) + 1
            )
       
       ## bounds, depending on xi=0, pos, neg
       lower <- 0.0001
-      low <- function(k) c(switch(k, NULL, lower, -Inf), lower, max(freq)+0.001)
+      low <- function(k) c(switch(k, NULL, lower, -Inf), lower,
+                           max(0, freq)+0.001)
       up <- function(k) c(switch(k, NULL, Inf, -lower), Inf, Inf)
     
       ## after optimisation, transform the optimised parameters to
@@ -387,7 +388,7 @@ risk.index <-
       idx <-  sel.dist[i] : nrow(data)
       idx <- idx[is.finite(data[idx, 2])]
       dist <- data[idx, 1] - min(data[idx, 1])
-      ml.dist <- dist + 1
+      ML.DIST <- dist + 1
       freq <- data[idx, 2]
       if (sum(freq>0) <= 1) {
         for (signum in 1:3) { # 0, +, -
@@ -415,14 +416,15 @@ risk.index <-
             init <- ini(c(signum, k))
             zaehler <- 0
             # print(init)
-            
+
             while
             (!is.list(lsq[[segm + k]] <-
-                      try(optim(PARAM, fn=target[[signum]], lower=low(signum), 
+                      #try
+                      (optim(PARAM, fn=target[[signum]], lower=low(signum), 
                                 upper=up(signum), meth="L-BFGS-B",
                                 control=list(fnscale=c(if (signum!=1) 1,
                                                max.dist/3, if (method!="fix.m")
-                                               max(data[, 2])))
+                                               max(0, data[, 2])))
                                 ))))
             {
               ## it may happen that the optim algorithm fails without any real
@@ -430,10 +432,14 @@ risk.index <-
               ## best parameters as the initial ones.
               ## retry it only 4 times before giving up. 
               if (PrintLevel>3)
-                cat("repeat: i=", i, " sign=", signum, " k=", k, "\n", sep="")
+                cat("repeat: i=", i,
+                    " threshold d=", sel.dist[i],
+                    " sign=", signum,
+                    " k=", k,
+                    "\n", sep="")
               if ((zaehler <- zaehler + 1) > 4) break;
             }
-
+ 
             if (!is.list(lsq[[segm + k]])) {
               lsq[[segm + k]] <- list()
               if (PrintLevel>3) 
@@ -473,11 +479,11 @@ risk.index <-
             if (!is.logical(close.screen())) screen(max(close.screen()))
             plot(dist, freq)
             if (FALSE)
-            print(cbind(dist, switch(method, fix.m=max(freq), optim.m=eta[3])
+            print(cbind(dist, switch(method, fix.m=max(0, freq), optim.m=eta[3])
                         *(pmax(0, 1 + eta[1] * dist /
                                eta[2]))^(-1/eta[1]))
                   )
-            lines(dist, switch(method, fix.m=max(freq), optim.m=eta[3], ml=dist)
+            lines(dist, switch(method, fix.m=max(0, freq), optim.m=eta[3], ml=dist)
                   *(pmax(0, 1 + eta[1] * dist /
                          eta[2]))^(-1/eta[1]), col="red")
             lines(dist, switch(method, fix.m=freq[1], optim.m=eta[3], ml=dist) * 

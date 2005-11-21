@@ -25,5 +25,6 @@ simulateHorizons        Simulation of the stochastic part of the
                         definition of the horizons
 SoPhy                   Soil physics tools
 swms2d                  SWMS2D function call
+tortuosity              Variability of the tortuosity
 write.picture           RGB to TIF
 xswms2d                 Modelling of water flux and solute transport

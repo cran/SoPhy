@@ -96,7 +96,7 @@ risk.index(data, selected.dist=0.95,
    parameter in the optimisation.}
  \item{PrintLevel}{
     The higher the value of \code{PrintLevel} the more tracing
-    information is given. Up to value 2, no information is given.
+    information is given. Up to value 1, no information is given.
 %     \itemize{
 %     \item \eqn{<}=0 : no messages are printed\cr
 %     \item 1 : failures of \code{optim} are announced
@@ -104,7 +104,7 @@ risk.index(data, selected.dist=0.95,
 %     \item 3 : the percentage of performed work is shown.
 %     \item \eqn{>}=4 : further tracing information
 %   }
-   Note that if \code{PrintLevel>2} a running counter is shown that
+   Note that if \code{PrintLevel>=2} a running counter is shown that
    includes the printing of backspaces
    (\eqn{\mbox{\textasciicircum}}{^}H).
    The backspaces may have undesirable interactions with some few other

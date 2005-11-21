@@ -5,7 +5,7 @@ s <- "/home/schlather/R/RF/RandomFields/tests/source.R"
 if (EXTENDED.TESTING <- file.exists(s)) source(s)
 # EXTENDED.TESTING <- FALSE
 
-.path <- "/home/schlather/R/SOPHY/SoPhy/R/"
+.path <- "~/R/SOPHY/SoPhy/R/"
 if (file.exists(paste(.path, "swms2d.R", sep=""))) {
   Source <- function(x) {
     cat(x, "...\n")
@@ -20,4 +20,5 @@ if (file.exists(paste(.path, "swms2d.R", sep=""))) {
   Source("sh.R")
   Source("simu.R")
   Source("swms2d.R")
+  Source("tortuosity.R")
 }
