@@ -96,7 +96,8 @@ risk.index <-
                 ##                 20 are not distinguishable
                 ##                 (preliminary examination) 
                 max.no.paths=10 * max(data[, 2]),
-                PrintLevel=RFparameters()$Print
+                PrintLevel=RFparameters()$Print,
+                max.rate = TRUE
                 )
 {
 
@@ -149,8 +150,12 @@ risk.index <-
               all(selected.rate >= 0))
     for (i in 1:ncol(selected.rate)) {
       sel.rate <- range(selected.rate[, i]) * mxfreq
-      idx <- !is.na(data[, 2]) & ((data[, 2] >= sel.rate[1]) &
-                                  (data[, 2] <= sel.rate[2]))
+      dummy <- data[, 2]
+      if (max.rate) {
+        dummy[is.na(dummy)] <- -1
+        dummy <- rev(cummax(rev(dummy)))
+      }
+      idx <- !is.na(data[, 2]) & (dummy >= sel.rate[1]) & (dummy <= sel.rate[2])
       if (any(idx)) break;
     }
     if (!any(idx))
@@ -241,10 +246,7 @@ risk.index <-
         if (k==1) par <- c(0, par) else  ## par[2] <- par[2] * par[1]
         if (k==3) par[2] <- - par[2] * par[1]
         return(par)
-      }
-      n.param <- 3  ## number of parameters returned (for xi=0, less parameters)
-      ##               are optimized. 
-      
+      }     
     } else if (method=="fix.m") {
       targetLS <- function(eta) {
         ## 1E-50 avoid error messages in case of positive eta and non-working
@@ -263,6 +265,7 @@ risk.index <-
           if (is.finite(res) && res < VALUE) {
             assign("VALUE", res, envir=ENVIR)
             assign("PARAM", eta, envir=ENVIR)
+            assign("MAX.FREQ", max.freq, envir=ENVIR)
           }
         }
         res
@@ -325,8 +328,6 @@ risk.index <-
         if (k==3) par[2] <- - par[2] * par[1]
         return(par)
       }
-      n.param <- 2  ## number of parameters returned (for xi=0, less parameters
-      ##               are optimized. 
       
     } else if (method=="ml") {
       target <- function(x) {
@@ -368,11 +369,9 @@ risk.index <-
       ## readable, standardised parameters
       param <- function(k, par) return(if (k==1) c(0, par) else par)
       
-      n.param <- 3  ## number of parameters returned (for xi=0, less parameters
-      ##               are optimized. 
     } else stop(paste("unknown method:", method))
     
-    total.par <- matrix(nrow=n.param, ncol=length(sel.dist)) ## total.par
+    total.par <- matrix(nrow=3, ncol=length(sel.dist)) ## total.par
     ## stored the optimal parameter for each distance, above which data
     ## are used for fitting
 
@@ -383,6 +382,7 @@ risk.index <-
     mess <- c("exp", "pos", "neg")
     nkcum <- cumsum(c(0, nk))
     ENVIR <- environment()
+    MAX.FREQ <- NULL
     for (i in 1:length(sel.dist)) {
       ## select the data, whose distance to the soil surface is >= i
       idx <-  sel.dist[i] : nrow(data)
@@ -416,7 +416,12 @@ risk.index <-
             init <- ini(c(signum, k))
             zaehler <- 0
             # print(init)
-
+#            print(PARAM)
+#            print(signum)
+#            print(target[[signum]])
+#            print(low(signum))
+#            print(up(signum))
+            
             while
             (!is.list(lsq[[segm + k]] <-
                       #try
@@ -440,6 +445,7 @@ risk.index <-
               if ((zaehler <- zaehler + 1) > 4) break;
             }
  
+            lsq[[segm + k]]$fixed.m <- MAX.FREQ
             if (!is.list(lsq[[segm + k]])) {
               lsq[[segm + k]] <- list()
               if (PrintLevel>3) 
@@ -451,11 +457,11 @@ risk.index <-
               if (PrintLevel>3) cat("  undetected optimum\n")
               lsq[[segm + k]]$value <- VALUE
               lsq[[segm + k]]$par <- PARAM
-            }
-          }  # for k      
+             }
+          }  # for k
         } # for signum
       } # else any freq>0
-    
+
       value <- sapply(lsq, function(x) if (is.null(x$value)) NA else x$value)
 
       ## extract best parameter out of the three cases -,0,+
@@ -464,13 +470,14 @@ risk.index <-
       } else {
         idx <- which(value==(values[i] <- min(value, na.rm=TRUE)))[1]
         idx.i <- sum(idx > nkcum)
-        total.par[, i] <- param(idx.i, lsq[[idx]]$par)
+         total.par[, i] <-
+          c(param(idx.i, lsq[[idx]]$par), lsq[[segm + k]]$fixed.m)        
         if (PrintLevel>2) {
           
           #for (jj in 2:11) cat(param(2, lsq[[jj]]$par)[1], "")
           #cat("\n")
           
-          eta <-  total.par[, i]
+          eta <- total.par[, i]
           print(log(value))
           print(log(value/values[i]))
           print(c(idx, NA, nkcum, NA, idx.i))
@@ -483,7 +490,8 @@ risk.index <-
                         *(pmax(0, 1 + eta[1] * dist /
                                eta[2]))^(-1/eta[1]))
                   )
-            lines(dist, switch(method, fix.m=max(0, freq), optim.m=eta[3], ml=dist)
+            lines(dist, switch(method, fix.m=max(0, freq), optim.m=eta[3],
+                               ml=dist)
                   *(pmax(0, 1 + eta[1] * dist /
                          eta[2]))^(-1/eta[1]), col="red")
             lines(dist, switch(method, fix.m=freq[1], optim.m=eta[3], ml=dist) * 
@@ -507,6 +515,8 @@ risk.index <-
       risk.index <-
         if (any(idx)) median(total.par[1,idx] , na.rm=TRUE) else NA  
     }
+    total.par <- rbind(total.par, sel.dist)
+    dimnames(total.par) <- list(c("xi", "s", "m", "dist (pixels)"), NULL)
     
   } # not is.null(sel.dist)
   
@@ -514,19 +524,19 @@ risk.index <-
          #lsq, ## lsq is several times overwritten -- only last run for largest
          ##   distance is returned; lsq is only for debugging and developing
          ##   checks
-         data=data, weights=weights, 
-         selected.dist=selected.dist,
-         selected.rate=selected.rate,
-         sel.rate=sel.rate,
-         sel.dist=sel.dist, ## the distances used (Klartext und als
+              data=data, weights=weights, 
+              selected.dist=selected.dist,
+              selected.rate=selected.rate,
+              sel.rate=sel.rate,
+              sel.dist=sel.dist, ## the distances used (Klartext und als
               ##              Startindex fuer frequency Vektor)
-         max.freq = mxfreq,
-         values=values,
-         method = method,
-         measure = measure,
-         raw.risk.index = raw.risk.index,
-         risk.index = risk.index
-         ))
+              max.freq = mxfreq,
+              values=values,
+              method = method,
+              measure = measure,
+              raw.risk.index = raw.risk.index,              
+              risk.index = risk.index
+              ))
 }
 
 

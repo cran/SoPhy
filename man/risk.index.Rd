@@ -13,7 +13,7 @@ risk.index(data, selected.dist=0.95,
            endpoint.tolerance = 0, front.factor = 2,
            # min.no.paths=max(data[, 2]),
            max.no.paths=10 * max(data[, 2]),
-           PrintLevel=RFparameters()$Print)
+           PrintLevel=RFparameters()$Print, max.rate=TRUE)
 }
 
 \arguments{
@@ -55,7 +55,9 @@ risk.index(data, selected.dist=0.95,
     number of stained pixels for the currently considered distances or
     depths (\code{'fix.m'}) or fitted within the optimisation algorithm
     (\code{'optim.m'}). Usually, it is not worth using the slower
-    \code{'optim.m'} option.}
+    \code{'optim.m'} option.
+    See also the Details.
+  }
   \item{max.neg.xi}{optimisation parameter : largest negative
     value that is allowed as
     shape parameter of the Pareto distribution, i.e. a negative
@@ -111,7 +113,16 @@ risk.index(data, selected.dist=0.95,
    R functions, e.g. \command{\link[utils]{Sweave}}.
    See package \link[RandomFields]{RandomFields} for the default option
    \command{\link[RandomFields]{RFparameters}}\code{()$Print}.
-  }  
+ }
+ \item{max.rate}{logical. If \code{TRUE} then 
+   the lines for which \eqn{m(D) / m(0)} is in \code{selected.rate}
+   are used to calculate the final risk index.
+   Here \eqn{m(D)} gives the maximum of \eqn{p(d)}, \eqn{d=D, D+1,
+     \ldots}{d=D, D+1, ...} where  \eqn{p(d)} the number of stained
+   pixels in depth \eqn{d}.
+   If \code{FALSE} then the criterion \eqn{m(D) / m(0)} is replaced
+   by \eqn{p(D) / p(0)}.
+   }
 }
 \details{
   Denote by \eqn{f(d)} the number of blue pixels registered at depth
@@ -123,11 +134,19 @@ risk.index(data, selected.dist=0.95,
   and several fixed starting distances \eqn{d_i}. 
   The distances \eqn{d_i} are given by \code{selected.rate}.
   (The approach is similar to that for analyzing extremal events.)
+
+  The selection criterion \eqn{m(D) / m(0)} is \bold{always} based
+  on \code{ method='fix.m'}, whatever \code{method}
+  is chosen to estimate \eqn{\xi}{xi}.
 }
 \value{
   list of the following components
   \item{par}{matrix of estimated parameters; first row: risk index;
-    second row: scale parameter; third row: estimated number of paths}
+    second row: scale parameter; third row: estimated maximum number of
+    paths \eqn{m(D)} except \eqn{m(0)} that is given by \code{max.freq}
+    and is always set to the maximum number of pixels.
+    forth row: \eqn{D} (\code{sel.dist}).
+  }
   \item{data}{the input data except for some reordering}
   \item{weights}{the input weights expcept for some reordering}
   \item{selected.dist}{the selected distances in form of indices
@@ -172,13 +191,13 @@ risk.index(data, selected.dist=0.95,
 }
 
 \examples{
-% library(SoPhy)
+%  library(SoPhy, lib="~/TMP"); source("~/R/SOPHY/SoPhy/R/extremal.coeff.R")
 sample.depth <- 1 : 100
 d <- rexp(1000, 1/25)
 freq <- numeric(length(sample.depth))
 for (i in 1:length(sample.depth)) freq[i] <- sum(d>=sample.depth[i])
 cr <- risk.index(cbind(sample.depth, freq),
-                 selected.rate=c(0.95, 0.9),
+                 selected.rate=c(0.95, 0.9), 
                  endpoint.tolerance=20,  method="fix.m")
 cr$risk.index ## the true value is 0
 }

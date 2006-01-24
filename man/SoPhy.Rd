@@ -34,11 +34,17 @@
     }
     \item \bold{Estimation of the risk index}
     \itemize{
-      \item \command{\link{analyse.profile}} : analysis of brilliant blue
-      experiments w.r.t. the contamination risk index
+      \item \command{\link{analyse.profile}} : analysis of Brilliant Blue
+      tracer experiments w.r.t. the contamination risk index
       \item \command{\link{BrilliantBlue}} : examples of profile pictures
       \item \command{\link{Pareto}} : the Pareto distribution
       \item \command{\link{risk.index}} : esimation of the risk index 
+    }
+    \item \bold{Estimation of the variability of the tortuosity}
+    \itemize{
+      \item \command{\link{tortuosity}} : estimation of tortuosity
+      from  Brilliant Blue tracer
+      experiments
     }
     \item \bold{Graphics}
     \itemize{

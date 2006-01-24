@@ -6,7 +6,7 @@
  library for modeling water flux and solute transport:
     fast cumsum for matrices
     
- Copyright (C)  2003 -- 2005  Martin Schlather, 
+ Copyright (C)  2003 -- 2006  Martin Schlather, 
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
