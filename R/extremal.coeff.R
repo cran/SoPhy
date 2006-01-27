@@ -101,6 +101,8 @@ risk.index <-
                 )
 {
 
+
+  
 #  str(list(data=data,selected.dist=selected.dist, selected.rate=selected.rate,
 #           weights=weights, measure= measure,method=method,
 #           min.neg.xi=min.neg.xi, max.neg.xi=max.neg.xi, max.pos.xi=max.pos.xi,
@@ -227,8 +229,8 @@ risk.index <-
         c(switch(k, lower, c(0.0001, lower),
                  c(min.neg.xi, 
                    if (endpoint.tolerance <= 0) {
-                     max(1, dist[which(freq>0)]) + endpoint.tolerance
-                   } else max(1, dist[which(freq > endpoint.tolerance)])
+                     max(1e-5, dist[which(freq>0)] + endpoint.tolerance)
+                   } else max(1e-5, dist[which(freq > endpoint.tolerance)])
                    )),
           max(0, freq)
           )
@@ -280,6 +282,7 @@ risk.index <-
           assign("VALUE", res, envir=ENVIR)
           assign("PARAM", eta, envir=ENVIR)
         }
+        ##if (!all(is.finite(res))) print(c(eta, theo, res))
         res
       }
       
@@ -311,8 +314,8 @@ risk.index <-
         switch(k, lower, c(0.0001, lower),
                c(min.neg.xi, 
                  if (endpoint.tolerance <= 0) {
-                     max(1, dist[which(freq>0)]) + endpoint.tolerance
-                 } else max(1, dist[which(freq > endpoint.tolerance)])
+                     max(1e-5, dist[which(freq>0)] + endpoint.tolerance)
+                 } else max(1e-5, dist[which(freq > endpoint.tolerance)])
                  ))
       }
       
@@ -362,7 +365,7 @@ risk.index <-
       ## bounds, depending on xi=0, pos, neg
       lower <- 0.0001
       low <- function(k) c(switch(k, NULL, lower, -Inf), lower,
-                           max(0, freq)+0.001)
+                           max(0, freq) + 0.001)
       up <- function(k) c(switch(k, NULL, Inf, -lower), Inf, Inf)
     
       ## after optimisation, transform the optimised parameters to
@@ -415,12 +418,13 @@ risk.index <-
             VALUE <- target[[signum]](PARAM)
             init <- ini(c(signum, k))
             zaehler <- 0
-            # print(init)
-#            print(PARAM)
-#            print(signum)
-#            print(target[[signum]])
-#            print(low(signum))
-#            print(up(signum))
+
+#            print(list(signum, k, dist=dist, freq=freq,
+#                       PARAM, fn=target[[signum]], lower=low(signum), 
+#                       upper=up(signum), meth="L-BFGS-B",
+#                       control=list(fnscale=c(if (signum!=1) 1,
+#                                      max.dist/3, if (method!="fix.m")
+#                                      max(0, data[, 2])))))
             
             while
             (!is.list(lsq[[segm + k]] <-

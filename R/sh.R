@@ -221,7 +221,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
   Measures <- list(robust=function(x) abs(x), lsq=function(x) x^2)
   Methods <- c("fix.m", "optim.m", "ml") #2: m not optimised, 4:m optimised
   ParIdx <- function(method, measure) {
-    which(method==Methods)
+    which(method==Methods) +
       (which(measure==names(Measures)) - 1) * length(Methods)
   }
   
@@ -585,7 +585,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
     screen(1, new=FALSE)
     xi <- numeric(length(model.param))
     start <- TRUE
-    tt <- list()
+    tt <- list()    
     par.idx <- ParIdx(method=method, measure=measure)
     i.start <- 1
     if (file.exists(simu.name)) {
@@ -631,7 +631,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
             simu.storage[[typ]] <- old.simu <- estim$intermediate
           if (start) {
             start <- FALSE
-            parameters <- list()
+            parameters <- list()            
             parameters[[par.idx]] <-
               array(dim=c(dim(estim[[1]]$par), repet,
                       length(type), length(model.param)))
@@ -1222,8 +1222,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
   while (TRUE) {
     RFparameters(Print=PrintLevel, pch="", TBM3.linesimus=linesimustep,
                   TBM2.linesimus=linesimustep, TBM3.linesimufactor = 0.0,
-                 TBM2.linesimufactor = 0.0,
-)
+                 TBM2.linesimufactor = 0.0)
     if (length(input)==0) input <- menu(items)
     if (input[1] > length(items) || input[1]==0) break
     if (PrintLevel>1) cat(input[1], ":", items[input[1]], "\n")
@@ -1236,15 +1235,17 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
                sensitivity.simu(final=final, repet=1, dev=dev, bw=bw)
              }, { #3
                if (length(input)>1 ||
-                   (wiederhol <- readline(paste("number of repetitions (",
-                                                sens.repet, ")"))) == "")
+                   (wiederhol <-
+                    readline(paste("number of repetitions (",
+                                   sens.repet, ") -- Press return"))) == "")
                  wiederhol <- sens.repet
                wiederhol <- as.integer(wiederhol)
                sensitivity.simu(final=final, repet=wiederhol, dev=dev, bw=bw)
              }, {
                if (length(input)>1 ||
-                   (wiederhol <- readline(paste("number of repetitions (",
-                                                sens.boot.repet, ")"))) == "")
+                   (wiederhol <-
+                    readline(paste("number of repetitions (",
+                                   sens.boot.repet, ") -- Press return"))) == "")
                  wiederhol <- sens.boot.repet
                wiederhol <- as.integer(wiederhol)
                sensitivity.simu.eval(bootstrap.repet=wiederhol)
@@ -1253,8 +1254,9 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
                sensitivity.simu.print(dev=dev, bw=bw)
              }, { #6
                if (length(input)>1 ||
-                   (wiederhol <- readline(paste("number of repetitions (",
-                                                simu.repet, ")"))) == "")
+                   (wiederhol <-
+                    readline(paste("number of repetitions (",
+                                   simu.repet, ") -- Press return"))) == "")
                  wiederhol <- simu.repet
                simulation(repet=wiederhol)
 #               simulation(repet=wiederhol, 1:8)

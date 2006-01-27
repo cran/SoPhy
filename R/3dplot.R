@@ -253,10 +253,13 @@ flowpattern <-
     eval(parse(text=paste(names(old.paths), "<- old.paths$", names(old.paths)))) 
   type <- match.arg(type)
   
-  if (any(unlist(RFparameters()[c("TBM2.simulinefactor","TBM2.simulinefactor")])
-          != 0.0) && (is.null(simu.method) || simu.method="TBM3" ||
-                  simu.method=="TBM2")) {
-    stop("simulinefactor must be zero for this function; see RFparameters for this global parameter")
+  lsf <-
+    unlist(RFparameters()[c("TBM2.linesimufactor","TBM3.linesimufactor")]) != 0.0
+  if ((is.null(simu.method) && any(lsf)) || 
+      (simu.method=="TBM2"  && lsf[1]) ||
+      (simu.method=="TBM3"  && lsf[2])
+      ) {
+    stop("linesimufactor must be zero for this function; see RFparameters for this global parameter")
   }
   stopifnot(!type %in% c("dependent", "all") ||
             length.profile == round(length.profile),
@@ -274,13 +277,15 @@ flowpattern <-
     
     InitGaussRF(x=c(-delta.x, length.profile + delta.x),
                 y=c(-delta.y, width.slice + delta.y),
-                z=c(1, depth),
-                grid=FALSE, model=model, reg=reg, method=simu.method)
+                z=c(1, depth), 
+                grid=FALSE, model=model, reg=reg, method=simu.method
+                )
 
 #str(GetRegisterInfo(reg), vec=20)
 #str(RFparameters())
     
     mem <- GetRegisterInfo(reg)$method[[1]]$mem
+    
     if (grid) {
       t(matrix(GaussRF(x=startx,
                        y=starty,
@@ -288,7 +293,7 @@ flowpattern <-
                        grid=grid, model=model, reg=reg, method=simu.method,
                        TBM2.linesimufactor=0.0, TBM2.linesimustep=0.0,
                        TBM3.linesimufactor=0.0, TBM3.linesimustep=0.0,
-                       TBM.points=length(mem$l),
+                       TBM.points=length(mem$simuline),
                        TBM.center=if (!is.null(mem$aniso)) solve(mem$aniso,
                          mem$center) + 0.0 else 0.0
                        ),
@@ -301,7 +306,7 @@ flowpattern <-
                      grid=grid, model=model, method=simu.method, reg=reg,
                      TBM2.linesimufactor=0.0, TBM2.linesimustep=0.0,
                      TBM3.linesimufactor=0.0, TBM3.linesimustep=0.0,
-                     TBM.points=length(mem$l),
+                     TBM.points=length(mem$simuline),
                      TBM.center=if (!is.null(mem$aniso)) solve(mem$aniso,
                        mem$center) + 0.0 else 0.0
                      ),
@@ -400,7 +405,7 @@ flowpattern <-
       seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
       YY <- STARTX <- STARTY <- NULL
     }
-    
+
     sx <- sy <- NULL
     repeat {
       yy <- switch(type,
