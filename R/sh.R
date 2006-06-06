@@ -446,7 +446,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
         eval(parse(text=paste("tt$", nt, "<-", "type[[typ]]$", nt)))
       if (PrintLevel>1) cat("type", typ, "\n")
       frequencies[[typ]] <-
-        frequencies[[typ]][, 1:sum(!apply(is.na(frequencies[[typ]]), 2, any))]
+        frequencies[[typ]][, 1:sum(colSums(is.na(frequencies[[typ]])) ==0)]
+      #####        passt obiges so ??
       maxdist <- nrow(frequencies[[typ]])
       nn <- ncol(frequencies[[typ]])
       dist <- 1:maxdist
@@ -454,7 +455,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
         cat(formatC(repet, width=4),"")
         for (b in 1:length(sens.bundle)) {
           idx <- as.integer(runif(sens.bundle[b], 1, nn + 1))
-          freq <- apply(frequencies[[typ]][, idx, drop=FALSE], 1, sum)
+          freq <- rowSums(frequencies[[typ]][, idx, drop=FALSE])
           ri <- risk.index(cbind(dist, freq),
                            selected.dist=NULL,
                            PrintLevel=PrintLevel,

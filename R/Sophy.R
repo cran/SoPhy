@@ -300,21 +300,25 @@ xswms2d <-
     Kf.param <- eval(formals(Kf)$param)
     beta.param <- eval(formals(beta)$param)
     stopifnot(is.list(Kf.param), is.list(beta.param))
-    h$Kf <- Kf 
-    environment(h$Kf) <- NULL
+    stopifnot(is.function(Kf), is.function(beta), is.function(Hinit),
+              is.function(root.zone) || is.null(root.zone),
+              is.function(root$stop.probab), is.function(root$rf.link)
+              )
+    h$Kf <- Kf
+    environment(h$Kf) <- EmptyEnv()
     h$beta <- beta
-    environment(h$beta) <- NULL
+    environment(h$beta) <- EmptyEnv()
     h$Hinit <- Hinit
-    environment(h$Hinit) <- NULL
+    environment(h$Hinit) <- EmptyEnv()
     h$root.zone <- root.zone
-    environment(h$root.zone) <- NULL
+    if (!is.null(root.zone)) environment(h$root.zone) <- EmptyEnv()
 
     h$root <- list()
     for (j in 1:plant.types) {
       h$root[[j]] <- c(root, Kf.param, beta.param)
       h$root[[j]]$plant.type <- j
       environment(h$root[[j]]$stop.probab) <- 
-        environment(h$root[[j]]$rf.link) <- NULL	     
+        environment(h$root[[j]]$rf.link) <- EmptyEnv()	     
     }
     
     h$atmosphere <- atmosphere
@@ -328,6 +332,7 @@ xswms2d <-
       h$atm.data <- t(matrix(atm.data, nrow=10, ncol=atm.periods,
                              dimnames=list(atm.names, NULL)))
     }
+
     
     h$water <- water
     h$chem <- chemical
@@ -356,9 +361,13 @@ xswms2d <-
     h$millerH <- if (is.null(millerH)) function(x) x else millerH
     h$millerK <- if (is.null(millerK)) function(x) x^(-2) else millerK
     h$millerT <- if (is.null(millerT)) function(x) 1 else millerT
+    stopifnot(is.function(h$miller.link),
+              is.function(h$millerH),
+              is.function(h$millerK),
+              is.function(h$millerT))
     environment(h$miller.link) <- # environment(h$m.link) <-
       environment(h$millerH) <- environment(h$millerK) <- 
-      environment(h$millerT) <- NULL
+      environment(h$millerT) <- EmptyEnv()
     h$col.rf <- col.rf
     h$col.simu <- col.simu
   } else {
@@ -377,7 +386,7 @@ xswms2d <-
       stop("root misspecification -- not a list of lists")
     environment(h$miller.link) <- # environment(h$m.link) <-
       environment(h$millerH) <- environment(h$millerK) <- 
-      environment(h$millerT) <- NULL
+      environment(h$millerT) <- EmptyEnv()
   }
  
    for (i in 1:h$n) {
@@ -393,8 +402,9 @@ xswms2d <-
   .Call("GetHorizons", h, n=as.integer(c(1,h$n)), PACKAGE="SoPhy")
   # h$RF <- matrix(NA, nrow=length(h$grid.x), ncol=length(h$grid.y)) # 31.12.03
   if (is.null(new)) return(h)
+
   
-  ENVIR = environment()
+  ENVIR <- environment()
   materials.entry <-
     list(	  
          ## what="water" is enough if no change in sharpness
@@ -579,6 +589,7 @@ xswms2d <-
                                   min=-Inf))))
     }
   }
+
   uptake.entry <- 
     c(list(
          list(name="plant type", var="plant.type", what="none"),
@@ -760,6 +771,7 @@ xswms2d <-
                 val=paste("pl.water(pr.par$ps, pr.par$height, pr.par$titl,",
                   "pr.par$legend, c('", paste(print.list, collapse="','"),"'))",
                   sep=""))))
+
   
   choice <- function(s, txt="", cex=1, col="blue", h.f=1.4, sp="", adj=0) {
     ## function used to draw the menue for selection the atmosphericial period,
@@ -1009,7 +1021,7 @@ xswms2d <-
         if ((i==1) ||
             ## if a point on the border is choosen the choice
             ## is ignored; horizon 1 does not have border points      
-            all(apply(abs(h[[i]]$border - c(loc.x, loc.y)), 2, sum)!=0)) {
+            all(colSums(abs(h[[i]]$border - c(loc.x, loc.y)))!=0)) {
           redraw.horizons(areas, select=i)      
            message(if (i==1)
                    paste("Start horizon chosen                                 ")
@@ -1173,6 +1185,7 @@ xswms2d <-
   reset.screen()
   if (update) assign("h", simulate(h, 1, 0), envir=ENVIR)
   if (exists(".dev.orig")) Dev(FALSE)
+  
   repeat {
     if (frequent.reset && old.loc %in% c(7:18)) reset.screen()
     n.m[(l.menue-2):(l.menue-1)] <- (h$n!=h$max.horizons)    

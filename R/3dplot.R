@@ -123,7 +123,7 @@ quader <- function(size, inf, sun,
     polygon(q1[1,], q1[2,], lty=lty[2], border=col.frame[2])
     
     ## hintere 4 Kanten
-    dq2 <- apply((q2-inf[1:2])^2, 2, sum)
+    dq2 <- colSums((q2-inf[1:2])^2)
     covered <- which(dq2==max(dq2))
     for (i in 1:4) {
       index <- c(i, i %% 4 + 1)
@@ -142,13 +142,13 @@ quader <- function(size, inf, sun,
   if (add) return(invisible())
   
   assign(".p3d.range.dist",
-         range(sqrt(apply((cbind(qq1, qq2) - sun)^2, 2, sum))), envir=.ENV)
+         range(sqrt(colSums((cbind(qq1, qq2) - sun)^2))), envir=.ENV)
 
   assign(".p3d.colfct", function(d)
          pmin(length(col),
               pmax(1, (d - .p3d.range.dist[1]) / diff(.p3d.range.dist) *
                    length(col))), envir=.ENV)
-  environment(.p3d.colfct) <- NULL
+  environment(.p3d.colfct) <- EmptyEnv()
 
   assign(".p3d.profile", size, envir=.ENV)
   assign(".p3d.inf", inf, envir=.ENV)
@@ -547,7 +547,7 @@ flowpattern <-
   picture <- matrix(FALSE, nrow=depth, ncol=length.profile)
   picture[cbind(i.d, i.x)] <- TRUE
     
-  freq <- apply(picture, 1, sum)
+  freq <- rowSums(picture)
   dist <- 1:nrow(picture)
   
   if (PrintLevel>2) {

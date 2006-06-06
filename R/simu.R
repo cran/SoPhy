@@ -85,8 +85,9 @@ create.stones <- function(h, trials=10){
                                   ellipse.grid.y[1]:ellipse.grid.y[2]))
           e.grid <- t((t(ellipse.grid)-1) * h$step + c(h$grid.x[1], h$grid.y[1])
                       -c(x,y))
-          ellipse <- ellipse.grid[apply(e.grid %*% m * e.grid, 1, sum) <= 1,,
-                                  drop=FALSE] ## drop=FALSE, otherwise,
+          ellipse <- ellipse.grid[rowSums(e.grid %*% m * e.grid) <= 1, ,
+                                  drop=FALSE]
+          ## drop=FALSE, otherwise,
           ## if only 1 points is left, it is turned to a vector and the
           ## the access to h$idx.rf[ellipse] is interpreted an access to
           ## a vector!
@@ -275,13 +276,13 @@ create.roots <- function(h, trials=10, PrintLevel=RFparameters()$PrintLevel,
 
       ## no own root
       if (h$root[[jj]]$no.own.root)
-        p <- p[, apply(outer(root[1:k, x], p[1,], "!=") |
-                       outer(root[1:k, y], p[2,], "!="), 2, all), drop=FALSE]
+        p <- p[, colSums(outer(root[1:k, x], p[1,], "!=") |
+                         outer(root[1:k, y], p[2,], "!=")) == ncol(p),drop=FALSE]
       if (ncol(p)==0)  next     
       
       ## direction change
-      v <- - h$root[[jj]]$dir.ch * apply(abs(2 * root[k,c(x,y)] -
-                                         root[root[k,prv], c(x,y)] - p), 2, sum)
+      v <- - h$root[[jj]]$dir.ch * colSums(abs(2 * root[k,c(x,y)] -
+                                         root[root[k,prv], c(x,y)] - p))
       v <- rnorm(length(v), v, h$root[[jj]]$dir.ch.s * abs(v))
 
       ## depth.bonus
@@ -321,8 +322,8 @@ create.roots <- function(h, trials=10, PrintLevel=RFparameters()$PrintLevel,
       ## calculate the added total lengths
       ## restrict the number of children if the aimed total length
       ## is exceeded
-      delta <- sqrt(apply((p[,1:root[k, chld], drop=FALSE] - root[k,c(x,y)])^2,
-                          2, sum)) * h$step
+      delta <- sqrt(colSums((p[,1:root[k, chld], drop=FALSE] - root[k,c(x,y)])^2)
+                    ) * h$step
       if ((sdelta <- sum(delta)) + total < len) {
         total <- total + sdelta
         n <- root[k, chld]
@@ -925,7 +926,7 @@ create.waterflow <-
   x <- cbind(x, x + 1, x + lx + 1, x + lx)
   ## stones are coded by NA !!
   horizonZ <- matrix(is.na(rf[as.vector(x)]), ncol=4)
-  idx <- apply(horizonZ, 1, sum)
+  idx <- rowSums(horizonZ)
   idx1 <- idx == 1
   
   ## eliminate the na in each row (but we do not know in which column it is)
@@ -939,7 +940,7 @@ create.waterflow <-
   horizonZ <- matrix(horizon[as.vector(x)], ncol=4)
   minhor <- apply(horizonZ, 1, min)
   ## triangular meshes may not be treated further (idx1 reduced by idx<=1, cp x)
-  slct <- (apply(horizonZ==minhor, 1, sum) == 1) && !idx1[idx <= 1]
+  slct <- (rowSums(horizonZ==minhor) == 1) && !idx1[idx <= 1]
   if (any(slct)) {
     horizonZ <- horizonZ[slct,,drop=FALSE]    
     min2hor <- apply(horizonZ, 1, function(x) min(x[x!=min(x)]))
@@ -1311,6 +1312,8 @@ plotRF <- function(h, col.txt='black', col.stones='white',
                    what=c("Root.RF", "Stone.RF", "RF"),
                    transf=c("K", "H", "theta", "none"),
                    legend=TRUE, ylim, zlim) {
+
+  
   root.x <- 1
   root.y <- 2
 
@@ -1335,10 +1338,9 @@ plotRF <- function(h, col.txt='black', col.stones='white',
 
   rf <- switch(what, RF=h$RF, Stone.RF=h$Stone.RF, Root.RF=h$Root.RF)
   if (is.null(rf)) {return(paste("error:", txt, "has not been generated yet"))}
-  if (transf!="none") rf <- h$miller.link(rf)
+  if (transf!="none") rf <- h$miller.link(rf)  
   rf <- switch(transf, K=h$millerK(rf), H=h$millerH(rf), theta= h$millerT(rf),
                none=rf)
-
   if (missing(zlim))
     zlim <- quantile(rf[is.finite(rf)], probs=c(0, lim), na.rm=TRUE)
   plot(Inf, Inf, xlim=xlim, ylim=ylim[2]-ylim, xlab="x", ylab="z",

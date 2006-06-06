@@ -122,10 +122,10 @@
   LINUX: 
   The tiff-library is avalailable from
   \url{http://www.remotesensing.org/libtiff}.
-  SuSe-users install libtiff and libtiff-devel.
+  Users of SuSe install libtiff and libtiff-devel.
   
   WINDOWS: 
-  The binaries are available from
+  The binaries (libtiff3.dll, zlibl.dll, jpeg62.dll) are available from
   \url{gnuwin32.sourceforge.net/packages/tiff.htm}.
   Before starting the R session, add in the 
   system variable \$PATH the path to the
@@ -136,8 +136,6 @@
 
 %  After installation copy the files in GnuWin32/lib and GnuWin32/include
 %  to MinGW
-}
-     
 }
 
 \keyword{spatial}

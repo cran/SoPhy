@@ -572,9 +572,8 @@ analyse.profile <-
   
   
   markemptylines <- function(picture) { 
-    ll <- apply(picture[,,1]==255 & picture[,,2]==255 &
-                picture[,,3]==255, 2, sum)
-      linie <- ll > dim(picture)[2] * 0.7
+    ll <- colSums(picture[,,1]==255 & picture[,,2]==255 & picture[,,3]==255)
+    linie <- ll > dim(picture)[2] * 0.7
     picture[,linie,1] <- NA
     picture[,linie,2] <- NA
     picture[,linie,3] <- NA
@@ -613,7 +612,7 @@ analyse.profile <-
             (gb >= i[,,1] * p$minR / 100) & (80<=gb) & (p$maxGB>=gb)
           }
         }
-      environment(fct) <- NULL
+      environment(fct) <- EmptyEnv()
     }
     
 ### check input of param, lower and upper
@@ -837,10 +836,10 @@ analyse.profile <-
           screen(menue.dev)
           par(mar=c(2, 1.2, 0.2, 0))
           if (!is.null(try(
-            plot(apply(old.picture[loc[[i]]$x[1]:loc[[i]]$x[2],
-                             loc[[i]]$y[1]:loc[[i]]$y[2]],
-                     2, sum, na.rm=TRUE), loc[[i]]$y[1]:loc[[i]]$y[2],
-               pch=16, cex=0.7, xaxs="i", yaxs="i", ylim=c(1,dp[2]))
+            plot(colSums(old.picture[loc[[i]]$x[1]:loc[[i]]$x[2],
+                                     loc[[i]]$y[1]:loc[[i]]$y[2]], na.rm=TRUE),
+                 loc[[i]]$y[1]:loc[[i]]$y[2],
+                 pch=16, cex=0.7, xaxs="i", yaxs="i", ylim=c(1,dp[2]))
                            ))) { ## fehler!!
             print("error !! -- mail the following output to schlather@cu.lu")
             plot(0,0)
@@ -957,8 +956,8 @@ analyse.profile <-
     old.picture[picture$loc[[1]]$x[1]:picture$loc[[1]]$x[2],
                 picture$loc[[1]]$y[1]:picture$loc[[1]]$y[2]]
     
-  absfreq <- apply(old.picture, 2, sum, na.rm=TRUE)
-  weights <- apply(!is.na(old.picture), 2, sum)
+  absfreq <- colSums(old.picture, na.rm=TRUE)
+  weights <- colSums(!is.na(old.picture))
   uw <- unique(weights)
   if (length(uw)!=1 && (length(uw)!=2 || all(uw!=0)))
     warning("number of NAs differs among the lines")
@@ -1049,8 +1048,8 @@ analyse.profile <-
           for (i in 1:total) {
             for (p in 1:np) param[p] <- mm[[p+4]][idx[p]]
             result <- picture$fct(figure, as.list(param))
-            freq <- apply(result, 2, sum, na.rm=TRUE)
-            weights <- apply(!is.na(result), 2, sum)
+            freq <- colSums(result, na.rm=TRUE)
+            weights <- colSums(!is.na(result))
             # freq <- freq / weights * nrow(figure)
             weights <- sqrt(weights)
             
