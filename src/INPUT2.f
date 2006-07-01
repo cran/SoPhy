@@ -2,7 +2,7 @@
 *  Authors:   Simunek, J., T. Vogel and M. Th. van Genuchten.
 *
 *  modified by 
-*  Martin Schlather, schlath@hsu-hh.de (2004 -- 2006)
+*  Martin Schlather, martin.schlather@math.uni-goettingen.de (2004 -- 2006)
 * 
 *  Copyright (C) 2002 Simunek, J., T. Vogel and M. Th. van Genuchten
 *
@@ -379,7 +379,9 @@ C       write(*,*) 'Dimension in NumKD is exceeded'
         return
         stop
       end if
-      if(n-k) 12,15,13
+      if (n.gt.k) goto 13
+      if (n.eq.k) goto 15
+C      if(n-k) 12,15,13
 12    continue
 C     write(*,130) n
       NrErr=10
@@ -445,7 +447,9 @@ C      read(32,*)
 C      read(32,*)
       ii = 0
       do 14 e=1,NumEL
-        IF (Num-e) 11,14,12
+       if (Num.gt.e) goto 12
+       if (Num.eq.e) goto 14
+C       IF (Num-e) 11,14,12
  11     continue
 C     read(32,*) Num,(KX(Num,i),i=1,4),ConAxz(Num),ConAxx(Num),
 C     !             ConAzz(Num),LayNum(Num)

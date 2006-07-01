@@ -91,8 +91,8 @@ simulateHorizons(h, first = 1, what = 'all',
   Schlather, M. (2001) Simulation and analysis of random fields
   \emph{R News} \bf{1} (2), 18-20.
 }
-\author{Martin Schlather, \email{schlath@hsu-hh.de}
-  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
+\author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
+  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
 
 
 \seealso{\code{\link{SoPhy}}, \command{\link{xswms2d}}}

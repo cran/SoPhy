@@ -41,6 +41,6 @@ rpareto(n, xi, s=1)
   Embrechts, P., Klueppelberg, C. and Mikosch, T. (1997)
   \emph{Modelling Extremal Events}. Springer: Berlin.
 }
-\author{Martin Schlather, \email{schlath@hsu-hh.de}
-  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
+\author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
+  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
 \keyword{distribution}

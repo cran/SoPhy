@@ -400,7 +400,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
   } ## function sketches
 
   sensitivity.simu.print <- function(dev, bw) {
-    load(sens.bundle.name)
+    risk <- NULL
+    load(sens.bundle.name) ## risk is loaded here
     tt <- list()
     if (!is.numeric(dev)) write(file=sens.result.name, "")
     for (typ in 1:length(type)) {
@@ -655,6 +656,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
   }
   
   all.estimate <- function() {
+    frequencies <- repet <- NULL
     load(simu.name) ## parameters, frequencies, xi, model.param, 
     ##                 type, model.param, Methods, Measures, ParIdx
     split.screen(c(2,2))
@@ -701,7 +703,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
           } # met
         } # m.p
         sel.dist <- estim$sel.dist
-        save(file=simu.name, parameters, frequencies, xi, model.param, sel.dist,
+        save(file=simu.name, parameters, frequencies, m$xi,
+             model.param, sel.dist,
              type, model.param, Methods, Measures, ParIdx)
       } # typ
     } # i / repet
@@ -709,6 +712,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
   }
   
   eval.simulation <- function(dev) {
+    frequencies <- sel.dist <- parameters <- NULL
     load(simu.name)
     if (is.numeric(dev)) split.screen(c(2,2))
     max.freq <- apply(frequencies[, , , ], c(2, 3, 4), max, na.rm=TRUE)

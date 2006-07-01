@@ -55,8 +55,8 @@ calculate.horizons(h)
   \command{\link{swms2d}} 
   \command{\link{xswms2d}} 
 }
-\author{Martin Schlather, \email{schlath@hsu-hh.de}
-  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
+\author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
+  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
 \examples{
 %  library(SoPhy, lib="~/TMP"); library(RandomFields)
 % source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")

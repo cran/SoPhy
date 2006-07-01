@@ -483,7 +483,7 @@ simulateHorizons <- function(h, first=1, what='all',
       
       ##  "timedim=2" should be improved
       ## 21.6.03 is.nan changed to is.na
-      if (any(is.na(unlist(PrepareModel(model=h[[i]]$model, timespacedim=2)
+      if (any(is.na(unlist(PrepareModel(model=h[[i]]$model)
                            [c("param","mean")])))){
         if (h[[i]]$type!="H") { ## h[1]$type!="Start" !
           message("First horizon cannot be NaN (air)")
@@ -669,7 +669,8 @@ create.waterflow <-
             NSeepD>=length(seepage))
   NSP <- NP <- NSeep <- NA
   if (SeepF <- (NSeep <- length(seepage)) > 0) {
-    NSP <- len(unlist(lapply(seepage, length)), NSeepD) 
+    ## NSP <- len(unlist(lapply(seepage, length)), NSeepD) 
+    NSP <- length(unlist(lapply(seepage, length)))
     NP <- matrix(NA, nrow=NSeepD, ncol=NumSPD)
     for (i in 1:length(seepage)) {
       l <- length(seepage[[i]])
@@ -1276,7 +1277,12 @@ modify.horizons <- function(h, percent=5, level.percent=5, rdistr=rnorm) {
   
   xlim <- range(h$grid.x)
   ylim <- range(h$grid.y)
-  genuine.hor <- sum(unlist(lapply(h, function(x) x$type=="H"))) + 1
+
+  genuine.hor <- sum(unlist(lapply(h, function(x){
+   !is.null(x) && is.list(x) && length(x$type)==1 && x$type=="H"
+  } ))) + 1
+
+   
   for (i in 2:h$n) {
     s.x <- sqrt(var(h[[i]]$points$x)) * percent / 100
     s.y <- sqrt(var(h[[i]]$points$y)) * percent / 100

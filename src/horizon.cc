@@ -100,17 +100,16 @@ void quicksortdouble(double *d, int start, int end) {
 
 
 SEXP XGetHorizons(SEXP h) {
-  SEXP x, names, name;
+  SEXP x, names;
   
   PROTECT(h);
   PROTECT(names = getAttrib(h, R_NamesSymbol));
+  SET_VECTOR_ELT(names, 5, mkChar("abc"));
+
   PROTECT(x = NEW_NUMERIC(1));
-  PROTECT(name = allocString(4));
-  strcpy(CHAR(name), "abc");
-  SET_VECTOR_ELT(names, 5, name);
-  setAttrib(h, R_NamesSymbol, names);
   REAL(x)[0] = 4.5; // or use NUMERIC_POINTER, p.35 bottom
   SET_VECTOR_ELT(h,5,x);
+  setAttrib(h, R_NamesSymbol, names);
   UNPROTECT(4);
   return h; 
 }
@@ -398,7 +397,7 @@ SEXP GetHorizons(SEXP h, SEXP nr) {
 // nr[1]: is 1, if called by 'calculate.horizons' -- to be on the same side
 //              or within xswms2d, except
 //        h$n, if a new horizon or polygon is drawn    
-  SEXP  name, elmt, Pts, hi, hinew, namesnew, must_sexp[MUST_N];  
+  SEXP  elmt, Pts, hi, hinew, namesnew, must_sexp[MUST_N];  
   double *(grid[2]), *(pts[2]), step, *xs, gridMstep, maxgridy;
   char text[100]; 
   int i, j, k, n, dim[2], firstnr, lastnr, npts, given_n, *idx_rf, *idx,
@@ -544,9 +543,7 @@ SEXP GetHorizons(SEXP h, SEXP nr) {
         //                                           not been given 
 	opt_pos[j] = given_n++; // not that the meaning of given_n has changed
 	//                         it is now LENGTH(hi) at start
-	name = allocString(H_OPT);
-	strcpy(CHAR(name), h_opt[j]);
-	SET_STRING_ELT(namesnew, opt_pos[j], name);
+	SET_STRING_ELT(namesnew, opt_pos[j], mkChar(h_opt[j]));
       }
       setAttrib(hinew, R_NamesSymbol, namesnew);
       SET_VECTOR_ELT(h, i, hinew);

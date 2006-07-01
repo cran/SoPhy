@@ -279,8 +279,8 @@ swms2d(d, max.iteration = 1e+05, iter.print = max.iteration, ShortF = TRUE,
     
   }
 }
-\author{Martin Schlather, \email{schlath@hsu-hh.de}
-  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}
+\author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
+  \url{http://www.stochastik.math.uni-goettingen.de/institute}
 
   The Fortran code was published as \sQuote{swms\_2d}
   by Jirka Simunek, T. Vogel and Martinus Th. van Genuchten, 

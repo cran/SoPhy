@@ -35,8 +35,8 @@ my.legend(lb.x=0, lb.y=0, zlim, col, cex=0.8, y.intersp=0.02, bg='white')
 %  image(x, y, z, zlim=zlim, col=col)
 %  my.legend(zlim=zlim, col=col, y.i=0.03)
 % }
-\author{Martin Schlather, \email{schlath@hsu-hh.de}
-  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
+\author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
+  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
 \examples{
  ## see \link{read.swms2d.table}, for example
 }

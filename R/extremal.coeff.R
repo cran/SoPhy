@@ -56,7 +56,7 @@ dpareto <- function(x, xi, s=1) {
 
 qpareto <- function(p, xi, s=1, lower.tail=TRUE) {
   if (lower.tail) p <- 1-p
-  l <- max(length(x), length(xi), length(s))
+  l <- max(length(p), length(xi), length(s))
   p <- rep(p, len=l)
   xi <- rep(xi, len=l)
   s <- rep(s, len=l)
@@ -430,7 +430,7 @@ risk.index <-
             (!is.list(lsq[[segm + k]] <-
                       #try
                       (optim(PARAM, fn=target[[signum]], lower=low(signum), 
-                                upper=up(signum), meth="L-BFGS-B",
+                                upper=up(signum), method="L-BFGS-B",
                                 control=list(fnscale=c(if (signum!=1) 1,
                                                max.dist/3, if (method!="fix.m")
                                                max(0, data[, 2])))
@@ -466,7 +466,8 @@ risk.index <-
         } # for signum
       } # else any freq>0
 
-      value <- sapply(lsq, function(x) if (is.null(x$value)) NA else x$value)
+      value <- sapply(lsq, function(x)
+                      if (!is.list(x) || is.null(x$value)) NA else x$value)
 
       ## extract best parameter out of the three cases -,0,+
       if (all(is.na(value))) {
@@ -688,6 +689,7 @@ analyse.profile <-
 
   if (debug) cat("interactive plot\n")
   if (debug) cat("\n")
+  old.param <- NULL ## for checker only
   if (interactive) {
     if (PrintLevel>7) cat("interactive\n")
     assign("old.param", picture[c("param", "lower", "upper")], envir=ENVIR)

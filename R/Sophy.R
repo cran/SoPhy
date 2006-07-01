@@ -208,6 +208,10 @@ xswms2d <-
            print.par = list(ps="sophy", height=3, titl=TRUE, legend=TRUE)
            )
 {
+  simu.dev <- draw.dev <- showmodel.dev <- menue.dev <- param.dev <-
+    waterflow.dev <- message.dev <- prec.water.dev <- percolation.dev <-
+      few.param.dev <- draw.lim <- NULL
+
   HEX <- c(0:9, LETTERS[1:6])
   l.col <- as.integer(c(seq(255, 230, len=15), 230:101, seq(100, 0, len=5)))
   l.col2 <- as.integer(c(255:100, seq(100, 0, len=50)))
@@ -342,7 +346,7 @@ xswms2d <-
                    stone=stone,
                    materials=materials
                    )
-    model <- PrepareModel(model=model, timespacedim=2)
+    model <- PrepareModel(model=model)
     m.aniso<- model$anisotropy
     model <- convert.to.readable(model, allowed="list")
     if (!is.null(anisotropy)) {
@@ -392,8 +396,7 @@ xswms2d <-
    for (i in 1:h$n) {
      if (!is.null(h[[i]]$model))
        h[[i]]$model <-
-         convert.to.readable(PrepareModel(h[[i]]$model, timespacedim=2),
-                             allowed="list")
+         convert.to.readable(PrepareModel(h[[i]]$model), allowed="list")
   }
   
   m.link <- function(x) h$millerK(h$miller.link(x))## used in Showmodels and
@@ -1380,8 +1383,7 @@ xswms2d <-
                               cex.eval=cex.eval
                               )
                  model <-
-                   convert.to.readable(PrepareModel(model, timespacedim=2),
-                                       allowed="list")
+                   convert.to.readable(PrepareModel(model), allowed="list")
 	         if (is.null(h[[i]]$model) || 
                      !all(as.character(h[[i]]$model)==as.character(model))) {
                    h[[i]]$model <- model   

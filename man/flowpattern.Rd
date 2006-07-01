@@ -289,8 +289,8 @@ flowpattern(type=c('identical', 'unif', 'independent',
     \emph{J. Contam. Hydrol.} \bold{79}, to appear.
   }
 }
-\author{Martin Schlather, \email{schlath@hsu-hh.de}
-  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
+\author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
+  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
 \seealso{\command{\link[RandomFields]{RandomFields}}, \command{\link{plotFlow2d}}, \command{\link{plotFlow3d}}}
 \examples{
 

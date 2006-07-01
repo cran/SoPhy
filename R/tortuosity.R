@@ -38,7 +38,7 @@ tortuosity <- function(depth, freq, range.depth, range.xi, len.xi=100,
    #     print(target(init)) 
         opt <- optim(init, # 1. scale; 2. b
                      target, lower=c(0.1, lower.bound.b),
-                     upper=c(1000, 100), meth="L-BFGS-B",
+                     upper=c(1000, 100), method="L-BFGS-B",
                      control=list(parscale=c(50,2),
                        fnscale=target(init) / 10)
                      )

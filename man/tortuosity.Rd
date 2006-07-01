@@ -60,8 +60,8 @@
     if \eqn{\code{tolerance.m}>0}}
 }
 
-\author{Martin Schlather, \email{schlath@hsu-hh.de}
-  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
+\author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
+  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
 \references{
   Schlather, M. and Huwe, B. (2005)
   A characteristic for the variability of tortuosity.

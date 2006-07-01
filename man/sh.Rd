@@ -85,8 +85,8 @@ Schwartz, R.C., McInnes, K.J., Juo, A.S.R., and Cervantes, C.E. (1999)
 The vertical distribution of a dye tracer in a layered soil.
 \emph{Soil Sci.}, \bold{164}, 561--573.
 }
-\author{Martin Schlather, \email{schlath@hsu-hh.de}
-  \url{http://www.unibw-hamburg.de/WWEB/math/schlath/schlather.html}}
+\author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
+  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
 \examples{
 
 % library(SoPhy, lib="~/TMP"); 

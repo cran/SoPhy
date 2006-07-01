@@ -9,6 +9,8 @@
     ## to do list -- since my surname is rare, the message should 
     ## appear only on computers I have a login
     cat("To-Do List\n==========\n")
+
+    print("package grid\n s4: useful for sophy print functions, etc.")
     print("wurzeln, parameter wie depth zuschlag funktionieren nicht mehr")
     print("convert create.stones into c programme")
     print("convert create.roots into c programme")
@@ -519,11 +521,12 @@ read.swms2d.table <- function(path,
   MNorth <- 4
   
   ENVIR = environment()
+  READLINES <- 0
   
   read <- function(file, skip, nrows=1, com="(", header=TRUE,
                    fct=function(x)x, solve=header, mode="any",
                    ndata=NA) {    
-    assign("READLINES", NULL, envir=ENVIR)
+    assign("READLINES", 0, envir=ENVIR)
     stopifnot(((nrows==1) && !header && !solve) || is.na(ndata))
     x <- read.table(file=file, skip=skip, header=header, nrows=nrows, com=com)
     if (solve)

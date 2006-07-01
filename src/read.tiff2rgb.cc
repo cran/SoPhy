@@ -63,10 +63,12 @@ SEXP readtiff(SEXP filename) {
   int x, Error, *r;
   SEXP raster;
   SEXP dim;
+  char fname[1000];
 
   assert(sizeof(x)==4);
 
-  if ((Error = getTIFFinfo(STRING_VALUE(filename), &Length, &Width)) != 0)
+  strncpy(fname, CHAR(STRING_ELT(filename, 0)), 1000);
+  if ((Error = getTIFFinfo(fname, &Length, &Width)) != 0)
     goto ErrorHandling2;
 
   PROTECT(dim=allocVector(INTSXP, 3));
@@ -75,7 +77,9 @@ SEXP readtiff(SEXP filename) {
   INTEGER_POINTER(dim)[2] = 4;
   PROTECT(raster=allocArray(INTSXP, dim));
   r = (int*) INTEGER_POINTER(raster);
-  if ((Error = getTIFFimage(STRING_VALUE(filename), Length, Width, r)) != 0)
+
+  strncpy(fname, CHAR(STRING_ELT(filename, 0)), 1000);
+  if ((Error = getTIFFimage(fname, Length, Width, r)) != 0)
     goto ErrorHandling;
   UNPROTECT(2);
   return raster;
