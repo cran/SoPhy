@@ -1,5 +1,6 @@
 Package: SoPhy
-Version: 1.0.29
+Version: 1.0.31
+Date: 2006-07-01
 Title: Soil Physics Tools
 Author: R by Martin Schlather <schlath@hsu-hh.de>; FORTRAN by Rien van Genuchten, Carl A. Mendoza, Rene Therrien, Edward Sudicky
 Maintainer: Martin Schlather <schlath@hsu-hh.de> 
@@ -8,4 +9,4 @@ SystemRequirements: linux: libtiff (and libtiff-devel); windows: Tiff (libtiff3.
 Description: SWMS_2D interface
 License: GPL Version 2 or newer.
 URL: http://www2.hsu-hh.de/schlath/index.html
-Packaged: Tue Jun  6 14:46:36 2006; schlather
+Packaged: Fri Sep 22 21:22:11 2006; hornik

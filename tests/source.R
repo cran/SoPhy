@@ -1,9 +1,14 @@
 
 library(SoPhy, lib=if (file.exists("~/TMP/SoPhy")) "~/TMP")
 
-s <- "/home/schlather/R/RF/RandomFields/tests/source.R"
-if (EXTENDED.TESTING <- file.exists(s)) source(s)
-# EXTENDED.TESTING <- FALSE
+if (EXTENDED.TESTING <- FALSE) {
+s <- "/home/schlather/R/old.randomfields/RandomFields/tests/source.R"
+if (EXTENDED.TESTING <- file.exists(s)) source(s) else {
+  s <- "/home/schlather/R/RF/RandomFields/tests/source.R"
+  if (EXTENDED.TESTING <- file.exists(s)) source(s)
+  ## EXTENDED.TESTING <- FALSE
+}
+}
 
 .path <- "~/R/SOPHY/SoPhy/R/"
 if (file.exists(paste(.path, "swms2d.R", sep=""))) {

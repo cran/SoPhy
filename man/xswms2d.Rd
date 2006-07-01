@@ -25,7 +25,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     max.iteration=1000,  max.iter.prec=50000,
     iter.print=100, breakpoint=100,
     %## boundary conditions
-    top.bound=2, top.value=0, bottom.bound=1, bottom.value=0,
+    top.bound=2, top.value=0, bottom.bound=1, bottom.value=0
   ),
   materials=list(
      thr=.02, ths=0.35, tha=0.02, thm=0.35, Alfa=0.041, n=1.964,
@@ -33,7 +33,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
      first=1, second=1, angle=0, 
      Hslope=0, Hseg=-100, POptm=-25, sharpness=1, 
      Bulk.d=1500, Diffus=0, longiDisper=1, transvDisper=0.5,
-     Adsorp=0.0004, SinkL1=-0.01, SinkS1=-0.01, SinkL0=0, SinkS0=0,
+     Adsorp=0.0004, SinkL1=-0.01, SinkS1=-0.01, SinkL0=0, SinkS0=0
   ),
   Hinit = function(Hseg, depth) Hseg,
   model=list(model="exp", param=c(0, 0.25, 0, diff(ylim) * 0.1)),
@@ -47,18 +47,18 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   chemical=list(
      lChem=FALSE, Epsi=2, lUpW=1, lArtD=FALSE, PeCr=10, tPulse=500,
      top.bound=2, top.value=1, bottom.bound=1, bottom.value=0,
-     root.uptake=0, intern.source=0,
+     root.uptake=0, intern.source=0
   ),
   
   %## atmospherical data
   atmosphere=list(
      AtmInf=TRUE, tInit=0, Aqh=-.1687, Bqh=-.02674,
-     hCritS=1.e30, GWL0L=ylim[2], rLen=diff(xlim),
+     hCritS=1.e30, GWL0L=ylim[2], rLen=diff(xlim)
   ),
   atm.periods=1, 
   atm.data=c(
      end=100000000, prec=0, cPrec=0, rSoil=0, rRoot=0, 
-     hCritA= 1000000, rGWL=0, GWL=0, crt=0, cht=0, 
+     hCritA= 1000000, rGWL=0, GWL=0, crt=0, cht=0
   ),
 
   %## stones
@@ -70,7 +70,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
      %## size 
      main.distr=rnorm,  main.mean=diff(ylim)/20, main.s=diff(ylim)/400,
      sec.distr=rnorm, sec.mean=diff(ylim)/50, sec.s=diff(ylim)/400,
-     phi.distr=rnorm, phi.mean=1, phi.s=0,
+     phi.distr=rnorm, phi.mean=1, phi.s=0
   ),
 
   %## roots
@@ -102,7 +102,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
      side.bonus=5.1, diagonal=TRUE, dir.ch=3.71, dir.ch.s=0.5,
      %## water uptake / change of conductivity
      rf.Kf=FALSE, P0=-10, P2H=-200, P2L=-800, P3=-8000, r2H=0.5,
-     r2L=0.1, root.condition=3, root.uptake=-150,
+     r2L=0.1, root.condition=3, root.uptake=-150
      ),
   %##
   root.zone = NULL,

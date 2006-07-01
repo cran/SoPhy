@@ -727,7 +727,7 @@ read.swms2d.table <- function(path,
               path = path,
               selct.in = selct.in,
               grid.in = grid.in,
-              atm.in = atm.in,
+              atm.in = atm.in
               ))
 }
 

@@ -31,7 +31,7 @@ xswms2d <-
              top.bound = 2,
              top.value = 0,
              bottom.bound = 1,
-             bottom.value = 0,
+             bottom.value = 0
              ),
            materials=list(thr=.02, ths=0.35, tha=0.02, thm=0.35, 
              Alfa=0.041, n=1.964, Ks=0.000722, Kk=0.000695, thk=0.2875,
@@ -39,7 +39,7 @@ xswms2d <-
              Hslope=0, Hseg=-100, POptm=-25, sharpness=1,
              
              Bulk.d=1500, Diffus=0, longiDisper=1, transvDisper=0.5,
-             Adsorp=0.0004, SinkL1=-0.01, SinkS1=-0.01, SinkL0=0, SinkS0=0,
+             Adsorp=0.0004, SinkL1=-0.01, SinkS1=-0.01, SinkL0=0, SinkS0=0
              ),
            Hinit=function(Hseg, depth) Hseg,
            model= list(model="exp", param=c(0, 0.25, 0, diff(ylim) * 0.1)),
@@ -60,7 +60,7 @@ xswms2d <-
              bottom.bound = 1,
              bottom.value = 0,
              root.uptake = 0,
-             intern.source = 0,
+             intern.source = 0
              ),
    
            ## atmospherical data
@@ -72,7 +72,7 @@ xswms2d <-
              Bqh = -.02674,## 0 if qGWLF=false
              hCritS = 1.e30,
              GWL0L = ylim[2],
-             rLen = diff(xlim),
+             rLen = diff(xlim)
              ),
            atm.periods = 1, 
            atm.data = c(
@@ -87,7 +87,7 @@ xswms2d <-
              rGWL  = 0, # drainage flux (for Kode = -3), 0 if no Kode(n)=-3
              GWL   = 0, # ground water level
              crt   = 0, # concentration, Kode=-3, KodCB < 0
-             cht   = 0, # concentration, Kode=+/-3, KodCB > 0
+             cht   = 0 # concentration, Kode=+/-3, KodCB > 0
              ),
 
            stone=list(
@@ -101,7 +101,7 @@ xswms2d <-
              ### size 
              main.distr=rnorm, main.mean=diff(ylim)/20, main.s=diff(ylim)/400,
              sec.distr=rnorm, sec.mean=diff(ylim)/50, sec.s=diff(ylim)/400,
-             phi.distr=rnorm, phi.mean=1, phi.s=0,
+             phi.distr=rnorm, phi.mean=1, phi.s=0
              ),
      
            ### roots
@@ -152,7 +152,7 @@ xswms2d <-
              r2H=0.5, 
 	     r2L=0.1,
              root.condition = 3, # atmospheric
-             root.uptake = -150,
+             root.uptake = -150
              ),
            root.zone = NULL,
            col.rf = NULL,
@@ -451,7 +451,7 @@ xswms2d <-
                             maxi=0, mini=-Inf) }),
          list(name="sharpness", var="materials$sharpness", 
               delta=FALSE, val=function(d, v) pmin(1, pmax(0,d)),
-              cond="type!='Start'", what="all"), 
+              cond="type!='Start'", what="all")
          )
     chem.material.entry <-
     list(
@@ -477,7 +477,7 @@ xswms2d <-
               val=function(d, v) {quadratic(d=d, v=v, a=0.01, mini=-Inf) }),    
          list(name="0-order const./solid", var="materials$SinkS0", 
               delta=TRUE,
-              val=function(d, v) {quadratic(d=d, v=v, a=0.01, mini=-Inf) }),
+              val=function(d, v) {quadratic(d=d, v=v, a=0.01, mini=-Inf) })
           )
 
   stones.entry <-
@@ -517,7 +517,7 @@ xswms2d <-
                 quadratic(d=d, v=v, a=pi/2, maxi=pi) }),
          list(name="phi, sd", var="stone$phi.s",
               delta=TRUE, val=function(d, v) {
-                quadratic(d=d, v=v, a=10) }),
+                quadratic(d=d, v=v, a=10) })
        )
   atmosphere.entry <- 
     list(list(name="atmosph. control param.", val="simulate", col=col.subord),
@@ -533,7 +533,7 @@ xswms2d <-
          list(name="ref. pos of groundwater", var="GWL0L",
               delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=ylim[2]/5)),
          list(name="width of soil (transpiration)", var="rLen",
-              delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=diff(xlim)/5)),
+              delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=diff(xlim)/5))
         )
   atm.data.entry <- 
     list(
@@ -559,7 +559,7 @@ xswms2d <-
           list(name="conc. flux (drainage)", var="crt",
               delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=1)),        
          list(name="conc. `pressure' (drain/var. H)", var="cht",
-              delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=1)),
+              delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=1))
      )
   #
   uptake.entry <-
@@ -592,7 +592,7 @@ xswms2d <-
 
   uptake.entry <- 
     c(list(
-         list(name="plant type", var="plant.type", what="none"),
+         list(name="plant type", var="plant.type", what="none")
          ),
       uptake.entry,
       list(
@@ -617,7 +617,7 @@ xswms2d <-
                 val=c("dirichlet", "neumann", "atmospheric", "none")),
            list(name="water uptake value", var="root.uptake", 
                 delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=20,
-                              mini=-Inf)),
+                              mini=-Inf))
            )
       )
         
@@ -667,7 +667,7 @@ xswms2d <-
          list(name="no direction change", var="dir.ch",
               delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=5)),
          list(name="no dir. change, rel. sd", var="dir.ch.s",
-              delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=1)),
+              delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=1))
        )
   print.list <- c("H", "Q", "theta", "vx", "vz", "Conc", "logH")
   water.entry <-
@@ -724,7 +724,7 @@ xswms2d <-
                 "H constant (Dirichlet)", "Q constant (Neumann)")),
          list(name="bottom value", var="bottom.value",
               delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=20,
-                            mini=-Inf)),
+                            mini=-Inf))
          )
   
   chemical.entry <-
@@ -759,7 +759,7 @@ xswms2d <-
                             mini=-Inf)),
          list(name="internal source", var="intern.source",
               delta=TRUE, val=function(d,v) quadratic(d=d, v=v, a=20,
-                            mini=-Inf)),
+                            mini=-Inf))
          )
   
   print.all.list <- 
@@ -1301,7 +1301,7 @@ xswms2d <-
                j <-
                  if (plant.types==1) 1 
                  else choice(as.character(unlist(sapply(h$root,
-                                                        function(x)x$plant.typ),
+                                                        function(x)x$plant.typ)
                                                  )),
                              txt="plant type", col=col.flash)
                if (!is.na(j)) {
@@ -1340,7 +1340,7 @@ xswms2d <-
                j <-
                  if (plant.types==1) 1 
                  else choice(as.character(unlist(sapply(h$root,
-                                                        function(x)x$plant.type),
+                                                        function(x)x$plant.type)
                                                  )),
                              txt="plant type", col=col.flash)
                if (!is.na(j)) {
@@ -1549,14 +1549,14 @@ xswms2d <-
                              val=paste(val.rf, "'RF',transf='none')")),
                         list(name=expression("----- " * alpha[K] * " -----"),
                              var=NULL, col=col.rect, 
-                             val=paste(val.rf, "'RF',transf='K')")),
+                             val=paste(val.rf, "'RF',transf='K')"))
                         ),
                    if (!is.null(h$Stone.RF))
                    list(list(name="Gauss rf + stones", var=NULL, col=col.rect,
                              val=paste(val.rf, "'Stone.RF',transf='none')")),
                         list(name=expression("----- "*alpha[K]+stones*" -----"),
                              var=NULL, col=col.rect,
-                             val=paste(val.rf, "'Stone.RF',transf='K')")),
+                             val=paste(val.rf, "'Stone.RF',transf='K')"))
                         ),
                    if (!is.null(h$Root.RF))
                    list(list(name="Gauss rf + stones + roots", var=NULL, 

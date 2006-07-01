@@ -86,7 +86,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
                          xi=-0.72,
                          drop.scale=22,
                          x.h.scale=20, x.v.scale=5, 
-                         dd=function(x) (1 - x^(-tt$xi)) * 50, 
+                         dd=function(x) (1 - x^(-tt$xi)) * 50
                          ),
                     F06 =
                     list(length=  579 - 51 + 1,
@@ -96,7 +96,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
                          drop.scale=20,
                          x.h.scale=25, #20, 3.9.04
                          x.v.scale=10, #20, 3.9.04
-                         dd=function(x) (x^(-tt$xi) - 1) * 250/(0.05^(-tt$xi)-1),
+                         dd=function(x) (x^(-tt$xi) - 1) * 250/(0.05^(-tt$xi)-1)
                          ),
                     K06 =
                     list(length= 468  - 118 + 1,
@@ -106,7 +106,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
                          xi=0.38, 
                          drop.scale=5,
                          x.h.scale=6, x.v.scale=5,
-                         dd=function(x) (x^(-tt$xi) - 1)*(150)/(0.05^(-tt$xi)-1),
+                         dd=function(x) (x^(-tt$xi) - 1)*(150)/(0.05^(-tt$xi)-1)
                          )
                     )
   stopifnot("F04" %in% figures)
@@ -151,34 +151,34 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
                     lambda=tinylambda,
                     length=length.for.largelambda * largelambda / tinylambda,
                     x.h.scale=20, x.v.scale=5, x.var=0,
-                    endpoint.tolerance=-50,
+                    endpoint.tolerance=-50
                     ),
                unif =
-               list(type="unif", unif.b=2, delta.y=1, delta.x=2,
+               list(type="unif", unif.b=2, delta.y=1, delta.x=2
                     ),
                independent=
-               list(type="independent", x.var=0.16, delta.y=delta, delta.x=delta,
+               list(type="independent", x.var=0.16, delta.y=delta, delta.x=delta
                     ),
                largelambda=
                list(lambda=largelambda, length=length.for.largelambda
                     ),
                dependent=
-               list(type="dependent",
+               list(type="dependent"
                     ),
                all =
-               list(type="all", 
-                    ),
+               list(type="all"
+                    )
                )
   type <- type[type.select]
   model.param <- list(xiNN=list(xi= -1.5, drops=1, drop.scale=10,
-                           dd=function(x) (1 - x^(-m$xi)) * 100, 
+                           dd=function(x) (1 - x^(-m$xi)) * 100
                            ),
                       xiN=list(xi=-1/2),
                       xi0=list(xi=0, 
-                           dd=function(x) -log(1 - x) * 20, # 50, 20      
+                           dd=function(x) -log(1 - x) * 20 # 50, 20      
                            ),
                       xiP=list(xi=1/2, drop.scale=5, drops=1,
-                           dd=function(x) (x^(-m$xi) - 1) * 100/(0.05^(-m$xi)-1),
+                           dd=function(x) (x^(-m$xi) - 1) * 100/(0.05^(-m$xi)-1)
                            ),
                       xiPP=list(xi=1.5) #              0.1, 0.005
                       )
@@ -1218,7 +1218,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
       "data print ('data risk estimation' must have been called first) (Fig. 10, Table 2, Fig. 11,12)",
       "Fig. 3",              #12
       "Fig. 6,8,9",
-      "Fig. 7",
+      "Fig. 7"
                )
   while (TRUE) {
     RFparameters(Print=PrintLevel, pch="", TBM3.linesimus=linesimustep,
@@ -1398,18 +1398,18 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
                standard = list(Profiles=9,
                  drop.distr=drop.distr[if (default.first)
                    c(default.distrib, 1, 2, 6) else
-                   c(1, 2, default.distrib, 6)], 
+                   c(1, 2, default.distrib, 6)]
                  ),          
                default, #3
-               standardgrid = list(raw=TRUE, grid=TRUE, Profiles=1, ), 
+               standardgrid = list(raw=TRUE, grid=TRUE, Profiles=1), 
                default, #5
-               dropkappa1 = list(drop.kappa=nu1, drop.scale=drop.scale / f1, ),
-               dropkappa2 = list(drop.kappa=nu2, drop.scale=drop.scale / f2, ),
-               dropkappa3 = list(drop.kappa=nu3, drop.scale=drop.scale / f3, ),
+               dropkappa1 = list(drop.kappa=nu1, drop.scale=drop.scale / f1),
+               dropkappa2 = list(drop.kappa=nu2, drop.scale=drop.scale / f2),
+               dropkappa3 = list(drop.kappa=nu3, drop.scale=drop.scale / f3),
                default, #9
-               xkappa1 = list(x.kappa=nu1, x.h.scale=20 / f1, x.v.scale=5 / f1,),
-               xkappa2 = list(x.kappa=nu2, x.h.scale=20 / f2, x.v.scale=5 / f2,),
-               xkappa3 = list(x.kappa=nu3, x.h.scale=20 / f3, x.v.scale=5 / f3,),
+               xkappa1 = list(x.kappa=nu1, x.h.scale=20 / f1, x.v.scale=5 / f1),
+               xkappa2 = list(x.kappa=nu2, x.h.scale=20 / f2, x.v.scale=5 / f2),
+               xkappa3 = list(x.kappa=nu3, x.h.scale=20 / f3, x.v.scale=5 / f3),
                default, #13
                absorbierend= list(Horizont="absorbing", n.balls=5),
                durchbruch = list(Horizont="breakthrough", n.balls=5),
@@ -1445,7 +1445,7 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
                  drop.distr= list(
                    crestana=function(x) x * 100 * crestana.resolution),
                  radius=0.5,
-                 unit="cm", unit.scale=1 / crestana.resolution,
+                 unit="cm", unit.scale=1 / crestana.resolution
                  ),
                default, #34
                schwartz = list(
@@ -1474,7 +1474,7 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
                  x.h.scale=2 * schwartz.resolution,
                  x.v.scale=20 * schwartz.resolution
                  ),
-               default, #36
+               default #36
                )
 
   slct <- c(1, 3, 5, 9, 13, 16, 19, 22, 25, 30, 32, 34)
@@ -1647,7 +1647,7 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
                 height=totalheight, width=totalwidth, quiet=quiet)
             par(mai=mai)
             cum <- t(apply(res$interm$raw.xx[idx, i, ], 1, cumsum))
-            ## t() da apply(, 1, ) zeilen und spalten vertauscht
+            ## t() da apply(, 1, .) zeilen und spalten vertauscht
             cszlim <- range(cum)
             image(x=seq(0, inp$length.profile, len=len.x),
                   y=seq(1, inp$depth, 1), xaxs="i", yaxs="i",

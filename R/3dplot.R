@@ -323,15 +323,15 @@ flowpattern <-
                ),
              independent = list(
                list(model=x.name, variance=x.var,
-                    scale=x.v.scale, kappa=x.kappa),
+                    scale=x.v.scale, kappa=x.kappa)
                ),
              dependent = list(
                list(model=x.name, variance=x.var, kappa=x.kappa,
-                    aniso=diag(1.0 / c(x.h.scale, x.h.scale, x.v.scale))),
+                    aniso=diag(1.0 / c(x.h.scale, x.h.scale, x.v.scale)))
                ),
              all = list(
                list(model=x.name, variance=x.var, kappa=x.kappa,
-                    aniso=diag(1.0 / c(x.h.scale, x.h.scale, x.v.scale))),
+                    aniso=diag(1.0 / c(x.h.scale, x.h.scale, x.v.scale)))
                )
              )
     y.model <-
@@ -342,17 +342,17 @@ flowpattern <-
                ),
              independent = list(
                list(model=y.name, variance=y.var,
-                    scale=y.v.scale, kappa=y.kappa),
+                    scale=y.v.scale, kappa=y.kappa)
                ),
              dependent = list(
                list(model=y.name, variance=y.var,
                     aniso=diag(1.0 / c(y.h.scale,
-                      y.h.scale, y.v.scale)), kappa=y.kappa),
+                      y.h.scale, y.v.scale)), kappa=y.kappa)
                ),
              all = list(
                list(model=y.name, variance=y.var,
                     aniso=diag(1.0 / c(y.h.scale,
-                      y.h.scale, y.v.scale)), kappa=y.kappa),
+                      y.h.scale, y.v.scale)), kappa=y.kappa)
                )
              )
 

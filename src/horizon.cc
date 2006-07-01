@@ -537,7 +537,7 @@ SEXP GetHorizons(SEXP h, SEXP nr) {
       PROTECT(hinew = allocVector(VECSXP, given_n + missing_n));
       for (j=0; j<given_n; j++) {
 	SET_VECTOR_ELT(hinew, j, VECTOR_ELT(hi, j));
-	SET_VECTOR_ELT(namesnew, j, VECTOR_ELT(getAttrib(hi, R_NamesSymbol), 
+	SET_STRING_ELT(namesnew, j, STRING_ELT(getAttrib(hi, R_NamesSymbol), 
 		       j));
       }
       for (j=0; j<OPT_N; j++) if (opt_pos[j]<0) { // i.e. that variable has 
@@ -546,7 +546,7 @@ SEXP GetHorizons(SEXP h, SEXP nr) {
 	//                         it is now LENGTH(hi) at start
 	name = allocString(H_OPT);
 	strcpy(CHAR(name), h_opt[j]);
-	SET_VECTOR_ELT(namesnew, opt_pos[j], name);
+	SET_STRING_ELT(namesnew, opt_pos[j], name);
       }
       setAttrib(hinew, R_NamesSymbol, namesnew);
       SET_VECTOR_ELT(h, i, hinew);

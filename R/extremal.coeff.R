@@ -782,7 +782,7 @@ analyse.profile <-
                function(x) list(names=paste("upper bound", x),
                                 var=paste("upper$", x, sep=""),
                                 delta=TRUE, 
-                                val=function(d,v) quadratic(d=d, v=v, a=50))),
+                                val=function(d,v) quadratic(d=d, v=v, a=50)))
         )
     
     screen(thresh.dev)
