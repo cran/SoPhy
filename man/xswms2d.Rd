@@ -169,7 +169,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     \describe{
       \item{\code{TPrint} \{TPrint\}}{scale; 
 	modelling time after which the result is printed.
-
+	
 	Note that for directly calls of \command{\link{create.waterflow}}
 	and subsequent call of \command{\link{swms2d}}, \code{TPrint}
 	might also be a vector, see \command{\link{read.swms2d.table}}
@@ -1471,7 +1471,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
     Each component of the list is a list with the same components as
     the input parameter \code{root}. Additionally, it has the
     components
-     \describe{
+     \itemize{
        \item
        \code{plant.type}, a user defined name of the species.
 
@@ -1659,7 +1659,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
 }
 \section{Warning}{The user should consider the following parameters
   of \code{h[[i]]} as being read-only:
-  \describe{
+  \itemize{
     \item \code{cut.x}
     \item \code{cut.y}
     \item \code{border}

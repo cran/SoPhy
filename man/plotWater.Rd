@@ -56,9 +56,8 @@ plotWater(h, instance,
     \itemize{
       \item \code{H} : \eqn{\code{zlim}=[q(1-\code{lim}); 0]}
       \item \code{theta} :
-      \eqn{\code{zlim}=\command{\link[base]{range}}(\{0,
-	\theta_{s,i}\}, max(\code{h$hQThFlC}))}{\code{zlim}=\command{range}({0,
-	  theta_{s,i}}, max(\code{h$hQThFlC}))},
+      \eqn{\code{zlim}=\code{range}(\{0,
+	\theta_{s,i}\}, max(\code{h$hQThFlC}))},
       where the \eqn{i} runs over all horizons
       and polygons. That is, the range is independent of the value of
       \code{lim}. See \command{\link{xswms2d}} for \eqn{\theta_s}{theta_s}.
