@@ -1,0 +1,6 @@
+\begin{tabular}{c rlrlrlrlrlrl }
+&\multicolumn{4}{c}{threshold parameters} & \multicolumn{8}{c}{position of the edges of the rectangle} \\
+profile & \multicolumn{2}{c}{ $c_0$ }&\multicolumn{2}{c}{ $c_2$ }&\multicolumn{2}{c}{ left }&\multicolumn{2}{c}{ right }&\multicolumn{2}{c}{ bottom }&\multicolumn{2}{c}{ top } \\\hline
+a  % F04 
+& 210 &\kern-3mm [200, 220] & 250 &\kern-3mm [240, 260] & 56 & \kern-3mm [2, 56] & 547 & \kern-3mm [547, 605] & 126 & \kern-3mm [ -- ] & 52 & \kern-3mm [ -- ] \\
+\end{tabular}

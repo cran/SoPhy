@@ -98,7 +98,7 @@ create.waterflow(h, Kat = 2, MaxIt = 20, hTab = c(0.001, 200),
   \item{water.y}{the y coordinates of the thinned grid}}
 
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 
 \seealso{
          \command{\link{modify.horizons}},

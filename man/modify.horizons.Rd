@@ -68,7 +68,7 @@ modify.horizons(h, percent=5, level.percent=5, rdistr=rnorm)
 }
 
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 
 \seealso{\code{\link{SoPhy}}, \command{\link{xswms2d}}}
 \examples{

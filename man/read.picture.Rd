@@ -56,7 +56,7 @@ fig <- read.picture(paste(system.file(package='SoPhy'),
 plotRGB(fig)
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \keyword{IO}
 \keyword{file}
 

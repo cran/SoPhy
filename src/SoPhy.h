@@ -1,7 +1,8 @@
+
 #ifndef SoPhy_H
 #define SoPhy 1
 
-#include "GSLvsR.h"
+#include "basic.h"
 
 
 EXTERN SEXP GetHorizons(SEXP h, SEXP nr);

@@ -173,7 +173,7 @@ create.roots(h, trials = 10, PrintLevel=RFparameters()$PrintLevel,
 }
 
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 
 \seealso{ \code{\link{SoPhy}}, \command{\link{xswms2d}}}
 

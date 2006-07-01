@@ -290,7 +290,7 @@ flowpattern(type=c('identical', 'unif', 'independent',
   }
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \seealso{\command{\link[RandomFields]{RandomFields}}, \command{\link{plotFlow2d}}, \command{\link{plotFlow3d}}}
 \examples{
 
@@ -301,6 +301,8 @@ flowpattern(type=c('identical', 'unif', 'independent',
 %    library(SoPhy)
 %library(RandomFields)
 %    source("~/R/SOPHY/SoPhy/R/3dplot.R")
+
+%%% muss wieder rueckgeaendert werden !!!
 RFparameters(TBM3.lines=100, TBM3.linesimustep=0.3,
              TBM3.linesimufactor=0, Print=1)
 fp3 <- flowpattern(type="all", lambda=0.1, length.profile=50,

@@ -1669,7 +1669,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
 
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \references{
   \itemize{
    \item

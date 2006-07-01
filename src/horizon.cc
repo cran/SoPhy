@@ -23,13 +23,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-extern "C" {
+
 #include <R.h>
 #include <Rdefines.h>
-#include <assert.h>
+ 
 #include "SoPhy.h"
   //#include "auxiliary.h"
-}
+
 
 /*
   to do:
@@ -220,6 +220,8 @@ void initchain(chaintype *chain) {
 void insertchain(chaintype *chain, double x1, double y1, double x2, double y2) {
   double swap;
   chainelmt *dummy, *i;
+  char insert[] = "insert";
+
   assert(chain->segment!=NULL);
 
   //showchain("insert",chain);
@@ -247,7 +249,7 @@ void insertchain(chaintype *chain, double x1, double y1, double x2, double y2) {
   i->y2 = y2;
   //printf("insert (%f,%f) - (%f,%f)\n", x1, y1, x2, y2);
 
-  showchain("insert",chain);
+  showchain(insert, chain);
 
 
 }
@@ -714,7 +716,7 @@ SEXP GetHorizons(SEXP h, SEXP nr) {
     // rough number of entries into $border
     nborder = 0;
     for (j=1; j<npts; j++) {
-      nborder += 3 + (int) (pythag(pts[0][j]-pts[0][j-1],
+      nborder += 3 + (int) (hypot(pts[0][j]-pts[0][j-1],
 				   pts[1][j]-pts[1][j-1]) / step);
     }
     border = (int*) malloc(sizeof(int) * 2 * nborder);
@@ -731,13 +733,13 @@ SEXP GetHorizons(SEXP h, SEXP nr) {
       } else {
 	deltax = 1;
 	deltay = (pts[1][j] - pts[1][j-1]) / (pts[0][j] - pts[0][j-1]);
-	delta = step / pythag(deltax, deltay);
+	delta = step / hypot(deltax, deltay);
 	if (pts[0][j]<pts[0][j-1]) delta = -delta;
 	deltax *= delta;
 	deltay *= delta;
       }
       int_delta = 
-	(int) (pythag(pts[0][j]-pts[0][j-1], pts[1][j]-pts[1][j-1]) / step);
+	(int) (hypot(pts[0][j]-pts[0][j-1], pts[1][j]-pts[1][j-1]) / step);
       x = pts[0][j-1];
       y = pts[1][j-1];
       for (k=0;  k<=int_delta;  k++, x += deltax, y += deltay) {

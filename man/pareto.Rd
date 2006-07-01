@@ -42,5 +42,5 @@ rpareto(n, xi, s=1)
   \emph{Modelling Extremal Events}. Springer: Berlin.
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \keyword{distribution}

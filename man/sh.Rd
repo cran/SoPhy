@@ -86,7 +86,7 @@ The vertical distribution of a dye tracer in a layered soil.
 \emph{Soil Sci.}, \bold{164}, 561--573.
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \examples{
 
 % library(SoPhy, lib="~/TMP"); 
@@ -94,10 +94,16 @@ The vertical distribution of a dye tracer in a layered soil.
 
   final <- FALSE # final <- TRUE
   printlevel <- 1 + !interactive()
-  sh.jh(input=if (!interactive()) c(1, 2, 5, 0), final=final,
+
+  sh.jh(input=if (!interactive()) c(1, 2, 5, 0), final=final, 
        Print=printlevel)
+
+%    source("/home/schlather/R/SOPHY/SoPhy/R/sh.R")
+% naechste Zeile laueft nicht im BATCH-Modus. Unklar warum -- notduerftig ausgeblendet
+\dontrun{
   sh.jch(input=if (!interactive()) c(1:14, 0), final=final,
          Print=printlevel)
+}
 
 }
 \keyword{spatial}

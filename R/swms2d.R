@@ -8,14 +8,14 @@
   if (file.exists("/home/schlather/bef/x")) {
     ## to do list -- since my surname is rare, the message should 
     ## appear only on computers I have a login
-    cat("To-Do List\n==========\n")
+    packageStartupMessage("To-Do List\n==========\n")
 
-    print("package grid\n s4: useful for sophy print functions, etc.")
-    print("wurzeln, parameter wie depth zuschlag funktionieren nicht mehr")
-    print("convert create.stones into c programme")
-    print("convert create.roots into c programme")
-    print("improve cut[][]-area!! -- add lines at the very end that check how much the cut area can be reduced.")
-    print("rf.link not tested yet -- improve standard definition of rf.link!")
+    packageStartupMessage("package grid\n s4: useful for sophy print functions, etc.")
+    packageStartupMessage("wurzeln, parameter wie depth zuschlag funktionieren nicht mehr")
+    packageStartupMessage("convert create.stones into c programme")
+    packageStartupMessage("convert create.roots into c programme")
+    packageStartupMessage("improve cut[][]-area!! -- add lines at the very end that check how much the cut area can be reduced.")
+    packageStartupMessage("rf.link not tested yet -- improve standard definition of rf.link!")
   }
 }
 

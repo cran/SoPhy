@@ -172,7 +172,7 @@ risk.index(data, selected.dist=0.95,
 }
 
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 
 \references{
   Embrechts, P., Klueppelberg, C. and Mikosch, T. (1997)

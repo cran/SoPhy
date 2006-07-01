@@ -92,14 +92,14 @@ simulateHorizons(h, first = 1, what = 'all',
   \emph{R News} \bold{1} (2), 18-20.
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 
 
 \seealso{\code{\link{SoPhy}}, \command{\link{xswms2d}}}
 
 \examples{
-%  library(SoPhy, lib="~/TMP"); library(RandomFields)
-% source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")
+%  library(SoPhy, lib="~/TMP");
+% source("/home/schlather/R/SOPHY/SoPhy/R/simu.R")
 h <- xswms2d(xlim=c(1, 50), ylim=c(1, 50), step=1, new=NULL)
 h$n <- 2            ## define a second
 h$H2 <- h$H1
@@ -110,8 +110,8 @@ h$H2$points <- list(x=seq(1, 100, 5))             ## x coordinates
 h$H2$points$y <- 40 + 20 * cos(h$H2$points$x / 5) ## y coordinates
 
 ## Gaussian random field of the second horizon is pure nugget effect:
-h$H2$model <- list(model=list(list(model='nugget', var=0.5, scale=1)),
-                   mean=0.5)
+h$H2$model <- list(model=list("$", var=0.5, scale=1, list("nugget")),
+                   trend=0.5)
 h$H2$stone$lambda <- 0.005  ## intensity of the stones in the 2nd horizon
 h <- calculate.horizons(h)
 for (i in 1:2) { 

@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern "C" {
 #include <R.h>
 #include <Rdefines.h>
-#include <assert.h>
+ 
 #include "SoPhy.h"
   //#include "auxiliary.h"
 }

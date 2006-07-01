@@ -479,8 +479,7 @@ simulateHorizons <- function(h, first=1, what='all',
       
       ##  "timedim=2" should be improved
       ## 21.6.03 is.nan changed to is.na
-      if (any(is.na(unlist(PrepareModel(model=h[[i]]$model)
-                           [c("param","mean")])))){
+      if (any(is.na(unlist(h[[i]]$model)))){
         if (h[[i]]$type!="H") { ## h[1]$type!="Start" !
           message("First horizon cannot be NaN (air)")
           return(h)
@@ -497,7 +496,9 @@ simulateHorizons <- function(h, first=1, what='all',
       if (i==1) {
         rf[cx[1]:cx[2], cy[1]:cy[2]] <-
           GaussRF(x=h$grid.x[cx[1]:cx[2]], y=h$grid.y[cy[1]:cy[2]],
-                              grid=TRUE, model=h[[i]]$model, register=i)
+                              grid=TRUE,  model=h[[i]]$model$model,
+                                   trend=if (is.numeric(h[[i]]$model$trend))
+                                          h[[i]]$model$trend else 0, register=i)
       } else {
         border <- h[[i]]$border
         if (any(select <- is.na(rf[border]))) {
@@ -510,8 +511,9 @@ simulateHorizons <- function(h, first=1, what='all',
         }
         
         ## standard case, not NaN
-        mn <- h[[i]]$model$mean
-        h[[i]]$model$mean <- 0
+        if (exists("RFgui")) stop("RFgui not programmed yet.") 
+        mn <- h[[i]]$model$trend
+        h[[i]]$model$trend <- 0
         
         rf[cx[1]:cx[2], cy[1]:cy[2]][h[[i]]$idx] <-
           mn + if (h[[i]]$materials$sharpness<1) {
@@ -526,14 +528,19 @@ simulateHorizons <- function(h, first=1, what='all',
                          h[[i]]$materials$sharpness *
                            GaussRF(x=h$grid.x[cx[1]:cx[2]],
                                    y=h$grid.y[cy[1]:cy[2]],
-                                   grid=TRUE, model=h[[i]]$model,
+                                   grid=TRUE,
+                                   model=h[[i]]$model$model,
+                                   trend=if (is.numeric(h[[i]]$model$trend))
+                                          h[[i]]$model$trend else 0,
                                    register=i)[h[[i]]$idx]
           } else {
             (zz <- GaussRF(x=h$grid.x[cx[1]:cx[2]], y=h$grid.y[cy[1]:cy[2]],
-                           grid=TRUE, model=h[[i]]$model,
+                           grid=TRUE, model=h[[i]]$model$model,
+                                   trend=if (is.numeric(h[[i]]$model$trend))
+                                          h[[i]]$model$trend else 0,
                            register=i))[h[[i]]$idx]
           }
-        h[[i]]$model$mean <- mn
+        h[[i]]$model$trend <- mn
       }
     }
     h$RF <- rf

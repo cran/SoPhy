@@ -279,13 +279,10 @@ flowpattern <-
                 y=c(-delta.y, width.slice + delta.y),
                 z=c(1, depth), 
                 grid=FALSE, model=model, reg=reg, method=simu.method
-                )
+                )   
+    
+    mem <- GetRegisterInfo(reg, meth="TBM3")$S
 
-#str(GetRegisterInfo(reg), vec=20)
-#str(RFparameters())
-    
-    mem <- GetRegisterInfo(reg)$method[[1]]$mem
-    
     if (grid) {
       t(matrix(GaussRF(x=startx,
                        y=starty,
@@ -293,9 +290,8 @@ flowpattern <-
                        grid=grid, model=model, reg=reg, method=simu.method,
                        TBM2.linesimufactor=0.0, TBM2.linesimustep=0.0,
                        TBM3.linesimufactor=0.0, TBM3.linesimustep=0.0,
-                       TBM.points=length(mem$simuline),
-                       TBM.center=if (!is.null(mem$aniso)) solve(mem$aniso,
-                         mem$center) + 0.0 else 0.0
+                       TBM.points=length(mem$line),
+                       TBM.center=mem$center
                        ),
                ## +0.0: force double value for TBM.center...
                ncol=depth))
@@ -306,9 +302,8 @@ flowpattern <-
                      grid=grid, model=model, method=simu.method, reg=reg,
                      TBM2.linesimufactor=0.0, TBM2.linesimustep=0.0,
                      TBM3.linesimufactor=0.0, TBM3.linesimustep=0.0,
-                     TBM.points=length(mem$simuline),
-                     TBM.center=if (!is.null(mem$aniso)) solve(mem$aniso,
-                       mem$center) + 0.0 else 0.0
+                     TBM.points=length(mem$line),
+                     TBM.center=mem$center
                      ),
              nrow=depth)
     }

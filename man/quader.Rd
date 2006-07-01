@@ -48,7 +48,7 @@
     relative to the current, see \command{\link[graphics]{par}}}
   \item{reverse}{logical. If \code{TRUE} the z-axis is numbered
     upside down}
-  \item{unit}{}
+  \item{unit}{unit}
   \item{add}{logical.  If \code{TRUE}, a quader is added to current figure}
   \item{plot}{logical. If \code{FALSE} only the values for the
     coordinate system are calculated and stored in the background,
@@ -93,6 +93,6 @@
   quader(add=TRUE, col.frame=c("transparent", "black"))
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \keyword{hplot}
 

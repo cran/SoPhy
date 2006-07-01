@@ -42,7 +42,7 @@ xswms2d <-
              Adsorp=0.0004, SinkL1=-0.01, SinkS1=-0.01, SinkL0=0, SinkS0=0
              ),
            Hinit=function(Hseg, depth) Hseg,
-           model= list(model="exp", param=c(0, 0.25, 0, diff(ylim) * 0.1)),
+           model = list(model="exp", param=c(0, 0.25, 0, diff(ylim) * 0.1)),
            anisotropy = NULL,
            miller.link = function(rf) exp(sign(rf) * sqrt(abs(rf))),
            millerH = function(lambda) lambda, # Zavattaro et al, SSSA 1999;
@@ -346,11 +346,16 @@ xswms2d <-
                    stone=stone,
                    materials=materials
                    )
+
+    
     model <- PrepareModel(model=model)
-    m.aniso<- model$anisotropy
-    model <- convert.to.readable(model, allowed="list")
+
+     if (m.aniso <- model[[1]][[1]] == "$") {
+      m.aniso <- !is.null(model[[1]]$aniso)
+    }
+    
     if (!is.null(anisotropy)) {
-      if ((m.aniso)!=anisotropy) {
+      if (m.aniso != anisotropy) {
         if (anisotropy) {
           model$model[[1]]$aniso <- diag(1/model$model[[1]]$scale,2)
           model$model[[1]]$scale <- NULL
@@ -393,11 +398,10 @@ xswms2d <-
       environment(h$millerT) <- .EmptyEnv()
   }
  
-   for (i in 1:h$n) {
-     if (!is.null(h[[i]]$model))
-       h[[i]]$model <-
-         convert.to.readable(PrepareModel(h[[i]]$model), allowed="list")
-  }
+##   for (i in 1:h$n) {
+##     if (!is.null(h[[i]]$model))
+##       h[[i]]$model <- PrepareModel(h[[i]]$model)
+##  }
   
   m.link <- function(x) h$millerK(h$miller.link(x))## used in Showmodels and
   ##                                          postscript
@@ -1369,23 +1373,33 @@ xswms2d <-
                  oldmodel <-
                    if (is.null(h[[i]]$model)) model
                    else h[[i]]$model
-                # zlim <-
-                #   if (is.null(h$Root.RF)) NULL
-                 #  else list(range(h$Root.RF, na.rm=TRUE),
-                 #            range(m.link(h$Root.RF), na.rm=TRUE))
-                 model <- 
-                   ShowModels(x=h$grid.x, y=h$grid.y, model=oldmodel,
-                              erase=FALSE, x.fraction=0.45,cex.names=cex.eval,
-                              link.fct=m.link, covx.default=30,
-                              update=update, Col.main="green",
-                              # debug=TRUE,
-                              col=col.rf, Zlim=Zlim,
-                              cex.eval=cex.eval
-                              )
-                 model <-
-                   convert.to.readable(PrepareModel(model), allowed="list")
-	         if (is.null(h[[i]]$model) || 
-                     !all(as.character(h[[i]]$model)==as.character(model))) {
+
+                 if (!exists("RFgui")) {
+                   model <- readline("ShowModels currently does not work. Please type in a model,\ne.g. ' list(model=\"exp\", param=c(0, 0.25, 0, diff(ylim) * 0.1)),'")
+                   if (newmodel <- model != "")
+                     model <- eval(parse(text=model))
+                 } else {
+                   stop("RFgui not programmed yet")
+                   stop("sh.jch  in sh.Rd wieder unter BATCH zum Laufen bekommen. Auf interactive laeuft es. Unklar wieso. Ausblenden der Abfrage interactive() hilft nicht.")
+                   
+                   ## zlim <-
+                   ##   if (is.null(h$Root.RF)) NULL
+                   ##  else list(range(h$Root.RF, na.rm=TRUE),
+                   ##           range(m.link(h$Root.RF), na.rm=TRUE))
+                   model <- 
+                     ShowModels(x=h$grid.x, y=h$grid.y, model=oldmodel,
+                                erase=FALSE, x.fraction=0.45,cex.names=cex.eval,
+                                link.fct=m.link, covx.default=30,
+                                update=update, Col.main="green",
+                                        # debug=TRUE,
+                                col=col.rf, Zlim=Zlim,
+                                cex.eval=cex.eval
+                                )
+                   model <- PrepareModel(model)
+                   newmodel <- is.null(h[[i]]$model) || 
+                       !all(as.character(h[[i]]$model)==as.character(model))
+                 }
+                 if (newmodel) {
                    h[[i]]$model <- model   
                    screen(showmodel.dev)  ## delete               
                    h$hQThFlC <- h$RF <- NULL

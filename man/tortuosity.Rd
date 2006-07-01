@@ -61,7 +61,7 @@
 }
 
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \references{
   Schlather, M. and Huwe, B. (2005)
   A characteristic for the variability of tortuosity.

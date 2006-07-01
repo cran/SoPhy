@@ -2,12 +2,22 @@
 #ifndef GSL_VS_R_H
 #define GSL_VS_R_H 1
 
+#define NDEBUG 1
+#include <assert.h>
+
+
 #ifdef RF_GSL /* RF_GSL */
 
 
 #ifndef MATHLIB_STANDALONE
 #define MATHLIB_STANDALONE 1
 #endif
+
+
+//#include <R.h>
+//#include <Rinternals.h>
+//#include <Rmath.h>
+//include <errno.h>
 
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_sf_gamma.h>

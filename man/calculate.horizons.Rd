@@ -56,7 +56,7 @@ calculate.horizons(h)
   \command{\link{xswms2d}} 
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \examples{
 %  library(SoPhy, lib="~/TMP"); library(RandomFields)
 % source("/home/schlather/R/SOPHY/SoPhy/R/Sophy.R")
@@ -72,7 +72,7 @@ h <- xswms2d(xlim=c(1, 100), ylim=c(1, 100), step=1, new=NULL)
 h$n <- 2         ## define a second horizon
 h$H2 <- h$H1    
 h$H2$type <- "H" ## genuine horizon, not polygon
-h$H2$model$model[[1]]$scale <- 30 ## different
+h$H2$model$model$scale <- 30 ## different
 ## coordinates of the boundary segments between the horizons: 
 h$H2$points <- list(x=seq(1, 100, 5))             ## x coordinates
 h$H2$points$y <- 80 + 20 * cos(h$H2$points$x / 10) ## y coordinates

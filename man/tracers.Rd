@@ -1,4 +1,5 @@
 \name{Tracer experiments}
+\docType{data}
 \alias{BrilliantBlue}
 \alias{brilliantblue}
 \alias{tracer}
@@ -6,15 +7,6 @@
 \alias{F06}
 \alias{F04}
 \title{Brilliant Blue tracer profile}
-\usage{
-   path <- paste(system.file(package='SoPhy'), 'tracer', sep="/")
-   F04  <- read.picture(paste(path, "F04", sep="/"))
-   F04g <- read.picture(paste(path, "F04.G", sep="/"))
-   F06  <- read.picture(paste(path, "F06", sep="/"))
-   F06g <- read.picture(paste(path, "F06.G", sep="/"))
-   K06  <- read.picture(paste(path, "K06", sep="/"))
-   K06g <- read.picture(paste(path, "K06.G", sep="/"))
-}
 \description{
   Digitised pictures of profiles that have been
   excavated after Brilliant Blue tracer
@@ -83,6 +75,9 @@
 % library(SoPhy)
 %    source("/home/schlather/R/SOPHY/SoPhy/R/rgb.R")
 
+
+
+
 path <- paste(system.file(package='SoPhy'), 'tracer', sep="/")
 for (nm in c("F04", "F06", "K06")) {
    cat("\n", nm, ":\nOriginal picture. ", sep="")
@@ -93,6 +88,18 @@ for (nm in c("F04", "F06", "K06")) {
    plotRGB(p)
    readline("Picture after first preparation. Press return.")
 }
+
+\dontrun{
+  path <- paste(system.file(package='SoPhy'), 'tracer', sep="/")
+  F04  <- read.picture(paste(path, "F04", sep="/"))
+  F04g <- read.picture(paste(path, "F04.G", sep="/"))
+  F06  <- read.picture(paste(path, "F06", sep="/"))
+  F06g <- read.picture(paste(path, "F06.G", sep="/"))
+  K06  <- read.picture(paste(path, "K06", sep="/"))
+  K06g <- read.picture(paste(path, "K06.G", sep="/"))
+}
+
+
 }
 
 \keyword{datasets}

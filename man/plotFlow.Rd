@@ -137,5 +137,5 @@ plotFlow3d(paths, horizons=c("no", "absorbing", "breakthrough"),
  ## see \link{flowpattern}
 }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \keyword{hplot}

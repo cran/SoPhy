@@ -651,7 +651,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
       seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
       i.start <- i + 1
       sel.dist <-  estim[[1]]$sel.dist
-      save(file=simu.name, parameters, frequencies, xi, model.param, sel.dist,
+      save(file=simu.name, parameters, frequencies, xi, m,
+           model.param, sel.dist,
            type, model.param, Methods, Measures, ParIdx, repet, seed, i.start)
       simu.storage <- NULL
     } # i
@@ -677,6 +678,7 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
             txt <- paste("m$", n, "<-", "model.param[[m.p]]$", n) 
             eval(parse(text=txt))
           }
+          xi[m.p] <- m$xi
           if (PrintLevel>1)
             cat("\n **** run=", i, "   type=", typ, " (", tt$type,")", 
                 "   model=", m.p, " (xi=", m$xi, ") **** \n", sep="")
@@ -706,7 +708,8 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
           } # met
         } # m.p
         sel.dist <- estim$sel.dist
-        save(file=simu.name, parameters, frequencies, m$xi,
+        
+        save(file=simu.name, parameters, frequencies, m, xi,
              model.param, sel.dist,
              type, model.param, Methods, Measures, ParIdx)
       } # typ
@@ -1360,9 +1363,12 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   nu1 <- 0.3 # to investigate the influence of the parameter nu 
   nu2 <- 1
   nu3 <- 8
-  f1 <- GetPracticalRange("whittle", nu1) / GetPracticalRange("whittle", 2)
-  f2 <- GetPracticalRange("whittle", nu2) / GetPracticalRange("whittle", 2)
-  f3 <- GetPracticalRange("whittle", nu3) / GetPracticalRange("whittle", 2)
+  f1 <- GetPracticalRange(list("whittle", nu=nu1)) /
+    GetPracticalRange(list("whittle", nu=2))
+  f2 <- GetPracticalRange(list("whittle", nu=nu2)) /
+    GetPracticalRange(list("whittle", nu=2))
+  f3 <- GetPracticalRange(list("whittle", nu=nu3)) /
+    GetPracticalRange(list("whittle", nu=2))
 
 
   drop.distr <- list(x2 = function(x) x^0.25 * 100,
@@ -1503,13 +1509,14 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
   if (!exists(".Random.seed",  envir=.GlobalEnv)) runif(1)
   seed <- get(".Random.seed", envir=.GlobalEnv, inherits = FALSE)
   RFparameters(Print=1, pch="", PracticalRange=11,
-               TBM2.num=TRUE, TBMCE.forc=TRUE,
+               # TBM2.num=TRUE,
+               TBMCE.forc=TRUE,
                TBM3.lines=nlines, CE.useprimes=TRUE,
                TBM3.linesimufactor = 0.0,
                TBM2.linesimufactor = 0.0,
                TBM3.linesimus=linesimustep, 
                TBM2.linesimus=linesimustep)
-  for (name in c(pspath)) {
+  for (name in pspath) {
     if (PrintLevel>2) cat("path", name, "\n")
     if (file.exists(name)) stopifnot(file.info(name)$isdir)
     else {
@@ -1573,7 +1580,7 @@ sh.jh <- function(input=NULL, dev=2, pspath="./", final=TRUE, PrintLevel=0,
                "Fig. 2d/e", #
                "Crestana & Posadas (1998, Fig. 8)", #
                "Schwartz et al. (1999, Fig. 4)", # 
-               "Fig. 3 (sketches)",#
+               "Fig. 3 (sketches)"
                )
              )
     }

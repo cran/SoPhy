@@ -26,14 +26,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include <R.h>
 #include <Rdefines.h>
-#include <assert.h>
+ 
 #include "SoPhy.h"
 #include "win_linux_aux.h"
 
 SEXP writetiff(SEXP picture, SEXP filename) {
   FILE *file;
   SEXP ret;
-  int *p, l2, l, i;
+  int *p, l2, l, i, errno;
   errno = 0;
   ret=allocVector(INTSXP, 1);
   INTEGER(ret)[0] = 0;

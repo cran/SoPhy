@@ -1,0 +1,3 @@
+estimation of xi using ranges of values and subsequently the median of all xi; see run.R, daten,druck
+file          measure  raw.idx    index raw-sens idx-sens
+       F04        x^2  -0.7518  -0.7518  -0.8385  -0.8385

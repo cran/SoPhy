@@ -36,7 +36,7 @@ my.legend(lb.x=0, lb.y=0, zlim, col, cex=0.8, y.intersp=0.02, bg='white')
 %  my.legend(zlim=zlim, col=col, y.i=0.03)
 % }
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \examples{
  ## see \link{read.swms2d.table}, for example
 }

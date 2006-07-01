@@ -35,7 +35,7 @@
 }
 
 \author{Martin Schlather, \email{martin.schlather@math.uni-goettingen.de}
-  \url{http://www.stochastik.math.uni-goettingen.de/institute}}
+  \url{http://www.stochastik.math.uni-goettingen.de/~schlather}}
 \references{
   Schlather, M. and Huwe, B. (2004)
   The use of the language interface of R: two examples for modelling water
