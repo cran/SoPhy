@@ -385,14 +385,17 @@ sh.jch <- function(input=NULL, dev=2, pspath="./", txt.result.dir = "txt/",
     pp <- pos3D(xx)
     xi <- matrix(pp[1,], ncol=3)
     yi <- matrix(pp[2,], ncol=3)
+    p3d.sun <- get(".p3d.sun")
+    p3d.col <- get(".p3d.col")
+    p3d.colfct <- get(".p3d.colfct")
     for (i in 1:n) {
       for (j in 2:(nrow(xi)-1)) {
         lines(xi[(j-1):j, i],  yi[(j-1):j, i],
               lwd=if ((y[j,i]>=0) & (y[j,i]<= breite) &
                 (x[j,i]>=0) & (x[j,i]<=laenge)) 
               8 else 3 ,
-              col = .p3d.col[.p3d.colfct(sqrt(sum((c(x[j,i], y[j,i], j) 
-                - .p3d.sun)^2)))]
+              col = p3d.col[p3d.colfct(sqrt(sum((c(x[j,i], y[j,i], j) 
+                - p3d.sun)^2)))]
               )
       }
     }

@@ -43,7 +43,7 @@ read.picture <- function(picture, extensions=c("tif", "tiff",
       i <- i + 1
       }
     if (i>length(extensions)) {
-      stop(paste("file", picture, "not found"))
+      stop("file ", picture, " not found")
     } else {
       sfound <- paste(s, exten, sep=".")
     }

@@ -24,10 +24,6 @@ create.stones <- function(h, trials=10){
   idx <- (as.integer(h$idx.rf / h$max.horizons) %% 2) >= 1
   h$idx.rf[idx] <- h$idx.rf[idx] - h$max.horizons
   
-#if (length(dev.list())==1) get(getOption("device"))() else dev.set(3)
-#image(h$idx.rf,col=rainbow(30))
-#readline("press return")
-#dev.set(2)       
  
   for (i in 1:h$n) {    
     hor <- i-1
@@ -108,7 +104,7 @@ create.stones <- function(h, trials=10){
  ##27.12.03
 #  cat(i,x,y, 1 + round((x - h$grid.x[1]) / h$step),
 #       1 + round((y - h$grid.y[1]) / h$step),":", dim(h$idx.rf), "\n")
-#   if (length(dev.list())==1) get(getOption("device"))() else dev.set(3)
+#   if (length(dev.list())==1) get(g etOption("device"))() else dev.set(3)
 #   image(h$grid.x, h$grid.y, h$idx.rf,col=rainbow(30))
 #   points(x + e.grid[,1] * h$step, y + h$step * e.grid[,2], pch=".")
 #   points(x, y, pch=16)      

@@ -522,6 +522,11 @@ read.swms2d.table <- function(path,
   
   ENVIR = environment()
   READLINES <- 0
+
+  NumNP <- NumEl <- NumBP <- NObs <- hTab1 <- hTabN <- NMat <- AtmInF <-
+    dtMin <- dtMax <- DMul2 <- MPL <- SeepF <- DrainF <- lChem <- LUnit <-
+      TUnit <- MUnit <- Kat <- MaxIt <- TolTh <- TolH <- lWat <- FreeD <-
+        NLay <- NaN
   
   read <- function(file, skip, nrows=1, com="(", header=TRUE,
                    fct=function(x)x, solve=header, mode="any",
@@ -531,7 +536,7 @@ read.swms2d.table <- function(path,
     x <- read.table(file=file, skip=skip, header=header, nrows=nrows, com=com)
     if (solve)
       for (i in names(x)) {
-        if (any(i==ls(envir=ENVIR))) stop(paste(i,"exists"))
+        if (any(i==ls(envir=ENVIR)) && !is.nan(get(i))) stop(i," exists")
         txt <- paste("assign('",i,"',fct(x$",i,"),envir=ENVIR)",sep="")
         eval(parse(text=txt))
       }

@@ -372,7 +372,7 @@ risk.index <-
       ## readable, standardised parameters
       param <- function(k, par) return(if (k==1) c(0, par) else par)
       
-    } else stop(paste("unknown method:", method))
+    } else stop("unknown method: ", method)
     
     total.par <- matrix(nrow=3, ncol=length(sel.dist)) ## total.par
     ## stored the optimal parameter for each distance, above which data
@@ -695,7 +695,8 @@ analyse.profile <-
     assign("old.param", picture[c("param", "lower", "upper")], envir=ENVIR)
     X11.height <-
       X11.width / nrow(picture$picture) * ncol(picture$picture) * 40 / 99
-    if (new) get(getOption("device"))(height=X11.height, width=X11.width)
+    if (new)
+      do.call(getOption("device"), list(height=X11.height, width=X11.width))
     else bg.save <- par()$bg
 
     figs <- rbind(c(0.01,0.40,0.01,0.99),

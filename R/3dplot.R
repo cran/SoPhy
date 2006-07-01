@@ -140,13 +140,13 @@ quader <- function(size, inf, sun,
   } # plot
   
   if (add) return(invisible())
-  
-  assign(".p3d.range.dist",
-         range(sqrt(colSums((cbind(qq1, qq2) - sun)^2))), envir=.ENV)
+
+  p3d.range.dist <- range(sqrt(colSums((cbind(qq1, qq2) - sun)^2)))
+  assign(".p3d.range.dist", p3d.range.dist, envir=.ENV)
 
   assign(".p3d.colfct", function(d)
          pmin(length(col),
-              pmax(1, (d - .p3d.range.dist[1]) / diff(.p3d.range.dist) *
+              pmax(1, (d - p3d.range.dist[1]) / diff(p3d.range.dist) *
                    length(col))), envir=.ENV)
   environment(.p3d.colfct) <- EmptyEnv()
 

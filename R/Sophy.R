@@ -850,8 +850,8 @@ xswms2d <-
         (length(what)!=1 || what!="none")) {
       print(pmatch(what, c(rf.menu, "water"), dup=TRUE))
       print(is.na(pmatch(what, c(rf.menu, "water"), dup=TRUE)))
-      stop(paste("simulation call with strange value(s) of what:",
-                 paste(what, collapse=","))) ## programming error then!
+      stop("simulation call with strange value(s) of what:",
+                 paste(what, collapse=",")) ## programming error then!
     }
     rf.choice <- pmatch(what, rf.menu, dup=TRUE)
     rf.choice <- rf.choice[!is.na(rf.choice)]
@@ -1052,7 +1052,7 @@ xswms2d <-
                     ...)
   }
  
-  if (new) get(getOption("device"))(height=X11.height, width=X11.width)
+  if (new) do.call(getOption("device"), list(height=X11.height, width=X11.width))
   else bg.save <- par()$bg
   par(bg="white")
 
