@@ -17,7 +17,7 @@ dimension of \code{picture}}
 dimension of \code{picture}; see details}
    \item{reverse}{logical; see details}
    \item{cex.axis}{graphical parameter, see \command{\link{par}}}
-   \item{...}{additional graphical parameters for \command{\link[base]{image}}}
+   \item{...}{additional graphical parameters for \command{\link[graphics]{image}}}
 }
 \value{
  NULL

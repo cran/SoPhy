@@ -55,7 +55,8 @@
     which will be used by \command{belichtet}, for example.
   }
   \item{font}{font used for the labelling of the axes, see also
-    \command{\link[graphics]{font}}}
+    \code{par("font")}
+  }
   \item{srt}{angle for the character rotation when labelling the y axis;
     if \code{NULL} the angle is calculated, but might be not always the
     best choice.

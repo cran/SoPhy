@@ -1448,7 +1448,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   \item{idx.rf}{integer. Matrix of size
     \code{length(grid.x) }\eqn{\times}{x }\code{length(grid.y)}
     indicates the affiliation to a horizon or polygon (number is
-    decremented by 1, i.e., \eqn{0,...,\code{h$n}-1}), see also
+    decremented by 1, i.e., \eqn{0,...,\code{h\$n}-1}), see also
     the output variable \code{border} within the specific horizons.
     
     It allows also for the indication of the presence of a stone; then,
@@ -1655,7 +1655,7 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
   Any of the lists that contain input parameters may have the additional
   component \code{.history}, an internal variable used by the
   interactive menue algorithm that gives the last entries by the user;
-  see \command{\link[RandomFields]{evalpar}}. 
+  see \command{\link[RandomFields]{eval.parameters}}. 
 }
 \section{Warning}{The user should consider the following parameters
   of \code{h[[i]]} as being read-only:

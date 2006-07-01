@@ -1,4 +1,4 @@
-PKG_LIBS= $(FLIBS) -ltiff
+PKG_LIBS= $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) -ltiff
 #PKG_CFLAGS = -O0 -Wall -pedantic -g
 #PKG_CXXFLAGS = -O0 -Wall -pedantic -g
 #PKG_FFLAGS  = -O0 -Wall -pedantic -g

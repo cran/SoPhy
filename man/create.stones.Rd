@@ -97,7 +97,7 @@ create.stones(h, trials = 10)
   
   \item{\code{$idx.rf}}{
     gives, at first instance, the association of a pixel
-    to a horizon (\eqn{0,...,\code{h$n}-1}).
+    to a horizon (0,...,\code{h$n}-1).
     If the pixel belongs to one or more stones the value
     of the maximum number of horizons is added.}
 
