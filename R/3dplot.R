@@ -148,7 +148,7 @@ quader <- function(size, inf, sun,
          pmin(length(col),
               pmax(1, (d - p3d.range.dist[1]) / diff(p3d.range.dist) *
                    length(col))), envir=.ENV)
-  environment(.p3d.colfct) <- EmptyEnv()
+  environment(.p3d.colfct) <- .EmptyEnv()
 
   assign(".p3d.profile", size, envir=.ENV)
   assign(".p3d.inf", inf, envir=.ENV)

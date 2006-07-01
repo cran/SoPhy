@@ -1,6 +1,6 @@
 ### inconsistent: h kann nicht durchgezogen werden!
 
-
+.EmptyEnv <- function() baseenv()
 
 sophy <- function(...) xswms2d(...)
 
@@ -309,20 +309,20 @@ xswms2d <-
               is.function(root$stop.probab), is.function(root$rf.link)
               )
     h$Kf <- Kf
-    environment(h$Kf) <- EmptyEnv()
+    environment(h$Kf) <- .EmptyEnv()
     h$beta <- beta
-    environment(h$beta) <- EmptyEnv()
+    environment(h$beta) <- .EmptyEnv()
     h$Hinit <- Hinit
-    environment(h$Hinit) <- EmptyEnv()
+    environment(h$Hinit) <- .EmptyEnv()
     h$root.zone <- root.zone
-    if (!is.null(root.zone)) environment(h$root.zone) <- EmptyEnv()
+    if (!is.null(root.zone)) environment(h$root.zone) <- .EmptyEnv()
 
     h$root <- list()
     for (j in 1:plant.types) {
       h$root[[j]] <- c(root, Kf.param, beta.param)
       h$root[[j]]$plant.type <- j
       environment(h$root[[j]]$stop.probab) <- 
-        environment(h$root[[j]]$rf.link) <- EmptyEnv()	     
+        environment(h$root[[j]]$rf.link) <- .EmptyEnv()	     
     }
     
     h$atmosphere <- atmosphere
@@ -371,7 +371,7 @@ xswms2d <-
               is.function(h$millerT))
     environment(h$miller.link) <- # environment(h$m.link) <-
       environment(h$millerH) <- environment(h$millerK) <- 
-      environment(h$millerT) <- EmptyEnv()
+      environment(h$millerT) <- .EmptyEnv()
     h$col.rf <- col.rf
     h$col.simu <- col.simu
   } else {
@@ -390,7 +390,7 @@ xswms2d <-
       stop("root misspecification -- not a list of lists")
     environment(h$miller.link) <- # environment(h$m.link) <-
       environment(h$millerH) <- environment(h$millerK) <- 
-      environment(h$millerT) <- EmptyEnv()
+      environment(h$millerT) <- .EmptyEnv()
   }
  
    for (i in 1:h$n) {

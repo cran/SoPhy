@@ -1,5 +1,5 @@
 Package: SoPhy
-Version: 1.0.33
+Version: 1.0.34
 Date: 2006-07-01
 Title: Soil Physics Tools
 Author: R by Martin Schlather <martin.schlather@math.uni-goettingen.de>; FORTRAN by Rien van Genuchten, Carl A. Mendoza, Rene Therrien, Edward Sudicky
@@ -9,4 +9,4 @@ SystemRequirements: linux: libtiff (and libtiff-devel); windows: Tiff (libtiff3.
 Description: SWMS_2D interface
 License: GPL
 URL: http://www.stochastik.math.uni-goettingen.de/institute
-Packaged: Thu Aug 21 22:09:33 2008; schlather
+Packaged: Sun Sep 14 19:42:55 2008; hornik

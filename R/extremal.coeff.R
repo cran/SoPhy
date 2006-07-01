@@ -613,7 +613,7 @@ analyse.profile <-
             (gb >= i[,,1] * p$minR / 100) & (80<=gb) & (p$maxGB>=gb)
           }
         }
-      environment(fct) <- EmptyEnv()
+      environment(fct) <- .EmptyEnv()
     }
     
 ### check input of param, lower and upper

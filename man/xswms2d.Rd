@@ -170,7 +170,6 @@ xswms2d(h, xlim, ylim, step, picture=NULL,
       \item{\code{TPrint} \{TPrint\}}{scale; 
 	modelling time after which the result is printed.
 
-	\cr
 	Note that for directly calls of \command{\link{create.waterflow}}
 	and subsequent call of \command{\link{swms2d}}, \code{TPrint}
 	might also be a vector, see \command{\link{read.swms2d.table}}
